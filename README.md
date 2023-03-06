@@ -4,9 +4,11 @@
 
 ### Common
 
-<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
-<img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=github&logoColor=white">
-<img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">
+<div>
+  <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+  <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=github&logoColor=white">
+  <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">
+</div>
 
 ### Backend
 
@@ -38,10 +40,10 @@
 <table>
   <tbody>
     <tr/>
-      <td align="center"><a href="https://github.com/jaypedia"><img src="" width="100px;" alt=""/><br /><sub><b>Frontend : Millie</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/soralee2821"><img src="" width="100px;" alt=""/><br /><sub><b>Frontend : S</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/jaypedia"><img src="https://avatars.githubusercontent.com/u/85419343?v=4" width="100px;" alt=""/><br /><sub><b>Frontend : Millie</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/soralee2821"><img src="https://avatars.githubusercontent.com/u/70058081?v=4" width="100px;" alt=""/><br /><sub><b>Frontend : S</b></sub></a><br /></td>
       <td align="center"><a href=""><img src="" width="100px;" alt=""/><br /><sub><b>Designer : 쏘오오</b></sub></a><br /></td>
-      <td align="center"><a href="https://github.com/ikjo93"><img src="" width="100px;" alt=""/><br /><sub><b>Backend : 익조</b></sub></a><br /></td>
+      <td align="center"><a href="https://github.com/ikjo93"><img src="https://avatars.githubusercontent.com/u/82401504?v=4" width="100px;" alt=""/><br /><sub><b>Backend : 익조</b></sub></a><br /></td>
     </tr>
   </tbody>
 </table>
