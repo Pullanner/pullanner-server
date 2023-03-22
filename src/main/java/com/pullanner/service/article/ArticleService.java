@@ -3,6 +3,7 @@ package com.pullanner.service.article;
 import com.pullanner.domain.article.Article;
 import com.pullanner.domain.article.ArticleRepository;
 import com.pullanner.web.dto.ArticleResponseDto;
+import com.pullanner.web.dto.ArticleResponseDtos;
 import com.pullanner.web.dto.ArticleSaveRequestDto;
 import com.pullanner.web.dto.ArticleUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,11 @@ public class ArticleService {
             .orElseThrow(() -> new IllegalStateException("해당 게시글이 없습니다. id = " + id));
 
         return new ArticleResponseDto(article);
+    }
+
+    @Transactional(readOnly = true)
+    public ArticleResponseDtos findAll() {
+        return new ArticleResponseDtos(articleRepository.findAll());
     }
 
     @Transactional
