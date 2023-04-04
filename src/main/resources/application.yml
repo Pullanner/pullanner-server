@@ -11,6 +11,16 @@ spring:
       hibernate:
         show_sql: true # 하이버네이트가 DB에 날리는 모든 쿼리(DDL, DML)를 콘솔창에 보여줌
         format_sql: true # SQL 예쁘게 보기
+        ddl-auto: none
   h2:
     console:
       enabled: true
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: 6379
+logging:
+  level:
+    org:
+      springframework:
+        security: INFO
