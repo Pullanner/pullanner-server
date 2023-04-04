@@ -2,6 +2,7 @@ package com.pullanner.web;
 
 import com.pullanner.service.article.ArticleService;
 import com.pullanner.web.dto.ArticleResponseDto;
+import com.pullanner.web.dto.ArticleResponseDtos;
 import com.pullanner.web.dto.ArticleSaveRequestDto;
 import com.pullanner.web.dto.ArticleUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,11 @@ public class ArticleApiController {
     @GetMapping("/api/articles/{id}")
     public ArticleResponseDto findById(@PathVariable Long id) {
         return articleService.findById(id);
+    }
+
+    @GetMapping("/api/articles")
+    public ArticleResponseDtos findAll() {
+        return articleService.findAll();
     }
 
     @DeleteMapping("/api/articles/{id}")
