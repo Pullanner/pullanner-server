@@ -4,7 +4,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
-import org.springframework.security.core.Authentication;
 
 public class AccessTokenProvider implements TokenProvider<AccessToken> {
 
@@ -23,8 +22,8 @@ public class AccessTokenProvider implements TokenProvider<AccessToken> {
         return Keys.hmacShaKeyFor(secretKeyBytes);
     }
 
-    public AccessToken createToken(Authentication authentication) {
-        return new AccessToken(authentication, secretKey, signatureAlgorithm, duration);
+    public AccessToken createToken(String email) {
+        return new AccessToken(email, secretKey, signatureAlgorithm, duration);
     }
 
     public AccessToken convertToObject(String token) {

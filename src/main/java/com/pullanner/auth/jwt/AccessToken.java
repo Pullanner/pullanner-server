@@ -6,7 +6,6 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import org.springframework.security.core.Authentication;
 
 public class AccessToken extends Token {
 
@@ -15,24 +14,23 @@ public class AccessToken extends Token {
         super.secretKey = secretKey;
     }
 
-    AccessToken(Authentication authentication, Key secretKey, SignatureAlgorithm signatureAlgorithm, long duration) {
+    AccessToken(String email, Key secretKey, SignatureAlgorithm signatureAlgorithm, long duration) {
         super.secretKey = secretKey;
-        super.token = compactToken(authentication, signatureAlgorithm, new Date(System.currentTimeMillis() + duration));
+        super.token = compactToken(email, signatureAlgorithm, new Date(System.currentTimeMillis() + duration));
     }
 
-    private String compactToken(Authentication authentication, SignatureAlgorithm signatureAlgorithm, Date expiration) {
+    private String compactToken(String email, SignatureAlgorithm signatureAlgorithm, Date expiration) {
         return Jwts.builder()
-            .setSubject(String.valueOf(authentication.getPrincipal()))
-            .setClaims(makeClaims(authentication))
+            .setSubject(email)
+            .setClaims(makeClaims())
             .setExpiration(expiration)
             .signWith(secretKey, signatureAlgorithm)
             .compact();
     }
 
-    private Map<String, Object> makeClaims(Authentication authentication) {
+    private Map<String, Object> makeClaims() {
         Map<String, Object> claims = new HashMap<>();
         claims.put(ClaimKey.TOKEN_TYPE.getKeyName(), TokenType.ACCESS.name());
-        claims.put(ClaimKey.USER_ROLE.getKeyName(), authentication.getAuthorities());
         return claims;
     }
 }

@@ -23,8 +23,8 @@ public class RefreshTokenProvider implements TokenProvider<RefreshToken> {
         return Keys.hmacShaKeyFor(secretKeyBytes);
     }
 
-    public RefreshToken createToken(Authentication authentication) {
-        return new RefreshToken(authentication, secretKey, signatureAlgorithm, duration);
+    public RefreshToken createToken(String email) {
+        return new RefreshToken(email, secretKey, signatureAlgorithm, duration);
     }
 
     public RefreshToken convertToObject(String token) {

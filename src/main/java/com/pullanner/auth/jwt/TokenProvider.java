@@ -4,7 +4,7 @@ import org.springframework.security.core.Authentication;
 
 public interface TokenProvider<T> {
 
-    T createToken(Authentication authentication);
+    T createToken(String email);
 
     T convertToObject(String token);
 }

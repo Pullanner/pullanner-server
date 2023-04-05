@@ -8,11 +8,13 @@ import com.pullanner.web.dto.common.ResponseMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -26,13 +28,21 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
         Authentication authentication) throws IOException {
 
-        Token accessToken = tokenService.createAccessToken(authentication);
-        Token refreshToken = tokenService.createRefreshToken(authentication);
+        String email = getOAuth2UserEmail(authentication);
+
+        Token accessToken = tokenService.createAccessToken(email);
+        Token refreshToken = tokenService.createRefreshToken(email);
 
         response.addHeader("Token", accessToken.getToken());
         response.addHeader("Set-Cookie", getRefreshTokenCookieInfo(refreshToken));
 
         setSuccessResponseBody(response);
+    }
+
+    private String getOAuth2UserEmail(Authentication authentication) {
+        DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
+        Map<String, Object> attributes = defaultOAuth2User.getAttributes();
+        return (String) attributes.get("email");
     }
 
     private String getRefreshTokenCookieInfo(Token refreshToken) {

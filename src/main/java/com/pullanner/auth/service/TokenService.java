@@ -8,7 +8,6 @@ import com.pullanner.auth.jwt.RefreshTokenProvider;
 import com.pullanner.auth.jwt.Token;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -21,13 +20,13 @@ public class TokenService {
     private final AccessTokenProvider accessTokenProvider;
     private final RefreshTokenProvider refreshTokenProvider;
 
-    public Token createAccessToken(Authentication authentication) {
-        return accessTokenProvider.createToken(authentication);
+    public Token createAccessToken(String email) {
+        return accessTokenProvider.createToken(email);
     }
 
-    public Token createRefreshToken(Authentication authentication) {
-        Token refreshToken = refreshTokenProvider.createToken(authentication);
-        redisRepository.save(String.valueOf(authentication.getPrincipal()), refreshToken.getToken(), Duration.ofMinutes(REFRESH_TOKEN_DURATION_MINUTE));
+    public Token createRefreshToken(String email) {
+        Token refreshToken = refreshTokenProvider.createToken(email);
+        redisRepository.save(email, refreshToken.getToken(), Duration.ofMinutes(REFRESH_TOKEN_DURATION_MINUTE));
         return refreshToken;
     }
 
