@@ -23,7 +23,7 @@ public class AccessTokenProvider implements TokenProvider<AccessToken> {
     }
 
     public AccessToken createToken(String email) {
-        return new AccessToken(email, secretKey, signatureAlgorithm, duration);
+        return new AccessToken(email, secretKey, signatureAlgorithm, System.currentTimeMillis() + duration);
     }
 
     public AccessToken convertToObject(String token) {

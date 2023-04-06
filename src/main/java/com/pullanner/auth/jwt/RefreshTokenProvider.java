@@ -24,7 +24,7 @@ public class RefreshTokenProvider implements TokenProvider<RefreshToken> {
     }
 
     public RefreshToken createToken(String email) {
-        return new RefreshToken(email, secretKey, signatureAlgorithm, duration);
+        return new RefreshToken(email, secretKey, signatureAlgorithm, System.currentTimeMillis() + duration);
     }
 
     public RefreshToken convertToObject(String token) {

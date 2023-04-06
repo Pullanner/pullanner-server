@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import java.security.Key;
 import java.util.Date;
 import lombok.Getter;
@@ -14,11 +15,12 @@ public abstract class Token {
     @Getter
     protected String token;
     protected Key secretKey;
+    protected SignatureAlgorithm signatureAlgorithm;
+    protected Date expiration;
 
     @Getter
     @RequiredArgsConstructor
     enum ClaimKey {
-        USER_ROLE("role"),
         TOKEN_TYPE("tokenType");
 
         private final String keyName;
@@ -42,7 +44,7 @@ public abstract class Token {
         }
     }
 
-    public String getUserInfo() {
+    public String getUserEmail() {
         try {
             return getClaims(token)
                 .getSubject();
@@ -51,5 +53,9 @@ public abstract class Token {
         } catch (JwtException e) {
             throw new IllegalStateException("유효하지 않은 토큰입니다.");
         }
+    }
+
+    public long getDuration() {
+        return expiration.getTime();
     }
 }

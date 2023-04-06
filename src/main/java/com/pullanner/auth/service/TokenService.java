@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class TokenService {
 
-    private static final long REFRESH_TOKEN_DURATION_MINUTE = 10L;
-
     private final RedisRepository redisRepository;
     private final AccessTokenProvider accessTokenProvider;
     private final RefreshTokenProvider refreshTokenProvider;
@@ -26,17 +24,17 @@ public class TokenService {
 
     public Token createRefreshToken(String email) {
         Token refreshToken = refreshTokenProvider.createToken(email);
-        redisRepository.save(email, refreshToken.getToken(), Duration.ofMinutes(REFRESH_TOKEN_DURATION_MINUTE));
+        redisRepository.save(email, refreshToken.getToken(), Duration.ofMinutes(refreshToken.getDuration()));
         return refreshToken;
     }
 
-    public String validateDurationOfRefreshToken(RefreshToken refreshToken) {
-        String memberId = refreshToken.getUserInfo();
-
-        if (redisRepository.findByKey(memberId) == null) {
-            throw new InvalidTokenException("refresh 토큰의 만료기한이 지났습니다. 다시 로그인 해주세요.");
+    public void validateRefreshToken(RefreshToken refreshToken) {
+        if (redisRepository.findByKey(refreshToken.getUserEmail()) == null) {
+            throw new InvalidTokenException("해당되는 Refresh 토큰이 존재하지 않습니다.");
         }
+    }
 
-        return memberId;
+    public void renewRefreshToken(Token refreshToken) {
+        redisRepository.save(refreshToken.getUserEmail(), refreshToken.getToken(), Duration.ofMinutes(refreshToken.getDuration()));
     }
 }

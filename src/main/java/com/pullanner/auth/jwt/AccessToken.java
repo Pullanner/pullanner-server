@@ -16,7 +16,10 @@ public class AccessToken extends Token {
 
     AccessToken(String email, Key secretKey, SignatureAlgorithm signatureAlgorithm, long duration) {
         super.secretKey = secretKey;
-        super.token = compactToken(email, signatureAlgorithm, new Date(System.currentTimeMillis() + duration));
+        super.signatureAlgorithm = signatureAlgorithm;
+        Date expiration = new Date(duration);
+        super.token = compactToken(email, signatureAlgorithm, expiration);
+        super.expiration = expiration;
     }
 
     private String compactToken(String email, SignatureAlgorithm signatureAlgorithm, Date expiration) {
