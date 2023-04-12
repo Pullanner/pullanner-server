@@ -1,25 +1,21 @@
-package com.pullanner.redis;
+package com.pullanner.auth.jwt.repository;
 
-import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
 @Repository
-public class RedisRepository {
+public class RefreshTokenRepository {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    public void save(String key, String value, Duration duration) {
-        redisTemplate.opsForValue().set(key, value, duration);
+    public void save(String key, String value, long duration) {
+        redisTemplate.opsForValue().set(key, value, duration, TimeUnit.MILLISECONDS);
     }
 
     public String findByKey(String key) {
         return redisTemplate.opsForValue().get(key);
-    }
-
-    public void deleteByKey(String key) {
-        redisTemplate.delete(key);
     }
 }
