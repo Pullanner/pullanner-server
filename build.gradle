@@ -1,13 +1,18 @@
 plugins {
-	id 'java'
+	id 'java' /* 자바 컴파일 위한 그래들 자바 플러그인 */
 	id 'org.springframework.boot' version '3.0.2'
 	id 'io.spring.dependency-management' version '1.1.0'
 }
 
-group = 'com.pullanner'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+/* 프로젝트의 메타 데이터 */
+group = 'com.pullanner' // 프로젝트 식별 정보
+version = '0.0.1-SNAPSHOT' // 프로젝트 버전
+sourceCompatibility = '17' // 자바 플러그인의 컴파일 위한 자바 버전
 
+/*
+	롬복이 코드를 작성하려면 애노테이션 프로세서 필요
+	따라서, 롬복에서 제공하는 애노테이션 프로세서를 컴파일 시 사용하기 위해 그래드 설정에 명시
+*/
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -34,6 +39,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'com.h2database:h2'
 	/*runtimeOnly 'com.mysql:mysql-connector-j'*/
+
+	/* jwt */
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+	/* redis */
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 tasks.named('test') {
