@@ -14,8 +14,4 @@ public class RefreshTokenRepository {
     public void save(String key, String value, long duration) {
         redisTemplate.opsForValue().set(key, value, duration, TimeUnit.MILLISECONDS);
     }
-
-    public String findByKey(String key) {
-        return redisTemplate.opsForValue().get(key);
-    }
 }
