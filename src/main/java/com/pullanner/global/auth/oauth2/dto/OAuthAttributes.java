@@ -42,9 +42,14 @@ public class OAuthAttributes {
     public User toEntity() {
         return User.builder()
             .name(name)
+            .nickName(getNickNameFromEmail(email))
             .email(email)
             .picture(picture)
             .role(Role.GUEST)
             .build();
+    }
+
+    private static String getNickNameFromEmail(String email) {
+        return email.substring(0, email.lastIndexOf('@'));
     }
 }
