@@ -14,7 +14,7 @@ public class TokenUtil {
     public static final String ACCESS_TOKEN_TYPE = "Bearer ";
     private static final String REFRESH_TOKEN_COOKIE_NAME = "refresh";
 
-    public static String parseBearerToken(HttpServletRequest request) {
+    public static String parseAccessToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(ACCESS_TOKEN_TYPE)) {
