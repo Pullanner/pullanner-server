@@ -16,24 +16,25 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "`user`")
+@Table(name = "`user`") // TODO : Table name user 라고 기입하면 SQL 에러
 @Entity
 public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(length = 20)
+    @Column(length = 30, name = "nickname")
     private String nickName;
 
     @Column(nullable = false)
     private String email;
 
-    @Column
+    @Column(length = 500, name = "picture")
     private String picture;
 
     @Enumerated(EnumType.STRING)
