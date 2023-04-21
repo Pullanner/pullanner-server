@@ -3,8 +3,6 @@ package com.pullanner.domain.user.controller;
 import com.pullanner.domain.user.dto.UserResponseDto;
 import com.pullanner.domain.user.dto.UserUpdateRequestDto;
 import com.pullanner.domain.user.service.UserService;
-import com.pullanner.global.ApiResponseCode;
-import com.pullanner.global.ApiResponseMessage;
 import com.pullanner.global.auth.jwt.dto.JwtAuthenticationResult;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +23,11 @@ public class UserController {
     public UserResponseDto find() {
         JwtAuthenticationResult jwtAuthenticationResult = (JwtAuthenticationResult) SecurityContextHolder.getContext().getAuthentication();
         String email = jwtAuthenticationResult.getEmail();
-        return userService.findByEmail(email);
+        return userService.findByEmail(email); // TODO : 매번 이메일로 디피 조회해야하나? -> 어짜피 사용자가 새로고침하지 않는 이상 한번만 호출하닌까 괜찮지 않나?
     }
 
     @PatchMapping("/api/users/{id}")
-    public ApiResponseMessage update(@PathVariable Long id, @Valid @RequestBody UserUpdateRequestDto request) {
-        userService.update(id, request);
-        return new ApiResponseMessage(ApiResponseCode.USER_UPDATE_SUCCESS.getCode(),
-            ApiResponseCode.USER_UPDATE_SUCCESS.getMessage());
+    public UserResponseDto update(@PathVariable Long id, @Valid @RequestBody UserUpdateRequestDto request) {
+        return userService.update(id, request);
     }
 }

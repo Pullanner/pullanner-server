@@ -25,12 +25,14 @@ public class UserService {
     }
 
     @Transactional
-    public void update(Long id, UserUpdateRequestDto request) {
+    public UserResponseDto update(Long id, UserUpdateRequestDto request) {
         User user = userRepository.findById(id)
             .orElseThrow(() -> {
                 throw new IllegalStateException("식별 번호가 " + id + "에 해당되는 사용자가 없습니다.");
             });
 
         user.update(request.getNickName(), request.getPicture());
+
+        return UserResponseDto.from(user);
     }
 }
