@@ -35,10 +35,6 @@ public class JwtAuthenticationResult extends AbstractAuthenticationToken {
 
     @Override
     public Object getPrincipal() {
-        return null;
-    }
-
-    public void setPrincipal(Object principal) {
-        this.principal = principal;
+        return principal;
     }
 }

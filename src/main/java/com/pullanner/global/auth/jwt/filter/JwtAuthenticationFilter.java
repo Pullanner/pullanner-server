@@ -1,10 +1,10 @@
 package com.pullanner.global.auth.jwt.filter;
 
+import static com.pullanner.global.ServletUtil.*;
+
 import com.pullanner.global.auth.jwt.dto.JwtAuthenticationResult;
-import com.pullanner.global.auth.jwt.exception.InvalidTokenException;
-import com.pullanner.global.auth.jwt.service.JwtService;
-import com.pullanner.global.auth.jwt.utils.TokenUtil;
-import com.pullanner.global.AuthenticationResponse;
+import com.pullanner.global.auth.jwt.service.AccessTokenService;
+import com.pullanner.global.ApiResponseCode;
 import com.pullanner.global.ServletUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,8 +25,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
-    private final String[] excludePaths = {"/login", "/h2-console", "/oauth2", "/api/token/reissue"};
+    private final AccessTokenService accessTokenService;
+
+    private final String[] excludePaths = {"/login", "/h2-console", "/oauth2",
+        "/api/token/reissue"};
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -35,27 +37,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             log.debug("JwtAuthenticationFilter is running...");
 
-            String token = TokenUtil.parseBearerToken(request);
+            String token = parseAccessToken(request);
 
             if (StringUtils.hasText(token) && !token.equalsIgnoreCase("null")) {
                 log.debug("Token is obtained...");
-                if (jwtService.validateExpirationOfToken(token)) {
-                    log.debug("Token is successfully validated...");
-                    JwtAuthenticationResult jwtAuthenticationResult = jwtService.getJwtAuthenticationResult(token);
-                    jwtAuthenticationResult.setAuthenticated(true);
-                    jwtAuthenticationResult.setDetails(request.getRemoteAddr());
 
-                    SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-                    securityContext.setAuthentication(jwtAuthenticationResult);
-                    SecurityContextHolder.setContext(securityContext);
-                } else {
-                    throw new InvalidTokenException("Access token is expired...");
-                }
+                accessTokenService.validateAndGetSubject(token);
+                log.debug("Token is successfully validated...");
+
+                JwtAuthenticationResult jwtAuthenticationResult = accessTokenService.getJwtAuthenticationResult(token);
+                jwtAuthenticationResult.setAuthenticated(true);
+                jwtAuthenticationResult.setDetails(request.getRemoteAddr());
+
+                SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+                securityContext.setAuthentication(jwtAuthenticationResult);
+                SecurityContextHolder.setContext(securityContext);
             }
         } catch (Exception e) {
             SecurityContextHolder.clearContext();
             log.debug(e.getMessage());
-            ServletUtil.setResponseBody(response, AuthenticationResponse.INVALID_TOKEN);
+            ServletUtil.setApiResponse(response, ApiResponseCode.TOKEN_INVALID);
             return;
         }
 
