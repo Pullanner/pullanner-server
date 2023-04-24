@@ -6,6 +6,7 @@ import com.pullanner.global.auth.jwt.dto.JwtAuthenticationResult;
 import com.pullanner.global.auth.jwt.service.AccessTokenService;
 import com.pullanner.global.ApiResponseCode;
 import com.pullanner.global.ServletUtil;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,10 +43,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (StringUtils.hasText(token) && !token.equalsIgnoreCase("null")) {
                 log.debug("Token is obtained...");
 
-                accessTokenService.validateAndGetSubject(token);
+                Claims claims = accessTokenService.validateAndGetClaims(token);
                 log.debug("Token is successfully validated...");
 
-                JwtAuthenticationResult jwtAuthenticationResult = accessTokenService.getJwtAuthenticationResult(token);
+                JwtAuthenticationResult jwtAuthenticationResult = accessTokenService.getJwtAuthenticationResult(claims);
                 jwtAuthenticationResult.setAuthenticated(true);
                 jwtAuthenticationResult.setDetails(request.getRemoteAddr());
 

@@ -1,6 +1,7 @@
 package com.pullanner.global.auth.jwt.repository;
 
-import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -16,19 +17,19 @@ public class RefreshTokenRepository {
         redisTemplate.opsForValue().set(refreshTokenId, refreshToken, duration, TimeUnit.MILLISECONDS);
     }
 
-    public String findRefreshTokenById(String refreshTokenId) {
-        return redisTemplate.opsForValue().get(refreshTokenId);
+    public Optional<String> findRefreshTokenById(String refreshTokenId) {
+        return Optional.ofNullable(redisTemplate.opsForValue().get(refreshTokenId));
     }
 
-    public void deleteRefreshTokenById(String refreshTokenId) {
-        redisTemplate.delete(refreshTokenId);
+    public void deleteByKey(String key) { // userId 또는 refreshTokenId
+        redisTemplate.delete(key);
     }
 
     public void addRefreshTokenIdByUserId(String userId, String refreshTokenId) {
-        redisTemplate.opsForList().rightPush(userId, refreshTokenId);
+        redisTemplate.opsForSet().add(userId, refreshTokenId);
     }
 
-    public List<String> findAllRefreshTokenIdsByUserId(String userId) {
-        return redisTemplate.opsForList().range(userId, 0, -1);
+    public Set<String> findAllRefreshTokenIdsByUserId(String userId) {
+        return redisTemplate.opsForSet().members(userId);
     }
 }

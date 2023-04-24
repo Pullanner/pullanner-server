@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccessTokenService extends TokenService {
 
-    private static final long ACCESS_TOKEN_DURATION = 2 * 60_000; // 2 minutes
-
     public String createAccessToken(OAuth2UserInfo oAuth2UserInfo, List<String> authorities) {
         return makeToken(oAuth2UserInfo, authorities, System.currentTimeMillis() + ACCESS_TOKEN_DURATION);
     }
@@ -22,12 +20,11 @@ public class AccessTokenService extends TokenService {
         return remakeToken(token, System.currentTimeMillis() + ACCESS_TOKEN_DURATION);
     }
 
-    public String validateAndGetSubject(String token) {
-        return getClaims(token).getSubject();
+    public Claims validateAndGetClaims(String token) {
+        return getClaims(token);
     }
 
-    public JwtAuthenticationResult getJwtAuthenticationResult(String token) {
-        Claims claims = getClaims(token);
+    public JwtAuthenticationResult getJwtAuthenticationResult(Claims claims) {
         String uid = claims.getSubject();
         String provider = claims.get(PROVIDER, String.class);
         String email = claims.get(EMAIL, String.class);
