@@ -1,8 +1,9 @@
 package com.pullanner.global;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pullanner.global.auth.jwt.dto.AccessTokenResponse;
+import com.pullanner.global.auth.jwt.dto.LoginSuccessResponse;
 import com.pullanner.global.auth.jwt.exception.InvalidTokenException;
+import com.pullanner.global.auth.oauth2.dto.OAuth2UserInfo;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,9 +42,11 @@ public class ServletUtil {
         throw new InvalidTokenException();
     }
 
-    public static void setAccessTokenResponse(HttpServletResponse response, String accessToken) throws IOException {
+    public static void setLoginSuccessResponse(HttpServletResponse response, OAuth2UserInfo oAuth2UserInfo, String accessToken) throws IOException {
         setResponseHeader(response, HttpStatus.OK.value());
-        setResponseBody(response, new AccessTokenResponse(accessToken));
+        setResponseBody(response, new LoginSuccessResponse(oAuth2UserInfo.getId(), oAuth2UserInfo.getName(),
+            oAuth2UserInfo.getNickName(), oAuth2UserInfo.getEmail(), oAuth2UserInfo.getPicture(),
+            accessToken));
     }
 
     public static void addRefreshTokenCookie(HttpServletResponse response, String token) {

@@ -2,6 +2,7 @@ package com.pullanner.domain.user.entity;
 
 import com.pullanner.domain.article.entity.Article;
 import com.pullanner.global.BaseTimeEntity;
+import com.pullanner.global.auth.oauth2.dto.OAuth2Provider;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -43,6 +44,10 @@ public class User extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    private OAuth2Provider provider;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
     @OneToMany(mappedBy = "author")
@@ -50,11 +55,12 @@ public class User extends BaseTimeEntity {
 
     @Builder
     public User(String name, String nickName, String email, String picture,
-        Role role) {
+        OAuth2Provider provider, Role role) {
         this.name = name;
         this.nickName = nickName;
         this.email = email;
         this.picture = picture;
+        this.provider = provider;
         this.role = role;
     }
 

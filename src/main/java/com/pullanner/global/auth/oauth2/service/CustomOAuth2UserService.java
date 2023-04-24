@@ -4,6 +4,8 @@ import com.pullanner.global.auth.oauth2.dto.OAuthAttributes;
 import com.pullanner.domain.user.entity.User;
 import com.pullanner.domain.user.repository.UserRepository;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -30,19 +32,22 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
             .getUserInfoEndpoint().getUserNameAttributeName();
 
-        OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName,
-            oAuth2User.getAttributes());
+        Map<String, Object> attributes = oAuth2User.getAttributes();
+        OAuthAttributes oAuthAttributes = OAuthAttributes.of(registrationId, userNameAttributeName, attributes);
 
-        User user = saveOrUpdate(attributes);
+        User user = saveOrUpdate(oAuthAttributes);
+
+        Map<String, Object> newAttributes = new HashMap<>(attributes);
+        newAttributes.put("id", user.getId());
 
         return new DefaultOAuth2User(
             Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
-            attributes.getAttributes(),
-            attributes.getNameAttributeKey());
+            newAttributes,
+            oAuthAttributes.getNameAttributeKey());
     }
 
     private User saveOrUpdate(OAuthAttributes attributes) {
-        User user = userRepository.findByEmail(attributes.getEmail())
+        User user = userRepository.findByEmail(attributes.getEmail()) // TODO : 이메일 인덱스 추가하기
             .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
             .orElse(attributes.toEntity());
 

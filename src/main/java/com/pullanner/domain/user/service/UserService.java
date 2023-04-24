@@ -15,10 +15,10 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public UserResponseDto findByEmail(String email) {
-        User user = userRepository.findByEmail(email)
+    public UserResponseDto findById(Long id) {
+        User user = userRepository.findById(id)
             .orElseThrow(() -> {
-                throw new IllegalStateException("이메일이 " + email + "에 해당되는 사용자가 없습니다.");
+                throw new IllegalStateException("이메일이 " + id + "에 해당되는 사용자가 없습니다.");
             });
 
         return UserResponseDto.from(user);
