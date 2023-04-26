@@ -10,6 +10,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "`user`") // TODO : Table name user 라고 기입하면 SQL 에러
+@Table(name = "`user`", indexes = @Index(name = "index_email_provider", columnList = "email, provider", unique = true))
 @Entity
 public class User extends BaseTimeEntity {
 
@@ -51,7 +52,7 @@ public class User extends BaseTimeEntity {
     private Role role;
 
     @OneToMany(mappedBy = "author")
-    private List<Article> articles = new ArrayList<>(); // TODO : Set vs List
+    private List<Article> articles = new ArrayList<>();
 
     @Builder
     public User(String name, String nickName, String email, String picture,

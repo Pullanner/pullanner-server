@@ -4,13 +4,20 @@ import java.util.Map;
 
 public class GoogleOAuth2UserInfo extends OAuth2UserInfo {
 
-    private static final String KEY_ID = "id";
+    private final Long userId;
+    private static final String KEY_ID = "sub";
     private static final String KEY_NAME = "name";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_PICTURE = "picture";
 
-    public GoogleOAuth2UserInfo(Map<String, Object> attributes) {
+    public GoogleOAuth2UserInfo(Long userId, Map<String, Object> attributes) {
         super(OAuth2Provider.GOOGLE, attributes);
+        this.userId = userId;
+    }
+
+    @Override
+    public Long getUserId() {
+        return userId;
     }
 
     @Override

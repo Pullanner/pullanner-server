@@ -1,10 +1,10 @@
 package com.pullanner.global.auth.oauth2.service;
 
+import com.pullanner.global.auth.oauth2.dto.CustomOAuth2User;
 import com.pullanner.global.auth.oauth2.dto.OAuthAttributes;
 import com.pullanner.domain.user.entity.User;
 import com.pullanner.domain.user.repository.UserRepository;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,7 +12,6 @@ import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserServ
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
@@ -37,17 +36,16 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         User user = saveOrUpdate(oAuthAttributes);
 
-        Map<String, Object> newAttributes = new HashMap<>(attributes);
-        newAttributes.put("id", user.getId());
-
-        return new DefaultOAuth2User(
+        return new CustomOAuth2User(
             Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
-            newAttributes,
-            oAuthAttributes.getNameAttributeKey());
+            attributes,
+            oAuthAttributes.getNameAttributeKey(),
+            user.getId()
+        );
     }
 
     private User saveOrUpdate(OAuthAttributes attributes) {
-        User user = userRepository.findByEmail(attributes.getEmail()) // TODO : 이메일 인덱스 추가하기
+        User user = userRepository.findByEmailAAndProvider(attributes.getEmail(), attributes.getProvider())
             .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
             .orElse(attributes.toEntity());
 

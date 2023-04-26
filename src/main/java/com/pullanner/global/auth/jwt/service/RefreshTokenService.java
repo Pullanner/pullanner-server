@@ -21,11 +21,12 @@ public class RefreshTokenService extends TokenService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     public String createRefreshToken(OAuth2UserInfo oAuth2UserInfo, List<String> authorities) {
-        String userId = String.valueOf(oAuth2UserInfo.getId());
+        String userId = String.valueOf(oAuth2UserInfo.getUserId());
+
         String refreshToken = makeToken(oAuth2UserInfo, authorities, System.currentTimeMillis() + REFRESH_TOKEN_DURATION);
         String refreshTokenId = UUID.randomUUID().toString();
         refreshTokenRepository.saveRefreshTokenById(refreshTokenId, refreshToken, REFRESH_TOKEN_DURATION); // 리프레쉬 토큰 아이디별 리프레쉬 토큰 값 저장
-        deleteRefreshTokensByUserId(userId); // 해당 사용자 이름으로 이전에 발행됐었던 모든 리프레쉬 토큰 값들을 삭제
+        deleteRefreshTokensByUserId(userId);
         refreshTokenRepository.addRefreshTokenIdByUserId(userId, refreshTokenId); // 해당 사용자 이름으로 새롭게 발행된 리프레쉬 토큰 아이디 값 저장
 
         return refreshTokenId;
@@ -41,8 +42,7 @@ public class RefreshTokenService extends TokenService {
 
         if (claims.get(INVALIDATE, Boolean.class)) { // 리프레쉬 토큰 재사용이 감지된 경우
             String userId = claims.getSubject();
-            deleteRefreshTokensByUserId(userId); // 해당 사용자 이름으로 이전에 발행됐었던 모든 리프레쉬 토큰 값들 삭제
-            refreshTokenRepository.deleteByKey(userId); // 해당 사용자 이름으로 발행된 모든 리프레쉬 토큰 아이디 set 삭제
+            deleteRefreshTokensByUserId(userId);
 
             throw new HackedTokenException();
         }
@@ -52,9 +52,11 @@ public class RefreshTokenService extends TokenService {
 
     private void deleteRefreshTokensByUserId(String userId) {
         Set<String> refreshTokenIds = refreshTokenRepository.findAllRefreshTokenIdsByUserId(userId);
-        for (String id : refreshTokenIds) {
+        for (String id : refreshTokenIds) { // 해당 사용자 이름으로 이전에 발행됐었던 모든 리프레쉬 토큰 값들 삭제
             refreshTokenRepository.deleteByKey(id);
         }
+
+        refreshTokenRepository.deleteByKey(userId); // 해당 사용자 이름으로 발행된 모든 리프레쉬 토큰 아이디 set 삭제
     }
 
     public String renewRefreshToken(String refreshTokenId, String refreshToken) {
