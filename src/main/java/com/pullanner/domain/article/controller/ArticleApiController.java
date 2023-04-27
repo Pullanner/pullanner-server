@@ -5,6 +5,7 @@ import com.pullanner.domain.article.dto.ArticleResponseDto;
 import com.pullanner.domain.article.dto.ArticleResponseDtos;
 import com.pullanner.domain.article.dto.ArticleSaveRequestDto;
 import com.pullanner.domain.article.dto.ArticleUpdateRequestDto;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -21,12 +23,12 @@ public class ArticleApiController {
     private final ArticleService articleService;
 
     @PostMapping("/api/articles")
-    public Long save(@RequestBody ArticleSaveRequestDto requestDto) {
+    public ArticleResponseDto save(@RequestBody ArticleSaveRequestDto requestDto) {
         return articleService.save(requestDto);
     }
 
     @PutMapping("/api/articles/{id}")
-    public Long update(@PathVariable Long id, @RequestBody ArticleUpdateRequestDto requestDto) {
+    public ArticleResponseDto update(@PathVariable Long id, @RequestBody ArticleUpdateRequestDto requestDto) {
         return articleService.update(id, requestDto);
     }
 
@@ -36,8 +38,8 @@ public class ArticleApiController {
     }
 
     @GetMapping("/api/articles")
-    public ArticleResponseDtos findAll() {
-        return articleService.findAll();
+    public ArticleResponseDtos findAll(@RequestParam @Min(1) Integer page) {
+        return articleService.findAllByPage(page);
     }
 
     @DeleteMapping("/api/articles/{id}")

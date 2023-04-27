@@ -10,11 +10,18 @@ public class ArticleResponseDto {
     private final String title;
     private final String content;
     private final String author;
+    private final Integer hit;
 
-    public ArticleResponseDto(Article article) {
-        this.id = article.getId();
-        this.title = article.getTitle();
-        this.content = article.getContent();
-        this.author = article.getAuthor();
+    private ArticleResponseDto(Long id, String title, String content, String author, Integer hit) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.author = author;
+        this.hit = hit;
+    }
+
+    public static ArticleResponseDto from(Article article) {
+        return new ArticleResponseDto(article.getId(), article.getTitle(), article.getContent(),
+            article.getAuthor().getNickName(), article.getHit());
     }
 }
