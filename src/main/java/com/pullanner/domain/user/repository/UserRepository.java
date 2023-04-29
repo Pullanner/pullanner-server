@@ -1,10 +1,11 @@
 package com.pullanner.domain.user.repository;
 
 import com.pullanner.domain.user.entity.User;
+import com.pullanner.global.auth.oauth2.dto.OAuth2Provider;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findByEmail(String email);
+    Optional<User> findByEmailAndProvider(String email, OAuth2Provider provider);
 }

@@ -40,13 +40,16 @@ public class Article extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private User author; // TODO : 데이터 삭제 후 userId 외래키로 User 참조하기 -> No! 역정규화!! (JOIN 제거)
+    private User author;
+
+    private Integer hit;
 
     @Builder
-    public Article(String title, String content, User author) {
+    public Article(String title, String content, User author, Integer hit) {
         this.title = title;
         this.content = content;
         this.author = author;
+        this.hit = hit;
     }
 
     public void update(String title, String content) {

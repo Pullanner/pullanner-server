@@ -40,7 +40,7 @@ public class TokenService {
     }
 
     protected String makeToken(OAuth2UserInfo oAuth2UserInfo, List<String> authorities, long expiration) {
-        String id = String.valueOf(oAuth2UserInfo.getId());
+        String id = String.valueOf(oAuth2UserInfo.getUserId());
         String provider = oAuth2UserInfo.getProvider().toString();
         String email = oAuth2UserInfo.getEmail();
 

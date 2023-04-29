@@ -44,7 +44,7 @@ public class ServletUtil {
 
     public static void setLoginSuccessResponse(HttpServletResponse response, OAuth2UserInfo oAuth2UserInfo, String accessToken) throws IOException {
         setResponseHeader(response, HttpStatus.OK.value());
-        setResponseBody(response, new LoginSuccessResponse(oAuth2UserInfo.getId(), oAuth2UserInfo.getName(),
+        setResponseBody(response, new LoginSuccessResponse(oAuth2UserInfo.getUserId(), oAuth2UserInfo.getName(),
             oAuth2UserInfo.getNickName(), oAuth2UserInfo.getEmail(), oAuth2UserInfo.getPicture(),
             accessToken));
     }
@@ -53,7 +53,7 @@ public class ServletUtil {
         response.addHeader("Set-Cookie", getRefreshTokenCookieInfo(token));
     }
 
-    // TODO : https 적용 시 Secure 설정
+    // TODO : https 적용 시 Secure 설정 필요
     private static String getRefreshTokenCookieInfo(String token) {
         return ResponseCookie.from(REFRESH_TOKEN_ID_COOKIE_NAME, token)
             .path("/api")
