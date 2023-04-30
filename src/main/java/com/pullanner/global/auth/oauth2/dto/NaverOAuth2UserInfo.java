@@ -2,16 +2,17 @@ package com.pullanner.global.auth.oauth2.dto;
 
 import java.util.Map;
 
-public class GoogleOAuth2UserInfo extends OAuth2UserInfo {
+public class NaverOAuth2UserInfo extends OAuth2UserInfo {
 
     private final Long userId;
-    private static final String KEY_ID = "sub";
+    private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
     private static final String KEY_EMAIL = "email";
-    private static final String KEY_PICTURE = "picture";
+    private static final String KEY_PICTURE = "profile_image";
+    private static final String KEY_ETC_DATA = "response";
 
-    public GoogleOAuth2UserInfo(Long userId, Map<String, Object> attributes) {
-        super(OAuth2Provider.GOOGLE, attributes);
+    public NaverOAuth2UserInfo(Long userId, Map<String, Object> attributes) {
+        super(OAuth2Provider.NAVER, (Map<String, Object>) attributes.get("response"));
         this.userId = userId;
     }
 
@@ -42,6 +43,6 @@ public class GoogleOAuth2UserInfo extends OAuth2UserInfo {
 
     @Override
     public Map<String, Object> getEtcData() {
-        return this.attributes;
+        return (Map<String, Object>) this.attributes.get(KEY_ETC_DATA);
     }
 }

@@ -17,7 +17,7 @@ public abstract class OAuth2UserInfo {
     public abstract Long getUserId();
     public abstract Long getId();
     public abstract String getName();
-    public abstract String getNickName();
     public abstract String getEmail();
     public abstract String getPicture();
+    public abstract Map<String, Object> getEtcData();
 }
