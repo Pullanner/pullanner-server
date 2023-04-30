@@ -9,7 +9,6 @@ public class LoginSuccessResponse {
 
     private Long userId;
     private String name;
-    private String nickName;
     private String email;
     private String picture;
     private String accessToken;
