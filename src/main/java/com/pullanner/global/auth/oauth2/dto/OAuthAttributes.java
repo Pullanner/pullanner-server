@@ -2,6 +2,7 @@ package com.pullanner.global.auth.oauth2.dto;
 
 import com.pullanner.domain.user.entity.Role;
 import com.pullanner.domain.user.entity.User;
+import com.pullanner.global.auth.oauth2.exception.UnsupportedOAuth2ProviderException;
 import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,13 +31,22 @@ public class OAuthAttributes {
     }
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
-        return ofGoogle(userNameAttributeName, attributes);
+        if ("google".equals(registrationId)) {
+            return ofGoogle(userNameAttributeName, attributes);
+        } else if ("naver".equals(registrationId)) {
+            return ofNaver(userNameAttributeName, attributes);
+        } else if ("kakao".equals(registrationId)) {
+            return ofKakao(userNameAttributeName, attributes);
+        }
+
+        throw new UnsupportedOAuth2ProviderException();
     }
 
     private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
+        System.out.println(userNameAttributeName);
+
         return OAuthAttributes.builder()
             .name((String) attributes.get("name"))
-            .nickName((String) attributes.get("email"))
             .email((String) attributes.get("email"))
             .provider(OAuth2Provider.GOOGLE)
             .picture((String) attributes.get("picture"))
@@ -45,10 +55,37 @@ public class OAuthAttributes {
             .build();
     }
 
+    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
+        System.out.println(userNameAttributeName);
+        Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+
+        return OAuthAttributes.builder()
+            .name((String) response.get("name"))
+            .email((String) response.get("email"))
+            .provider(OAuth2Provider.NAVER)
+            .picture((String) response.get("profile_image"))
+            .attributes(response)
+            .nameAttributeKey(userNameAttributeName)
+            .build();
+    }
+
+    private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
+        System.out.println(userNameAttributeName);
+        Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
+        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+
+        return OAuthAttributes.builder()
+            .name((String) properties.get("nickname"))
+            .email((String) kakaoAccount.get("email"))
+            .provider(OAuth2Provider.KAKAO)
+            .attributes(kakaoAccount)
+            .nameAttributeKey(userNameAttributeName)
+            .build();
+    }
+
     public User toEntity() {
         return User.builder()
             .name(name)
-            .nickName(nickName)
             .email(email)
             .provider(provider)
             .picture(picture)

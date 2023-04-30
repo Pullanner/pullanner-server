@@ -45,7 +45,7 @@ public class ServletUtil {
     public static void setLoginSuccessResponse(HttpServletResponse response, OAuth2UserInfo oAuth2UserInfo, String accessToken) throws IOException {
         setResponseHeader(response, HttpStatus.OK.value());
         setResponseBody(response, new LoginSuccessResponse(oAuth2UserInfo.getUserId(), oAuth2UserInfo.getName(),
-            oAuth2UserInfo.getNickName(), oAuth2UserInfo.getEmail(), oAuth2UserInfo.getPicture(),
+            oAuth2UserInfo.getEmail(), oAuth2UserInfo.getPicture(),
             accessToken));
     }
 
