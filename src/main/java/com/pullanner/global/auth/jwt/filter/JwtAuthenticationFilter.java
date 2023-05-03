@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -27,8 +29,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final AccessTokenService accessTokenService;
 
-    private final String[] excludePaths = {"/login", "/h2-console", "/oauth2",
-        "/api/token/reissue"};
+    private final String[][] excludePathAndMethod = {
+        {"/login", "GET"}, {"/oauth2", "GET"}, {"/api/token/reissue", "POST"}, {"/api/articles", "GET"}
+    };
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -66,6 +69,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-        return Arrays.stream(excludePaths).anyMatch(path::startsWith);
+        String method = request.getMethod();
+
+        return Arrays.stream(excludePathAndMethod)
+            .anyMatch(e -> path.startsWith(e[0]) && e[1].equals(method));
     }
 }

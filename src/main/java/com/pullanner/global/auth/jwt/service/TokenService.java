@@ -26,7 +26,6 @@ public class TokenService {
                 .parseClaimsJws(token)
                 .getBody();
         } catch (JwtException e) {
-            e.printStackTrace();
             throw new InvalidTokenException();
         }
     }

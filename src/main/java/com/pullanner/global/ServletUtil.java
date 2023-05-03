@@ -68,8 +68,8 @@ public class ServletUtil {
     }
 
     public static void setApiResponse(HttpServletResponse response, ApiResponseCode apiResponseCode) throws IOException {
-        setResponseHeader(response, apiResponseCode.getStatusCode());
-        setResponseBody(response, new ApiResponseMessage(apiResponseCode.getCode(), apiResponseCode.getMessage()));
+        setResponseHeader(response, apiResponseCode.getHttpStatusCode());
+        setResponseBody(response, ApiResponseMessage.of(apiResponseCode.getCode(), apiResponseCode.getMessage()));
     }
 
     private static void setResponseHeader(HttpServletResponse response, int statusCode) {
