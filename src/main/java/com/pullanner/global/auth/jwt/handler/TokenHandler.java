@@ -25,8 +25,7 @@ public class TokenHandler {
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/api/token/reissue")
-    public AccessTokenResponse reissue(@RefreshTokenId String refreshTokenId,
-        HttpServletResponse response) {
+    public AccessTokenResponse reissue(@RefreshTokenId String refreshTokenId, HttpServletResponse response) {
         String refreshToken = refreshTokenService.validateAndGetToken(refreshTokenId);
 
         String renewedAccessToken = accessTokenService.renewAccessToken(refreshToken);

@@ -8,23 +8,11 @@ import org.springframework.security.core.GrantedAuthority;
 @Getter
 public class JwtAuthenticationResult extends AbstractAuthenticationToken {
 
-    private Object principal;
-    private final String uid;
-    private final String provider;
-    private final String email;
+    private final Object principal;
 
-    public JwtAuthenticationResult(String uid, String provider, String email) {
-        super(null);
-        this.uid = uid;
-        this.provider = provider;
-        this.email = email;
-    }
-
-    public JwtAuthenticationResult(String uid, String provider, String email, Collection<? extends GrantedAuthority> authorities) {
+    public JwtAuthenticationResult(Long userId, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
-        this.uid = uid;
-        this.provider = provider;
-        this.email = email;
+        principal = userId;
     }
 
     @Deprecated

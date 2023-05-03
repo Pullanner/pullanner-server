@@ -4,20 +4,20 @@ import java.util.Map;
 
 public class NaverOAuth2UserInfo extends OAuth2UserInfo {
 
-    private final Long userId;
+    private final String userId;
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_PICTURE = "profile_image";
     private static final String KEY_ETC_DATA = "response";
 
-    public NaverOAuth2UserInfo(Long userId, Map<String, Object> attributes) {
+    public NaverOAuth2UserInfo(String userId, Map<String, Object> attributes) {
         super(OAuth2Provider.NAVER, (Map<String, Object>) attributes.get("response"));
         this.userId = userId;
     }
 
     @Override
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 

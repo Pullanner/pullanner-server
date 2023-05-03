@@ -32,13 +32,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoUtil.getOAuth2UserInfo(
             (OAuth2AuthenticationToken) authentication);
 
-        List<String> authorities = authentication.getAuthorities()
-            .stream()
-            .map(GrantedAuthority::getAuthority).
-            collect(Collectors.toList());
+        String userId = oAuth2UserInfo.getUserId();
 
-        String accessToken = accessTokenService.createAccessToken(oAuth2UserInfo, authorities);
-        String refreshTokenId = refreshTokenService.createRefreshToken(oAuth2UserInfo, authorities);
+        String accessToken = accessTokenService.createAccessToken(userId);
+        String refreshTokenId = refreshTokenService.createRefreshToken(userId);
 
         setLoginSuccessResponse(response, oAuth2UserInfo, accessToken);
         addRefreshTokenCookie(response, refreshTokenId);

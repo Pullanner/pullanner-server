@@ -3,12 +3,10 @@ package com.pullanner.global.auth.jwt.service;
 import com.pullanner.global.auth.jwt.exception.HackedTokenException;
 import com.pullanner.global.auth.jwt.exception.InvalidTokenException;
 import com.pullanner.global.auth.jwt.repository.RefreshTokenRepository;
-import com.pullanner.global.auth.oauth2.dto.OAuth2UserInfo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +16,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class RefreshTokenService extends TokenService {
 
+    private static final long REFRESH_TOKEN_DURATION = 10 * 60_000; // 10 minutes -> milliseconds
+
     private final RefreshTokenRepository refreshTokenRepository;
 
-    public String createRefreshToken(OAuth2UserInfo oAuth2UserInfo, List<String> authorities) {
-        String userId = String.valueOf(oAuth2UserInfo.getUserId());
-
-        String refreshToken = makeToken(oAuth2UserInfo, authorities, System.currentTimeMillis() + REFRESH_TOKEN_DURATION);
+    public String createRefreshToken(String userId) {
+        String refreshToken = makeToken(userId, System.currentTimeMillis() + REFRESH_TOKEN_DURATION);
         String refreshTokenId = UUID.randomUUID().toString();
         refreshTokenRepository.saveRefreshTokenById(refreshTokenId, refreshToken, REFRESH_TOKEN_DURATION); // 리프레쉬 토큰 아이디별 리프레쉬 토큰 값 저장
         deleteRefreshTokensByUserId(userId);

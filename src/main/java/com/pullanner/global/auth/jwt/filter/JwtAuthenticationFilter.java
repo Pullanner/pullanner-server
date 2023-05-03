@@ -5,7 +5,6 @@ import static com.pullanner.global.ServletUtil.*;
 import com.pullanner.global.auth.jwt.dto.JwtAuthenticationResult;
 import com.pullanner.global.auth.jwt.service.AccessTokenService;
 import com.pullanner.global.ApiResponseCode;
-import com.pullanner.global.ServletUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -57,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             SecurityContextHolder.clearContext();
             log.debug(e.getMessage());
-            ServletUtil.setApiResponse(response, ApiResponseCode.TOKEN_INVALID);
+            setApiResponse(response, ApiResponseCode.TOKEN_INVALID);
             return;
         }
 
