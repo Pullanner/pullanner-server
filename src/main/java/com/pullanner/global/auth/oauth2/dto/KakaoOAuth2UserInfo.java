@@ -4,20 +4,20 @@ import java.util.Map;
 
 public class KakaoOAuth2UserInfo extends OAuth2UserInfo {
 
-    private final Long userId;
+    private final String userId;
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "nickname";
     private static final String KEY_EMAIL = "email";
     private static final String KEY_PICTURE = "profile_image";
     private static final String KEY_ETC_DATA = "kakao_account";
 
-    public KakaoOAuth2UserInfo(Long userId, Map<String, Object> attributes) {
+    public KakaoOAuth2UserInfo(String userId, Map<String, Object> attributes) {
         super(OAuth2Provider.KAKAO, attributes);
         this.userId = userId;
     }
 
     @Override
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 

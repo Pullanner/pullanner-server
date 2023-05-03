@@ -14,7 +14,7 @@ public abstract class OAuth2UserInfo {
         this.attributes = attributes;
     }
 
-    public abstract Long getUserId();
+    public abstract String getUserId();
     public abstract Long getId();
     public abstract String getName();
     public abstract String getEmail();

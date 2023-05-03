@@ -14,7 +14,7 @@ public class OAuth2UserInfoUtil {
     public static OAuth2UserInfo getOAuth2UserInfo(OAuth2AuthenticationToken auth2AuthenticationToken) {
         String registrationId = auth2AuthenticationToken.getAuthorizedClientRegistrationId();
         CustomOAuth2User oAuth2User = (CustomOAuth2User) auth2AuthenticationToken.getPrincipal();
-        Long userId = oAuth2User.getUserId();
+        String userId = oAuth2User.getUserId();
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
         if ("google".equals(registrationId)) {

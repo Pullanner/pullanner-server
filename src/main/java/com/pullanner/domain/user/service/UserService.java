@@ -18,7 +18,7 @@ public class UserService {
     public UserResponseDto findById(Long id) {
         User user = userRepository.findById(id)
             .orElseThrow(() -> {
-                throw new IllegalStateException("이메일이 " + id + "에 해당되는 사용자가 없습니다.");
+                throw new IllegalStateException("식별 번호가 " + id + "에 해당되는 사용자가 없습니다.");
             });
 
         return UserResponseDto.from(user);

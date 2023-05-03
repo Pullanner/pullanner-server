@@ -7,7 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class LoginSuccessResponse {
 
-    private Long userId;
     private String name;
     private String email;
     private String picture;

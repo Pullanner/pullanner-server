@@ -2,6 +2,7 @@ package com.pullanner.global.auth.jwt.handler;
 
 import static com.pullanner.global.ServletUtil.*;
 
+import com.pullanner.global.CommonUtil;
 import com.pullanner.global.auth.jwt.argumentresolver.RefreshTokenId;
 import com.pullanner.global.auth.jwt.dto.AccessTokenResponse;
 import com.pullanner.global.auth.jwt.exception.HackedTokenException;
@@ -25,8 +26,7 @@ public class TokenHandler {
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/api/token/reissue")
-    public AccessTokenResponse reissue(@RefreshTokenId String refreshTokenId,
-        HttpServletResponse response) {
+    public AccessTokenResponse reissue(@RefreshTokenId String refreshTokenId, HttpServletResponse response) {
         String refreshToken = refreshTokenService.validateAndGetToken(refreshTokenId);
 
         String renewedAccessToken = accessTokenService.renewAccessToken(refreshToken);
@@ -44,15 +44,11 @@ public class TokenHandler {
 
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<ApiResponseMessage> handleInvalidTokenException() {
-        ApiResponseCode apiResponseCode = ApiResponseCode.TOKEN_INVALID;
-        ApiResponseMessage apiResponseMessage = new ApiResponseMessage(apiResponseCode.getCode(), apiResponseCode.getMessage());
-        return ResponseEntity.status(apiResponseCode.getStatusCode()).body(apiResponseMessage);
+        return CommonUtil.getResponseEntity(ApiResponseCode.TOKEN_INVALID);
     }
 
     @ExceptionHandler(HackedTokenException.class)
     public ResponseEntity<ApiResponseMessage> handleHackedTokenException() {
-        ApiResponseCode apiResponseCode = ApiResponseCode.TOKEN_HACKED;
-        ApiResponseMessage apiResponseMessage = new ApiResponseMessage(apiResponseCode.getCode(), apiResponseCode.getMessage());
-        return ResponseEntity.status(apiResponseCode.getStatusCode()).body(apiResponseMessage);
+        return CommonUtil.getResponseEntity(ApiResponseCode.TOKEN_HACKED);
     }
 }

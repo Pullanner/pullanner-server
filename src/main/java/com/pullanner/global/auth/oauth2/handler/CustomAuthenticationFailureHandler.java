@@ -15,7 +15,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
         AuthenticationException exception) throws IOException {
-        response.setStatus(ApiResponseCode.OAUTH2_LOGIN_FAIL.getStatusCode());
+        response.setStatus(ApiResponseCode.OAUTH2_LOGIN_FAIL.getHttpStatusCode());
         ServletUtil.setApiResponse(response, ApiResponseCode.OAUTH2_LOGIN_FAIL);
     }
 }

@@ -43,8 +43,6 @@ public class OAuthAttributes {
     }
 
     private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
-        System.out.println(userNameAttributeName);
-
         return OAuthAttributes.builder()
             .name((String) attributes.get("name"))
             .email((String) attributes.get("email"))
@@ -56,7 +54,6 @@ public class OAuthAttributes {
     }
 
     private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
-        System.out.println(userNameAttributeName);
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
 
         return OAuthAttributes.builder()
@@ -70,7 +67,6 @@ public class OAuthAttributes {
     }
 
     private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
-        System.out.println(userNameAttributeName);
         Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
 
@@ -78,6 +74,7 @@ public class OAuthAttributes {
             .name((String) properties.get("nickname"))
             .email((String) kakaoAccount.get("email"))
             .provider(OAuth2Provider.KAKAO)
+            .picture((String) properties.get("profile_image"))
             .attributes(kakaoAccount)
             .nameAttributeKey(userNameAttributeName)
             .build();
