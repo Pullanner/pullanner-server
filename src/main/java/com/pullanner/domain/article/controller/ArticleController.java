@@ -5,8 +5,13 @@ import com.pullanner.domain.article.dto.ArticleResponseDto;
 import com.pullanner.domain.article.dto.ArticleResponseDtos;
 import com.pullanner.domain.article.dto.ArticleSaveRequestDto;
 import com.pullanner.domain.article.dto.ArticleUpdateRequestDto;
+import com.pullanner.global.ApiResponseCode;
+import com.pullanner.global.ApiResponseMessage;
+import com.pullanner.global.CommonUtil;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,18 +23,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-public class ArticleApiController {
+public class ArticleController {
 
     private final ArticleService articleService;
 
     @PostMapping("/api/articles")
-    public ArticleResponseDto save(@RequestBody ArticleSaveRequestDto requestDto) {
-        return articleService.save(requestDto);
+    public ArticleResponseDto save(@AuthenticationPrincipal Long userId, @RequestBody ArticleSaveRequestDto requestDto) {
+        return articleService.save(userId, requestDto);
     }
 
     @PutMapping("/api/articles/{id}")
-    public ArticleResponseDto update(@PathVariable Long id, @RequestBody ArticleUpdateRequestDto requestDto) {
-        return articleService.update(id, requestDto);
+    public ArticleResponseDto update(@AuthenticationPrincipal Long userId, @PathVariable("id") Long articleId, @RequestBody ArticleUpdateRequestDto requestDto) {
+        return articleService.update(userId, articleId, requestDto);
     }
 
     @GetMapping("/api/articles/{id}")
@@ -42,8 +47,9 @@ public class ArticleApiController {
         return articleService.findAllByPage(page);
     }
 
-    @DeleteMapping("/api/articles/{id}")
-    public Long delete(@PathVariable Long id) {
-        return articleService.delete(id);
+    @DeleteMapping("/api/articles/{articleId}")
+    public ResponseEntity<ApiResponseMessage> delete(@AuthenticationPrincipal Long userId, @PathVariable Long articleId) {
+        articleService.delete(userId, articleId);
+        return CommonUtil.getResponseEntity(ApiResponseCode.ARTICLE_DELETE_COMPLETED);
     }
 }

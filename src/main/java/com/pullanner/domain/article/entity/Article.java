@@ -56,4 +56,12 @@ public class Article extends BaseTimeEntity {
         this.title = title;
         this.content = content;
     }
+
+    public void isSameUser(Long userId) {
+        if (author.getId() == userId) {
+            return;
+        }
+
+        throw new IllegalStateException("유효하지 않은 사용자입니다.");
+    }
 }

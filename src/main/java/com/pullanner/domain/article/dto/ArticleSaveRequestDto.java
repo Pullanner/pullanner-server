@@ -7,5 +7,4 @@ public class ArticleSaveRequestDto {
 
     private String title;
     private String content;
-    private Long userId;
 }

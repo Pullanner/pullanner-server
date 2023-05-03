@@ -25,11 +25,8 @@ public class ArticleService {
     private static final int ARTICLE_COUNT = 10;
 
     @Transactional
-    public ArticleResponseDto save(ArticleSaveRequestDto requestDto) {
-        User user = userRepository.findById(requestDto.getUserId())
-            .orElseThrow(() -> {
-                throw new IllegalStateException("해당 사용자가 존재하지 않습니다.");
-            });
+    public ArticleResponseDto save(Long userId, ArticleSaveRequestDto requestDto) {
+        User user = getUserById(userId);
 
         Article article = Article.builder()
             .title(requestDto.getTitle())
@@ -42,9 +39,9 @@ public class ArticleService {
     }
 
     @Transactional
-    public ArticleResponseDto update(Long id, ArticleUpdateRequestDto requestDto) {
-        Article article = articleRepository.findById(id)
-            .orElseThrow(() -> new IllegalStateException("해당 게시글이 존재하지 않습니다."));
+    public ArticleResponseDto update(Long userId, Long articleId, ArticleUpdateRequestDto requestDto) {
+        Article article = getArticleById(articleId);
+        article.isSameUser(userId);
 
         article.update(requestDto.getTitle(), requestDto.getContent());
 
@@ -52,9 +49,8 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticleResponseDto findById(Long id) {
-        Article article = articleRepository.findById(id)
-            .orElseThrow(() -> new IllegalStateException("해당 게시글이 존재하지 않습니다."));
+    public ArticleResponseDto findById(Long articleId) {
+        Article article = getArticleById(articleId);
 
         return ArticleResponseDto.from(article);
     }
@@ -66,9 +62,27 @@ public class ArticleService {
     }
 
     @Transactional
-    public Long delete(Long id) {
-        articleRepository.deleteById(id);
+    public void delete(Long userId, Long articleId) {
+        Article article = getArticleById(articleId);
+        article.isSameUser(userId);
+        articleRepository.deleteById(articleId);
+    }
 
-        return id;
+    private User getUserById(Long userId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> {
+                throw new IllegalStateException("해당 사용자가 존재하지 않습니다.");
+            });
+
+        return user;
+    }
+
+    private Article getArticleById(Long articleId) {
+        Article article = articleRepository.findById(articleId)
+            .orElseThrow(
+                () -> new IllegalStateException("해당 게시글이 존재하지 않습니다.")
+            );
+
+        return article;
     }
 }

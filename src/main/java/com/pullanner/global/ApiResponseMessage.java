@@ -1,10 +1,17 @@
 package com.pullanner.global;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public record ApiResponseMessage(
-    @JsonProperty("code") String code,
-    @JsonProperty("message") String message
-) {
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+public class ApiResponseMessage {
 
+    private String code;
+    private String message;
+
+    public static ApiResponseMessage of(String code, String message) {
+        return new ApiResponseMessage(code, message);
+    }
 }

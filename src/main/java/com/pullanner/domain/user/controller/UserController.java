@@ -34,8 +34,8 @@ public class UserController {
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<ApiResponseMessage> handleInvalidTokenException() {
         ApiResponseCode apiResponseCode = ApiResponseCode.USER_NOT_FOUND;
-        ApiResponseMessage apiResponseMessage = new ApiResponseMessage(apiResponseCode.getCode(), apiResponseCode.getMessage());
-        return ResponseEntity.status(apiResponseCode.getStatusCode()).body(apiResponseMessage);
+        ApiResponseMessage apiResponseMessage = ApiResponseMessage.of(apiResponseCode.getCode(), apiResponseCode.getMessage());
+        return ResponseEntity.status(apiResponseCode.getHttpStatusCode()).body(apiResponseMessage);
     }
 
     // TODO : 사용자 닉네임이 등록되지 않은 경우 클라이언트는 사용자가 닉네임을 등록하도록 하고 서버는 클라이언트로부터 사용자 닉네임을 받아 등록
