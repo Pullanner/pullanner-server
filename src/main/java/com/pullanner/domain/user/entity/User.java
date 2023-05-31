@@ -1,20 +1,8 @@
 package com.pullanner.domain.user.entity;
 
-import com.pullanner.domain.article.entity.Article;
-import com.pullanner.global.BaseTimeEntity;
+import com.pullanner.global.domain.BaseTimeEntity;
 import com.pullanner.global.auth.oauth2.dto.OAuth2Provider;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +10,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "`user`", indexes = @Index(name = "index_email_provider", columnList = "email, provider", unique = true))
+@Table(name = "`user`", indexes = {
+    @Index(name = "index_email_provider", columnList = "email, provider", unique = true),
+    @Index(name = "index_nickname", columnList = "nickname", unique = true)
+})
 @Entity
 public class User extends BaseTimeEntity {
 
@@ -34,7 +25,7 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(length = 30, name = "nickname")
+    @Column(length = 15, name = "nickname")
     private String nickName;
 
     @Column(nullable = false)
@@ -51,9 +42,6 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private Role role;
 
-    @OneToMany(mappedBy = "author")
-    private List<Article> articles = new ArrayList<>();
-
     @Builder
     public User(String name, String nickName, String email, String picture,
         OAuth2Provider provider, Role role) {
@@ -65,11 +53,8 @@ public class User extends BaseTimeEntity {
         this.role = role;
     }
 
-    public User update(String name, String picture) {
-        this.name = name;
-        this.picture = picture;
-
-        return this;
+    public void updateNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getRoleKey() {
