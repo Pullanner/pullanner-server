@@ -1,13 +1,15 @@
 package com.pullanner.global.auth.oauth2.handler;
 
-import com.pullanner.global.ApiResponseCode;
-import com.pullanner.global.ServletUtil;
+import com.pullanner.global.api.ApiResponseCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+
+import static com.pullanner.global.servlet.ServletUtil.setApiResponse;
 
 @Component
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
@@ -15,7 +17,6 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
         AuthenticationException exception) throws IOException {
-        response.setStatus(ApiResponseCode.OAUTH2_LOGIN_FAIL.getHttpStatusCode());
-        ServletUtil.setApiResponse(response, ApiResponseCode.OAUTH2_LOGIN_FAIL);
+        setApiResponse(response, ApiResponseCode.OAUTH2_LOGIN_FAIL);
     }
 }

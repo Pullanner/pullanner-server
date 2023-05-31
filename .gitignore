@@ -1,5 +1,5 @@
-### OAuth ###
-application-oauth.yml
+application-ssl.yml
+keystore.p12
 
 HELP.md
 .gradle
