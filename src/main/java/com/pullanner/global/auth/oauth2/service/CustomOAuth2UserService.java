@@ -40,15 +40,17 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
             attributes,
             oAuthAttributes.getNameAttributeKey(),
-            user.getId()
+            user.getId(),
+            user.getNickName()
         );
     }
 
     private User saveOrUpdate(OAuthAttributes attributes) {
         User user = userRepository.findByEmailAndProvider(attributes.getEmail(), attributes.getProvider())
-            .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
             .orElse(attributes.toEntity());
 
+        // user 의 식별자가 존재하지 않는 경우 insert
+        // user 의 식별자가 존재하는 경우 select 후 data 변경 있으면 update, data 변경 없으면 종료
         return userRepository.save(user);
     }
 }

@@ -1,32 +1,33 @@
-package com.pullanner.global.auth.jwt.handler;
+package com.pullanner.global.auth.jwt.controller;
 
-import static com.pullanner.global.ServletUtil.*;
+import static com.pullanner.global.api.ApiUtil.getResponseEntity;
+import static com.pullanner.global.auth.jwt.utils.TokenUtils.getRefreshTokenIdCookie;
 
-import com.pullanner.global.CommonUtil;
 import com.pullanner.global.auth.jwt.argumentresolver.RefreshTokenId;
 import com.pullanner.global.auth.jwt.dto.AccessTokenResponse;
 import com.pullanner.global.auth.jwt.exception.HackedTokenException;
 import com.pullanner.global.auth.jwt.exception.InvalidTokenException;
 import com.pullanner.global.auth.jwt.service.AccessTokenService;
-import com.pullanner.global.ApiResponseCode;
-import com.pullanner.global.ApiResponseMessage;
+import com.pullanner.global.api.ApiResponseCode;
+import com.pullanner.global.api.ApiResponseMessage;
 import com.pullanner.global.auth.jwt.service.RefreshTokenService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-public class TokenHandler {
+public class TokenController {
 
     private final AccessTokenService accessTokenService;
     private final RefreshTokenService refreshTokenService;
 
-    @PostMapping("/api/token/reissue")
-    public AccessTokenResponse reissue(@RefreshTokenId String refreshTokenId, HttpServletResponse response) {
+    @PostMapping("/api/tokens")
+    public ResponseEntity<AccessTokenResponse> reissue(@RefreshTokenId String refreshTokenId, HttpServletResponse response) {
         String refreshToken = refreshTokenService.validateAndGetToken(refreshTokenId);
 
         String renewedAccessToken = accessTokenService.renewAccessToken(refreshToken);
@@ -37,18 +38,34 @@ public class TokenHandler {
              이를 통해 리프레쉬 토큰 탈취 시 피해 파급 최소화
         */
         String renewedRefreshTokenId = refreshTokenService.renewRefreshToken(refreshTokenId, refreshToken);
-        addRefreshTokenCookie(response, renewedRefreshTokenId);
+        response.addCookie(getRefreshTokenIdCookie(renewedRefreshTokenId));
 
-        return new AccessTokenResponse(renewedAccessToken);
+        ApiResponseCode apiResponseCode = ApiResponseCode.TOKEN_REFRESHED;
+        return ResponseEntity
+                .status(apiResponseCode.getHttpStatusCode())
+                .body(
+                    AccessTokenResponse.of(
+                        renewedAccessToken,
+                        apiResponseCode.getCode(),
+                        apiResponseCode.getMessage())
+                );
+    }
+
+    @DeleteMapping("/api/tokens")
+    public ResponseEntity<ApiResponseMessage> logout(@RefreshTokenId String refreshTokenId) {
+        refreshTokenService.deleteToken(refreshTokenId);
+        return getResponseEntity(ApiResponseCode.USER_LOGOUT_SUCCESS);
     }
 
     @ExceptionHandler(InvalidTokenException.class)
-    public ResponseEntity<ApiResponseMessage> handleInvalidTokenException() {
-        return CommonUtil.getResponseEntity(ApiResponseCode.TOKEN_INVALID);
+    public ResponseEntity<ApiResponseMessage> handleInvalidTokenException(InvalidTokenException e) {
+        e.printStackTrace();
+        return getResponseEntity(ApiResponseCode.TOKEN_INVALID);
     }
 
     @ExceptionHandler(HackedTokenException.class)
-    public ResponseEntity<ApiResponseMessage> handleHackedTokenException() {
-        return CommonUtil.getResponseEntity(ApiResponseCode.TOKEN_HACKED);
+    public ResponseEntity<ApiResponseMessage> handleHackedTokenException(HackedTokenException e) {
+        e.printStackTrace();
+        return getResponseEntity(ApiResponseCode.TOKEN_HACKED);
     }
 }

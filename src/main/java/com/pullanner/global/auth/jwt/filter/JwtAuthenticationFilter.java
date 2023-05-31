@@ -1,10 +1,11 @@
 package com.pullanner.global.auth.jwt.filter;
 
-import static com.pullanner.global.ServletUtil.*;
+import static com.pullanner.global.servlet.ServletUtil.setApiResponse;
+import static com.pullanner.global.auth.jwt.utils.TokenUtils.parseAccessToken;
 
 import com.pullanner.global.auth.jwt.dto.JwtAuthenticationResult;
 import com.pullanner.global.auth.jwt.service.AccessTokenService;
-import com.pullanner.global.ApiResponseCode;
+import com.pullanner.global.api.ApiResponseCode;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -14,8 +15,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -30,7 +29,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final AccessTokenService accessTokenService;
 
     private final String[][] excludePathAndMethod = {
-        {"/login", "GET"}, {"/oauth2", "GET"}, {"/api/token/reissue", "POST"}, {"/api/articles", "GET"}
+        {"/login", "GET"}, {"/oauth2", "GET"}, {"/api/tokens", "POST"}, {"/api/tokens", "DELETE"},
+        {"/api/articles", "GET"}, {"/api/travelkeywords", "GET"}, {"/api/travels", "GET"},
+        {"/api/boards", "GET"}
     };
 
     @Override
@@ -38,15 +39,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         FilterChain filterChain) throws IOException, ServletException {
 
         try {
-            log.debug("JwtAuthenticationFilter is running...");
-
             String token = parseAccessToken(request);
 
-            if (StringUtils.hasText(token) && !token.equalsIgnoreCase("null")) {
-                log.debug("Token is obtained...");
+            if (StringUtils.hasText(token)) {
+
+                log.info("token parsing completed...");
 
                 Claims claims = accessTokenService.validateAndGetClaims(token);
-                log.debug("Token is successfully validated...");
+
+                log.info("token is valid...");
 
                 JwtAuthenticationResult jwtAuthenticationResult = accessTokenService.getJwtAuthenticationResult(claims);
                 jwtAuthenticationResult.setAuthenticated(true);
@@ -58,7 +59,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         } catch (Exception e) {
             SecurityContextHolder.clearContext();
-            log.debug(e.getMessage());
             setApiResponse(response, ApiResponseCode.TOKEN_INVALID);
             return;
         }
