@@ -16,8 +16,12 @@ public class UserResponseDto {
     private String nickName;
     private String email;
     private String picture;
+    private String oauthProvider;
 
     public static UserResponseDto from(User user) {
-        return new UserResponseDto(user.getId(), user.getName(), user.getNickName(), user.getEmail(), user.getPicture());
+        return new UserResponseDto(
+                user.getId(), user.getName(), user.getNickName(), user.getEmail(),
+                user.getPicture(), user.getProvider().name()
+        );
     }
 }

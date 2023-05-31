@@ -1,15 +1,14 @@
 package com.pullanner.domain.user.dto;
 
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import org.hibernate.validator.constraints.Length;
 
 @Getter
 @NoArgsConstructor
 public class UserUpdateRequestDto {
 
-    @Size(min = 6)
-    @Size(max = 30)
+    @Length(min = 6, max = 15)
     private String nickName;
-    private String picture;
 }

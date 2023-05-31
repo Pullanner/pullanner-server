@@ -2,22 +2,26 @@ package com.pullanner.domain.user.controller;
 
 import com.pullanner.domain.user.dto.UserResponseDto;
 import com.pullanner.domain.user.dto.UserUpdateRequestDto;
+import com.pullanner.domain.user.exception.InvalidMailAuthorizationCodeException;
 import com.pullanner.domain.user.service.UserService;
-import com.pullanner.global.ApiResponseCode;
-import com.pullanner.global.ApiResponseMessage;
+import com.pullanner.global.api.ApiResponseCode;
+import com.pullanner.global.api.ApiResponseMessage;
+import com.pullanner.global.auth.jwt.argumentresolver.RefreshTokenId;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static com.pullanner.global.api.ApiUtil.getResponseEntity;
 
 @RequiredArgsConstructor
 @RestController
 public class UserController {
+
+    private static final int NICKNAME_MIN_LENGTH = 6;
+    private static final int NICKNAME_MAX_LENGTH = 15;
 
     private final UserService userService;
 
@@ -26,18 +30,36 @@ public class UserController {
         return userService.findById(userId);
     }
 
-    @PatchMapping("/api/users")
-    public UserResponseDto update(@AuthenticationPrincipal Long userId, @Valid @RequestBody UserUpdateRequestDto request) {
-        return userService.update(userId, request);
+    @GetMapping("/api/users/duplicate")
+    public ResponseEntity<ApiResponseMessage> validate(@RequestParam @Length(min = NICKNAME_MIN_LENGTH, max = NICKNAME_MAX_LENGTH) String nickName) {
+        return userService.validateDuplicate(nickName);
+    }
+
+    @PostMapping("/api/users")
+    public UserResponseDto register(@AuthenticationPrincipal Long userId, @Valid @RequestBody UserUpdateRequestDto userInfo) {
+        return userService.register(userId, userInfo);
+    }
+
+    @PostMapping("/api/users/mail")
+    public ResponseEntity<ApiResponseMessage> mail(@AuthenticationPrincipal Long userId) {
+        userService.sendMail(userId);
+        return getResponseEntity(ApiResponseCode.USER_EMAIL_SENDING_SUCCESS);
+    }
+
+    @DeleteMapping("/api/users")
+    public ResponseEntity<ApiResponseMessage> delete(@AuthenticationPrincipal Long userId,
+        @RefreshTokenId String refreshTokenId, @RequestParam Integer code) {
+        userService.deleteUSer(userId, refreshTokenId, code);
+        return getResponseEntity(ApiResponseCode.USER_EMAIL_SENDING_SUCCESS);
+    }
+
+    @ExceptionHandler(InvalidMailAuthorizationCodeException.class)
+    public ResponseEntity<ApiResponseMessage> handleInvalidMailAuthorizationCodeException() {
+        return getResponseEntity(ApiResponseCode.USER_EMAIL_SENDING_SUCCESS);
     }
 
     @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<ApiResponseMessage> handleInvalidTokenException() {
-        ApiResponseCode apiResponseCode = ApiResponseCode.USER_NOT_FOUND;
-        ApiResponseMessage apiResponseMessage = ApiResponseMessage.of(apiResponseCode.getCode(), apiResponseCode.getMessage());
-        return ResponseEntity.status(apiResponseCode.getHttpStatusCode()).body(apiResponseMessage);
+    public ResponseEntity<ApiResponseMessage> handleUserNotFoundException() {
+        return getResponseEntity(ApiResponseCode.USER_NOT_FOUND);
     }
-
-    // TODO : 사용자 닉네임이 등록되지 않은 경우 클라이언트는 사용자가 닉네임을 등록하도록 하고 서버는 클라이언트로부터 사용자 닉네임을 받아 등록
-    // TODO : 회원 탈퇴 기능(구글 SMTP)
 }
