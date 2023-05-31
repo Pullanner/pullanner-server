@@ -8,9 +8,8 @@ import com.pullanner.global.api.ApiResponseCode;
 import com.pullanner.global.api.ApiResponseMessage;
 import com.pullanner.global.auth.jwt.argumentresolver.RefreshTokenId;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/api/users/duplicate")
-    public ResponseEntity<ApiResponseMessage> validate(@RequestParam @Min(NICKNAME_MIN_LENGTH) @Max(NICKNAME_MAX_LENGTH) String nickName) {
+    public ResponseEntity<ApiResponseMessage> validate(@RequestParam @Length(min = NICKNAME_MIN_LENGTH, max = NICKNAME_MAX_LENGTH) String nickName) {
         return userService.validateDuplicate(nickName);
     }
 
