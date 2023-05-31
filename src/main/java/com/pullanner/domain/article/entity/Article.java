@@ -1,7 +1,7 @@
 package com.pullanner.domain.article.entity;
 
 import com.pullanner.domain.user.entity.User;
-import com.pullanner.global.BaseTimeEntity;
+import com.pullanner.global.domain.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
