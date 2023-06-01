@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build:
-    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'deploy/') && github.base_ref == 'main'
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'deploy') && github.base_ref == 'main'
     runs-on: ubuntu-latest
     defaults:
       run:
