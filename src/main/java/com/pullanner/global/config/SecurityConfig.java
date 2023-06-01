@@ -32,9 +32,7 @@ public class SecurityConfig {
         http
             .cors().configurationSource(corsConfigurationSource())
         .and()
-            .csrf().disable().headers().frameOptions()
-            .disable() // h2-console 화면 사용 위해 해당 옵션 disable
-        .and()
+            .csrf().disable()
             .httpBasic().disable() // 토큰 사용하므로 basic disable
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 기반이 아님을 선언

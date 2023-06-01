@@ -1,13 +1,14 @@
 package com.pullanner.domain.article.controller;
 
+import static com.pullanner.global.api.ApiUtil.getResponseEntity;
+
 import com.pullanner.domain.article.service.ArticleService;
 import com.pullanner.domain.article.dto.ArticleResponseDto;
 import com.pullanner.domain.article.dto.ArticleResponseDtos;
 import com.pullanner.domain.article.dto.ArticleSaveRequestDto;
 import com.pullanner.domain.article.dto.ArticleUpdateRequestDto;
-import com.pullanner.global.ApiResponseCode;
-import com.pullanner.global.ApiResponseMessage;
-import com.pullanner.global.CommonUtil;
+import com.pullanner.global.api.ApiResponseCode;
+import com.pullanner.global.api.ApiResponseMessage;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +51,6 @@ public class ArticleController {
     @DeleteMapping("/api/articles/{articleId}")
     public ResponseEntity<ApiResponseMessage> delete(@AuthenticationPrincipal Long userId, @PathVariable Long articleId) {
         articleService.delete(userId, articleId);
-        return CommonUtil.getResponseEntity(ApiResponseCode.ARTICLE_DELETE_COMPLETED);
+        return getResponseEntity(ApiResponseCode.ARTICLE_DELETE_COMPLETED);
     }
 }
