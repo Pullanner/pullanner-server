@@ -34,7 +34,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         response.addCookie(getAccessTokenCookie(accessToken));
         response.addCookie(getRefreshTokenIdCookie(refreshTokenId));
 
-        response.sendRedirect(System.getenv("CLIENT_URL"));
+        response.sendRedirect(System.getenv("CLIENT_URL") + "/callback");
     }
 
     private String getUserIdFromAuth(Authentication authentication) {

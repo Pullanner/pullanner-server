@@ -1,7 +1,3 @@
-CREATE DATABASE IF NOT EXISTS pullanner CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-
-use pullanner;
-
 DROP TABLE IF EXISTS article;
 DROP TABLE IF EXISTS `user`;
 
