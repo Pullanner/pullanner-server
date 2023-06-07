@@ -13,11 +13,8 @@ public enum ApiResponseCode {
     TOKEN_REFRESHED("A05", 200, "액세스 토큰이 재발급되었습니다."),
 
     USER_NOT_FOUND("U01", 404, "존재하지 않는 회원입니다."),
-    USER_UPDATE_SUCCESS("U02", 200, "회원 정보 수정이 완료되었습니다."),
-
     USER_DUPLICATE_NICKNAME("U03", 200, "이미 존재하는 닉네임입니다."),
     USER_NOT_DUPLICATE_NICKNAME("U04", 200, "사용 가능한 닉네임입니다."),
-    USER_REGISTER_SUCCESS("U05", 200, "회원 정보가 정상적으로 등록되었습니다."),
     USER_EMAIL_SENDING_SUCCESS("U06", 200, "사용자의 이메일로 인증 코드가 발송되었습니다."),
     USER_INVALID_MAIL_AUTHORIZATION_CODE("U07", 401, "유효하지 않은 인증 코드입니다."),
     USER_DELETED_SUCCESS("U08", 200, "사용자의 회원 정보가 삭제되었습니다."),

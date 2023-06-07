@@ -32,10 +32,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserResponseDto findById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> {
-            throw new IllegalStateException("식별 번호가 " + id + "에 해당되는 사용자가 없습니다.");
-        });
-        return UserResponseDto.from(user);
+        return UserResponseDto.from(getUserById(id));
     }
 
     @Transactional(readOnly = true)
@@ -79,10 +76,10 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUSer(Long userId, String refreshTokenId, Integer code) {
+    public void deleteUser(Long userId, String refreshTokenId, Integer code) {
         User user = getUserById(userId);
         if (mailAuthorizationCodeRepository.validateCode(user.getEmail(), code)) {
-            userRepository.deleteById(user.getId());
+            userRepository.delete(user);
             refreshTokenRepository.deleteByKey(refreshTokenId);
         } else {
             throw new InvalidMailAuthorizationCodeException("회원 탈퇴 처리를 위한 인증 번호가 일치하지 않습니다.");

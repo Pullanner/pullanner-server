@@ -49,13 +49,13 @@ public class UserController {
     @DeleteMapping("/api/users")
     public ResponseEntity<ApiResponseMessage> delete(@AuthenticationPrincipal Long userId,
         @RefreshTokenId String refreshTokenId, @RequestParam Integer code) {
-        userService.deleteUSer(userId, refreshTokenId, code);
-        return getResponseEntity(ApiResponseCode.USER_EMAIL_SENDING_SUCCESS);
+        userService.deleteUser(userId, refreshTokenId, code);
+        return getResponseEntity(ApiResponseCode.USER_DELETED_SUCCESS);
     }
 
     @ExceptionHandler(InvalidMailAuthorizationCodeException.class)
     public ResponseEntity<ApiResponseMessage> handleInvalidMailAuthorizationCodeException() {
-        return getResponseEntity(ApiResponseCode.USER_EMAIL_SENDING_SUCCESS);
+        return getResponseEntity(ApiResponseCode.USER_INVALID_MAIL_AUTHORIZATION_CODE);
     }
 
     @ExceptionHandler(IllegalStateException.class)
