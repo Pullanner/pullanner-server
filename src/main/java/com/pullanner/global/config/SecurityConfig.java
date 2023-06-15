@@ -33,13 +33,18 @@ public class SecurityConfig {
             .cors().configurationSource(corsConfigurationSource())
         .and()
             .csrf().disable()
-            .httpBasic().disable() // 토큰 사용하므로 basic disable
+            // 토큰을 사용하므로 basic disable
+            .httpBasic().disable()
             .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 기반이 아님을 선언
+            // 세션 기반이 아님을 선언
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            // Spring Security 는 기본적으로 Session Fixation Attack 을 막기 위해 SessionFixationProtectionStrategy (로그인 시 새로운 JSessionId 발급) 을 취함
+            .sessionFixation().none()
         .and()
-            .oauth2Login() // OAuth2  로그인 설정 시작점
-            .userInfoEndpoint() // OAuth2 로그인 성공 이후 사용자 정보를 가져올 때 설정 담당
-            .userService(customOAuth2UserService)
+            // OAuth2  로그인 설정 시작점
+            .oauth2Login()
+            // OAuth2 로그인 성공 이후 사용자 정보를 가져올 때 설정 담당
+            .userInfoEndpoint().userService(customOAuth2UserService)
         .and()
             .successHandler(successHandler)
             .failureHandler(failureHandler)
