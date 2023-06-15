@@ -2,6 +2,7 @@ plugins {
 	id 'java' /* 자바 컴파일 위한 그래들 자바 플러그인 */
 	id 'org.springframework.boot' version '3.0.2'
 	id 'io.spring.dependency-management' version '1.1.0'
+	id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 /* 프로젝트의 메타 데이터 */
@@ -9,14 +10,15 @@ group = 'com.pullanner' // 프로젝트 식별 정보
 version = '0.0.1-SNAPSHOT' // 프로젝트 버전
 sourceCompatibility = '17' // 자바 플러그인의 컴파일 위한 자바 버전
 
-/*
+configurations {
+	/*
 	롬복이 코드를 작성하려면 애노테이션 프로세서 필요
 	따라서, 롬복에서 제공하는 애노테이션 프로세서를 컴파일 시 사용하기 위해 그래드 설정에 명시
-*/
-configurations {
+	*/
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	asciidoctorExt
 }
 
 /* 각종 의존성(라이브러리)들을 어떤 원격 저장소에서 받을지 정함 */
@@ -25,28 +27,35 @@ repositories {
 }
 
 dependencies {
-	/* Spring Boot */
+	// Spring Boot
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-mail:3.1.0'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-cache', version: '3.0.6'
 
-	/* Tool */
+	// test
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	// RestDocs
+	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+	// Tool
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-	/* aws s3 */
+	// AWS S3
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
-	/* Database */
+	// Database
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
-	/* jwt */
+	// jwt
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
@@ -54,4 +63,30 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+ext { // 전역 변수
+	snippetsDir = file('build/generated-snippets')
+}
+
+test {
+	outputs.dir snippetsDir
+}
+
+asciidoctor {
+	inputs.dir snippetsDir
+	configurations 'asciidoctorExt'
+
+	sources { // 특정 파일만 html로 만든다.
+		include("**/index.adoc")
+	}
+	baseDirFollowsSourceFile() // 다른 adoc 파일을 include 할 때 경로를 baseDir로 맞춘다.
+	dependsOn test
+}
+
+bootJar {
+	dependsOn asciidoctor
+	from("${asciidoctor.outputDir}") {
+		into 'static/docs'
+	}
 }
