@@ -1,8 +1,11 @@
 package com.pullanner.domain.user.entity;
 
+import com.pullanner.domain.article.entity.Article;
 import com.pullanner.global.domain.BaseTimeEntity;
 import com.pullanner.global.auth.oauth2.dto.OAuth2Provider;
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "`user`", indexes = {
-    @Index(name = "index_email_provider", columnList = "email, provider", unique = true),
+    @Index(name = "index_email_provider", columnList = "email, provider"),
     @Index(name = "index_nickname", columnList = "nickname", unique = true)
 })
 @Entity
@@ -42,6 +45,9 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private Role role;
 
+    @OneToMany(mappedBy = "author")
+    private List<Article> articles = new ArrayList<>();
+
     @Builder
     public User(String name, String nickName, String email, String picture,
         OAuth2Provider provider, Role role) {
@@ -59,5 +65,14 @@ public class User extends BaseTimeEntity {
 
     public String getRoleKey() {
         return this.role.getKey();
+    }
+
+    public void addArticle(Article article) {
+        articles.add(article);
+    }
+
+    @PreRemove
+    public void clearArticles() {
+        articles.clear();
     }
 }

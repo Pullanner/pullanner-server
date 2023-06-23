@@ -68,6 +68,8 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+  profiles:
+    include: ssl
 
 cloud:
   aws:
@@ -86,5 +88,3 @@ logging:
     org:
       springframework:
         security: INFO
-
-spring.profiles.include: ssl

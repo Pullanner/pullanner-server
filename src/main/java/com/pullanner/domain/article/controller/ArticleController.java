@@ -3,10 +3,10 @@ package com.pullanner.domain.article.controller;
 import static com.pullanner.global.api.ApiUtil.getResponseEntity;
 
 import com.pullanner.domain.article.service.ArticleService;
-import com.pullanner.domain.article.dto.ArticleResponseDto;
-import com.pullanner.domain.article.dto.ArticleResponseDtos;
-import com.pullanner.domain.article.dto.ArticleSaveRequestDto;
-import com.pullanner.domain.article.dto.ArticleUpdateRequestDto;
+import com.pullanner.domain.article.dto.ArticleResponse;
+import com.pullanner.domain.article.dto.ArticleResponses;
+import com.pullanner.domain.article.dto.ArticleSaveRequest;
+import com.pullanner.domain.article.dto.ArticleUpdateRequest;
 import com.pullanner.global.api.ApiResponseCode;
 import com.pullanner.global.api.ApiResponseMessage;
 import jakarta.validation.constraints.Min;
@@ -29,22 +29,22 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping("/api/articles")
-    public ArticleResponseDto save(@AuthenticationPrincipal Long userId, @RequestBody ArticleSaveRequestDto requestDto) {
+    public ArticleResponse save(@AuthenticationPrincipal Long userId, @RequestBody ArticleSaveRequest requestDto) {
         return articleService.save(userId, requestDto);
     }
 
     @PutMapping("/api/articles/{id}")
-    public ArticleResponseDto update(@AuthenticationPrincipal Long userId, @PathVariable("id") Long articleId, @RequestBody ArticleUpdateRequestDto requestDto) {
+    public ArticleResponse update(@AuthenticationPrincipal Long userId, @PathVariable("id") Long articleId, @RequestBody ArticleUpdateRequest requestDto) {
         return articleService.update(userId, articleId, requestDto);
     }
 
     @GetMapping("/api/articles/{id}")
-    public ArticleResponseDto findById(@PathVariable Long id) {
+    public ArticleResponse findById(@PathVariable Long id) {
         return articleService.findById(id);
     }
 
     @GetMapping("/api/articles")
-    public ArticleResponseDtos findAll(@RequestParam @Min(1) Integer page) {
+    public ArticleResponses findAll(@RequestParam @Min(1) Integer page) {
         return articleService.findAllByPage(page);
     }
 

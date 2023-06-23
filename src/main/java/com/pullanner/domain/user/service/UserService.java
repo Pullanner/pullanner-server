@@ -2,8 +2,8 @@ package com.pullanner.domain.user.service;
 
 import static com.pullanner.global.api.ApiUtil.getResponseEntity;
 
-import com.pullanner.domain.user.dto.UserResponseDto;
-import com.pullanner.domain.user.dto.UserUpdateRequestDto;
+import com.pullanner.domain.user.dto.UserResponse;
+import com.pullanner.domain.user.dto.UserUpdateRequest;
 import com.pullanner.domain.user.entity.User;
 import com.pullanner.domain.user.exception.InvalidMailAuthorizationCodeException;
 import com.pullanner.domain.user.repository.MailAuthorizationCodeRepository;
@@ -31,11 +31,8 @@ public class UserService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional(readOnly = true)
-    public UserResponseDto findById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> {
-            throw new IllegalStateException("식별 번호가 " + id + "에 해당되는 사용자가 없습니다.");
-        });
-        return UserResponseDto.from(user);
+    public UserResponse findById(Long id) {
+        return UserResponse.from(getUserById(id));
     }
 
     @Transactional(readOnly = true)
@@ -48,15 +45,15 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponseDto register(Long userId, UserUpdateRequestDto userInfo) {
+    public UserResponse register(Long userId, UserUpdateRequest userInfo) {
         User user = getUserById(userId);
 
         user.updateNickName(userInfo.getNickName());
 
-        return UserResponseDto.from(user);
+        return UserResponse.from(user);
     }
 
-    @Transactional
+    // 메일 전송의 경우 Transactional 선언 X (Connection 리소스 절약)
     public void sendMail(Long userId) {
         User user = getUserById(userId);
         SimpleMailMessage mailMessage = createMailMessage(user.getEmail());
@@ -79,10 +76,10 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUSer(Long userId, String refreshTokenId, Integer code) {
+    public void deleteUser(Long userId, String refreshTokenId, Integer code) {
         User user = getUserById(userId);
         if (mailAuthorizationCodeRepository.validateCode(user.getEmail(), code)) {
-            userRepository.deleteById(user.getId());
+            userRepository.delete(user);
             refreshTokenRepository.deleteByKey(refreshTokenId);
         } else {
             throw new InvalidMailAuthorizationCodeException("회원 탈퇴 처리를 위한 인증 번호가 일치하지 않습니다.");

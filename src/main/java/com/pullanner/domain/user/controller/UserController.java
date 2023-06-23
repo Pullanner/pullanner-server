@@ -1,7 +1,7 @@
 package com.pullanner.domain.user.controller;
 
-import com.pullanner.domain.user.dto.UserResponseDto;
-import com.pullanner.domain.user.dto.UserUpdateRequestDto;
+import com.pullanner.domain.user.dto.UserResponse;
+import com.pullanner.domain.user.dto.UserUpdateRequest;
 import com.pullanner.domain.user.exception.InvalidMailAuthorizationCodeException;
 import com.pullanner.domain.user.service.UserService;
 import com.pullanner.global.api.ApiResponseCode;
@@ -26,7 +26,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/api/users")
-    public UserResponseDto find(@AuthenticationPrincipal Long userId) {
+    public UserResponse find(@AuthenticationPrincipal Long userId) {
         return userService.findById(userId);
     }
 
@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/api/users")
-    public UserResponseDto register(@AuthenticationPrincipal Long userId, @Valid @RequestBody UserUpdateRequestDto userInfo) {
+    public UserResponse register(@AuthenticationPrincipal Long userId, @Valid @RequestBody UserUpdateRequest userInfo) {
         return userService.register(userId, userInfo);
     }
 
@@ -49,13 +49,13 @@ public class UserController {
     @DeleteMapping("/api/users")
     public ResponseEntity<ApiResponseMessage> delete(@AuthenticationPrincipal Long userId,
         @RefreshTokenId String refreshTokenId, @RequestParam Integer code) {
-        userService.deleteUSer(userId, refreshTokenId, code);
-        return getResponseEntity(ApiResponseCode.USER_EMAIL_SENDING_SUCCESS);
+        userService.deleteUser(userId, refreshTokenId, code);
+        return getResponseEntity(ApiResponseCode.USER_DELETED_SUCCESS);
     }
 
     @ExceptionHandler(InvalidMailAuthorizationCodeException.class)
     public ResponseEntity<ApiResponseMessage> handleInvalidMailAuthorizationCodeException() {
-        return getResponseEntity(ApiResponseCode.USER_EMAIL_SENDING_SUCCESS);
+        return getResponseEntity(ApiResponseCode.USER_INVALID_MAIL_AUTHORIZATION_CODE);
     }
 
     @ExceptionHandler(IllegalStateException.class)
