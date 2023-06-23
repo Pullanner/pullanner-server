@@ -3,16 +3,12 @@ package com.pullanner.domain.user.repository;
 import com.pullanner.domain.user.entity.User;
 import com.pullanner.global.auth.oauth2.dto.OAuth2Provider;
 import java.util.Optional;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-
-    @EntityGraph(value = "User.withAll")
-    Optional<User> findById(Long id);
 
     Optional<User> findByEmailAndProvider(String email, OAuth2Provider provider);
 
