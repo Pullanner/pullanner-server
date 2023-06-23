@@ -53,7 +53,7 @@ public class UserService {
         return UserResponseDto.from(user);
     }
 
-    @Transactional
+    // 메일 전송의 경우 Transactional 선언 X (Connection 리소스 절약)
     public void sendMail(Long userId) {
         User user = getUserById(userId);
         SimpleMailMessage mailMessage = createMailMessage(user.getEmail());
