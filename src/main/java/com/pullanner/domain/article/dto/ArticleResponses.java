@@ -7,21 +7,21 @@ import lombok.Getter;
 import org.springframework.data.domain.Page;
 
 @Getter
-public class ArticleResponseDtos {
+public class ArticleResponses {
 
     private final long totalArticles;
-    private final List<ArticleResponseDto> articles;
+    private final List<ArticleResponse> articles;
 
-    private ArticleResponseDtos(long totalArticles, List<ArticleResponseDto> articles) {
+    private ArticleResponses(long totalArticles, List<ArticleResponse> articles) {
         this.totalArticles = totalArticles;
         this.articles = articles;
     }
 
-    public static ArticleResponseDtos from(Page<Article> articles) {
-        return new ArticleResponseDtos(articles.getTotalElements(),
+    public static ArticleResponses from(Page<Article> articles) {
+        return new ArticleResponses(articles.getTotalElements(),
             articles.getContent()
                 .stream()
-                .map(ArticleResponseDto::from)
+                .map(ArticleResponse::from)
                 .collect(Collectors.toList())
         );
     }

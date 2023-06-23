@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Getter
 @NoArgsConstructor
-public class ArticleSaveRequestDto {
+public class ArticleUpdateRequest {
 
     @Length(min = 1, max = 100)
     private String title;
