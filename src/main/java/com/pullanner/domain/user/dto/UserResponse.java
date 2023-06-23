@@ -14,6 +14,7 @@ public class UserResponse {
     private String profileImage;
     private String oauthProvider;
     private Integer level;
+    private Integer journalCount;
 
     @Builder
     private UserResponse(Long userId, String name, String nickName, String email,
