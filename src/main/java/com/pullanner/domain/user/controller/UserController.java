@@ -1,7 +1,7 @@
 package com.pullanner.domain.user.controller;
 
-import com.pullanner.domain.user.dto.UserResponseDto;
-import com.pullanner.domain.user.dto.UserUpdateRequestDto;
+import com.pullanner.domain.user.dto.UserResponse;
+import com.pullanner.domain.user.dto.UserUpdateRequest;
 import com.pullanner.domain.user.exception.InvalidMailAuthorizationCodeException;
 import com.pullanner.domain.user.service.UserService;
 import com.pullanner.global.api.ApiResponseCode;
@@ -26,7 +26,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/api/users")
-    public UserResponseDto find(@AuthenticationPrincipal Long userId) {
+    public UserResponse find(@AuthenticationPrincipal Long userId) {
         return userService.findById(userId);
     }
 
@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/api/users")
-    public UserResponseDto register(@AuthenticationPrincipal Long userId, @Valid @RequestBody UserUpdateRequestDto userInfo) {
+    public UserResponse register(@AuthenticationPrincipal Long userId, @Valid @RequestBody UserUpdateRequest userInfo) {
         return userService.register(userId, userInfo);
     }
 

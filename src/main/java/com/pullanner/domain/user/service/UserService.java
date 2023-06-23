@@ -2,8 +2,8 @@ package com.pullanner.domain.user.service;
 
 import static com.pullanner.global.api.ApiUtil.getResponseEntity;
 
-import com.pullanner.domain.user.dto.UserResponseDto;
-import com.pullanner.domain.user.dto.UserUpdateRequestDto;
+import com.pullanner.domain.user.dto.UserResponse;
+import com.pullanner.domain.user.dto.UserUpdateRequest;
 import com.pullanner.domain.user.entity.User;
 import com.pullanner.domain.user.exception.InvalidMailAuthorizationCodeException;
 import com.pullanner.domain.user.repository.MailAuthorizationCodeRepository;
@@ -31,8 +31,8 @@ public class UserService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional(readOnly = true)
-    public UserResponseDto findById(Long id) {
-        return UserResponseDto.from(getUserById(id));
+    public UserResponse findById(Long id) {
+        return UserResponse.from(getUserById(id));
     }
 
     @Transactional(readOnly = true)
@@ -45,12 +45,12 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponseDto register(Long userId, UserUpdateRequestDto userInfo) {
+    public UserResponse register(Long userId, UserUpdateRequest userInfo) {
         User user = getUserById(userId);
 
         user.updateNickName(userInfo.getNickName());
 
-        return UserResponseDto.from(user);
+        return UserResponse.from(user);
     }
 
     // 메일 전송의 경우 Transactional 선언 X (Connection 리소스 절약)
