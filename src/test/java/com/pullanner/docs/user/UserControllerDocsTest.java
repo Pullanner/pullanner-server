@@ -3,14 +3,13 @@ package com.pullanner.docs.user;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.pullanner.docs.RestDocsSupport;
 import com.pullanner.domain.user.controller.UserController;
-import com.pullanner.domain.user.dto.UserResponseDto;
+import com.pullanner.domain.user.dto.UserResponse;
 import com.pullanner.domain.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,7 +31,7 @@ public class UserControllerDocsTest extends RestDocsSupport {
         // given
         given(userService.findById(any(Long.class)))
             .willReturn(
-                UserResponseDto.builder()
+                UserResponse.builder()
                     .userId(1L)
                     .name("조명익")
                     .nickName("ikjo")
