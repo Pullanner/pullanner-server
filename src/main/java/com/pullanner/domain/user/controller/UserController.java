@@ -20,8 +20,8 @@ import static com.pullanner.global.api.ApiUtil.getResponseEntity;
 @RestController
 public class UserController {
 
-    private static final int NICKNAME_MIN_LENGTH = 6;
-    private static final int NICKNAME_MAX_LENGTH = 15;
+    private static final int NICKNAME_MIN_LENGTH = 2;
+    private static final int NICKNAME_MAX_LENGTH = 8;
 
     private final UserService userService;
 
