@@ -9,7 +9,7 @@ public class UserResponse {
 
     private Long userId;
     private String name;
-    private String nickName;
+    private String nickname;
     private String email;
     private String profileImage;
     private String oauthProvider;
@@ -17,11 +17,11 @@ public class UserResponse {
     private Integer journalCount;
 
     @Builder
-    private UserResponse(Long userId, String name, String nickName, String email,
+    private UserResponse(Long userId, String name, String nickname, String email,
         String profileImage, String oauthProvider) {
         this.userId = userId;
         this.name = name;
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.email = email;
         this.profileImage = profileImage;
         this.oauthProvider = oauthProvider;
@@ -31,7 +31,7 @@ public class UserResponse {
         return UserResponse.builder()
             .userId(user.getId())
             .name(user.getName())
-            .nickName(user.getNickName())
+            .nickname(user.getNickName())
             .email(user.getEmail())
             .profileImage(user.getPicture())
             .oauthProvider(user.getProvider().name())
