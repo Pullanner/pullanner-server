@@ -31,8 +31,8 @@ public class UserController {
     }
 
     @GetMapping("/api/users/duplicate")
-    public ResponseEntity<ApiResponseMessage> validate(@RequestParam @Length(min = NICKNAME_MIN_LENGTH, max = NICKNAME_MAX_LENGTH) String nickName) {
-        return userService.validateDuplicate(nickName);
+    public ResponseEntity<ApiResponseMessage> validate(@RequestParam @Length(min = NICKNAME_MIN_LENGTH, max = NICKNAME_MAX_LENGTH) String nickname) {
+        return userService.validateDuplicate(nickname);
     }
 
     @PostMapping("/api/users")
