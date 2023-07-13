@@ -48,7 +48,7 @@ public class UserService {
     public UserResponse register(Long userId, UserUpdateRequest userInfo) {
         User user = getUserById(userId);
 
-        user.updateNickName(userInfo.getNickName());
+        user.updateNickName(userInfo.getNickname());
 
         return UserResponse.from(user);
     }

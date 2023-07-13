@@ -9,6 +9,6 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor
 public class UserUpdateRequest {
 
-    @Length(min = 6, max = 15)
-    private String nickName;
+    @Length(min = 2, max = 8)
+    private String nickname;
 }
