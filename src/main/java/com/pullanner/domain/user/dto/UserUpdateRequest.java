@@ -10,5 +10,5 @@ import org.hibernate.validator.constraints.Length;
 public class UserUpdateRequest {
 
     @Length(min = 6, max = 15)
-    private String nickName;
+    private String nickname;
 }
