@@ -1,10 +1,10 @@
 package com.pullanner.global.auth.jwt.filter;
 
 import static com.pullanner.api.ServletUtil.setApiResponse;
-import static com.pullanner.global.auth.jwt.utils.TokenUtils.parseAccessToken;
+import static com.pullanner.api.TokenUtils.parseAccessToken;
 
-import com.pullanner.global.auth.jwt.dto.JwtAuthenticationResult;
-import com.pullanner.global.auth.jwt.service.AccessTokenService;
+import com.pullanner.api.controller.token.dto.JwtAuthenticationResult;
+import com.pullanner.api.service.token.AccessTokenService;
 import com.pullanner.api.ApiResponseCode;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;

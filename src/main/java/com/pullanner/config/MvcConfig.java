@@ -1,6 +1,6 @@
 package com.pullanner.config;
 
-import com.pullanner.global.auth.jwt.argumentresolver.RefreshTokenIdArgumentResolver;
+import com.pullanner.api.argumentresolver.RefreshTokenIdArgumentResolver;
 import java.util.List;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

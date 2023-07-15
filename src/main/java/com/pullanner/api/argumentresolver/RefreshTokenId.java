@@ -1,4 +1,4 @@
-package com.pullanner.global.auth.jwt.argumentresolver;
+package com.pullanner.api.argumentresolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

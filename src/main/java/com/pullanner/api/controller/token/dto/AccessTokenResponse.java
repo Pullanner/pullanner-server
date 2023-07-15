@@ -1,4 +1,4 @@
-package com.pullanner.global.auth.jwt.dto;
+package com.pullanner.api.controller.token.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

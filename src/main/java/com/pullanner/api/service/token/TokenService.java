@@ -1,4 +1,4 @@
-package com.pullanner.global.auth.jwt.service;
+package com.pullanner.api.service.token;
 
 import com.pullanner.global.auth.jwt.exception.InvalidTokenException;
 import io.jsonwebtoken.Claims;

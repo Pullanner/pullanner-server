@@ -6,7 +6,7 @@ import com.pullanner.domain.user.InvalidMailAuthorizationCodeException;
 import com.pullanner.api.service.user.UserService;
 import com.pullanner.api.ApiResponseCode;
 import com.pullanner.api.ApiResponseMessage;
-import com.pullanner.global.auth.jwt.argumentresolver.RefreshTokenId;
+import com.pullanner.api.argumentresolver.RefreshTokenId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

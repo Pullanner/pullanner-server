@@ -1,6 +1,6 @@
-package com.pullanner.global.auth.jwt.argumentresolver;
+package com.pullanner.api.argumentresolver;
 
-import static com.pullanner.global.auth.jwt.utils.TokenUtils.parseRefreshTokenId;
+import static com.pullanner.api.TokenUtils.parseRefreshTokenId;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;

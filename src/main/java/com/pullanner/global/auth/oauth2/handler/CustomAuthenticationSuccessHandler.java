@@ -1,10 +1,10 @@
 package com.pullanner.global.auth.oauth2.handler;
 
-import static com.pullanner.global.auth.jwt.utils.TokenUtils.getAccessTokenCookie;
-import static com.pullanner.global.auth.jwt.utils.TokenUtils.getRefreshTokenIdCookie;
+import static com.pullanner.api.TokenUtils.getAccessTokenCookie;
+import static com.pullanner.api.TokenUtils.getRefreshTokenIdCookie;
 
-import com.pullanner.global.auth.jwt.service.AccessTokenService;
-import com.pullanner.global.auth.jwt.service.RefreshTokenService;
+import com.pullanner.api.service.token.AccessTokenService;
+import com.pullanner.api.service.token.RefreshTokenService;
 import com.pullanner.global.auth.oauth2.dto.CustomOAuth2User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

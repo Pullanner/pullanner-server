@@ -1,6 +1,6 @@
-package com.pullanner.global.auth.jwt.service;
+package com.pullanner.api.service.token;
 
-import com.pullanner.global.auth.jwt.dto.JwtAuthenticationResult;
+import com.pullanner.api.controller.token.dto.JwtAuthenticationResult;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.AuthorityUtils;
