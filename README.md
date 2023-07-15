@@ -56,7 +56,6 @@
 <div>
   <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white" alt="">
   <img src="https://img.shields.io/badge/Notion-FFFFFF?style=for-the-badge&logo=Notion&logoColor=black" alt="">
-  <img src="https://img.shields.io/badge/Spring Docs-6DB33F?style=for-the-badge&logo=spring&logoColor=white" alt="">
   <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white" alt="">
   <img src="https://img.shields.io/badge/Zoom-2D8CFF?style=for-the-badge&logo=Zoom&logoColor=black" alt="">
 </div>
