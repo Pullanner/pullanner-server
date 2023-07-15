@@ -1,6 +1,6 @@
 package com.pullanner.api.controller.user.dto;
 
-import com.pullanner.domain.user.entity.User;
+import com.pullanner.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 

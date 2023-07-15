@@ -4,10 +4,10 @@ import static com.pullanner.api.ApiUtil.getResponseEntity;
 
 import com.pullanner.api.controller.user.dto.UserResponse;
 import com.pullanner.api.controller.user.dto.UserUpdateRequest;
-import com.pullanner.domain.user.entity.User;
-import com.pullanner.domain.user.exception.InvalidMailAuthorizationCodeException;
-import com.pullanner.domain.user.repository.MailAuthorizationCodeRepository;
-import com.pullanner.domain.user.repository.UserRepository;
+import com.pullanner.domain.user.User;
+import com.pullanner.domain.user.InvalidMailAuthorizationCodeException;
+import com.pullanner.domain.user.MailAuthorizationCodeRepository;
+import com.pullanner.domain.user.UserRepository;
 import com.pullanner.api.ApiResponseCode;
 import com.pullanner.api.ApiResponseMessage;
 import com.pullanner.global.auth.jwt.repository.RefreshTokenRepository;

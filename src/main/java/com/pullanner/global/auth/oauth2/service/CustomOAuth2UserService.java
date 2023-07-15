@@ -2,8 +2,8 @@ package com.pullanner.global.auth.oauth2.service;
 
 import com.pullanner.global.auth.oauth2.dto.CustomOAuth2User;
 import com.pullanner.global.auth.oauth2.dto.OAuthAttributes;
-import com.pullanner.domain.user.entity.User;
-import com.pullanner.domain.user.repository.UserRepository;
+import com.pullanner.domain.user.User;
+import com.pullanner.domain.user.UserRepository;
 import java.util.Collections;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;

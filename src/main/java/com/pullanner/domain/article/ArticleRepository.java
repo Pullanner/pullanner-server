@@ -1,6 +1,6 @@
-package com.pullanner.domain.article.repository;
+package com.pullanner.domain.article;
 
-import com.pullanner.domain.article.entity.Article;
+import com.pullanner.domain.article.Article;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

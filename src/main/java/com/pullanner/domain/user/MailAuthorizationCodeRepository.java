@@ -1,4 +1,4 @@
-package com.pullanner.domain.user.repository;
+package com.pullanner.domain.user;
 
 
 import java.util.concurrent.TimeUnit;

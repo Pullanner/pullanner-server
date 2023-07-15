@@ -1,4 +1,4 @@
-package com.pullanner.global.domain;
+package com.pullanner.domain;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

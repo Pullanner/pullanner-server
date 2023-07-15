@@ -1,6 +1,5 @@
-package com.pullanner.domain.user.repository;
+package com.pullanner.domain.user;
 
-import com.pullanner.domain.user.entity.User;
 import com.pullanner.global.auth.oauth2.dto.OAuth2Provider;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

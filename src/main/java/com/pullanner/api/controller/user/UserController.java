@@ -2,7 +2,7 @@ package com.pullanner.api.controller.user;
 
 import com.pullanner.api.controller.user.dto.UserResponse;
 import com.pullanner.api.controller.user.dto.UserUpdateRequest;
-import com.pullanner.domain.user.exception.InvalidMailAuthorizationCodeException;
+import com.pullanner.domain.user.InvalidMailAuthorizationCodeException;
 import com.pullanner.api.service.user.UserService;
 import com.pullanner.api.ApiResponseCode;
 import com.pullanner.api.ApiResponseMessage;

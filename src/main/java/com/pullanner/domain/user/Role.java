@@ -1,4 +1,4 @@
-package com.pullanner.domain.user.entity;
+package com.pullanner.domain.user;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
