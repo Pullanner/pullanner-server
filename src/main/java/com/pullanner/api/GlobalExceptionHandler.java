@@ -1,4 +1,4 @@
-package com.pullanner.global.exception;
+package com.pullanner.api;
 
 import com.pullanner.api.ApiResponseCode;
 import com.pullanner.api.ApiResponseMessage;
