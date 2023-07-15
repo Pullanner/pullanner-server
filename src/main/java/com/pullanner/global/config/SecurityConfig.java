@@ -51,9 +51,7 @@ public class SecurityConfig {
         .and()
             .addFilterAfter(jwtAuthenticationFilter, CorsFilter.class)
             .headers()
-            .xssProtection()
-        .and()
-            .contentSecurityPolicy("script-src 'self");
+            .xssProtection();
 
         return http.build();
     }
