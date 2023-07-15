@@ -1,6 +1,6 @@
 package com.pullanner.api.service.user;
 
-import static com.pullanner.global.api.ApiUtil.getResponseEntity;
+import static com.pullanner.api.ApiUtil.getResponseEntity;
 
 import com.pullanner.api.controller.user.dto.UserResponse;
 import com.pullanner.api.controller.user.dto.UserUpdateRequest;
@@ -8,8 +8,8 @@ import com.pullanner.domain.user.entity.User;
 import com.pullanner.domain.user.exception.InvalidMailAuthorizationCodeException;
 import com.pullanner.domain.user.repository.MailAuthorizationCodeRepository;
 import com.pullanner.domain.user.repository.UserRepository;
-import com.pullanner.global.api.ApiResponseCode;
-import com.pullanner.global.api.ApiResponseMessage;
+import com.pullanner.api.ApiResponseCode;
+import com.pullanner.api.ApiResponseMessage;
 import com.pullanner.global.auth.jwt.repository.RefreshTokenRepository;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.RequiredArgsConstructor;

@@ -1,8 +1,8 @@
 package com.pullanner.global.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pullanner.global.api.ApiResponseCode;
-import com.pullanner.global.api.ApiResponseMessage;
+import com.pullanner.api.ApiResponseCode;
+import com.pullanner.api.ApiResponseMessage;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;

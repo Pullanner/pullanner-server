@@ -1,14 +1,14 @@
 package com.pullanner.api.controller.article;
 
-import static com.pullanner.global.api.ApiUtil.getResponseEntity;
+import static com.pullanner.api.ApiUtil.getResponseEntity;
 
 import com.pullanner.api.service.article.ArticleService;
 import com.pullanner.api.controller.article.dto.ArticleResponse;
 import com.pullanner.api.controller.article.dto.ArticleResponses;
 import com.pullanner.api.controller.article.dto.ArticleSaveRequest;
 import com.pullanner.api.controller.article.dto.ArticleUpdateRequest;
-import com.pullanner.global.api.ApiResponseCode;
-import com.pullanner.global.api.ApiResponseMessage;
+import com.pullanner.api.ApiResponseCode;
+import com.pullanner.api.ApiResponseMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

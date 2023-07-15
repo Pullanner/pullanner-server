@@ -4,8 +4,8 @@ import com.pullanner.api.controller.user.dto.UserResponse;
 import com.pullanner.api.controller.user.dto.UserUpdateRequest;
 import com.pullanner.domain.user.exception.InvalidMailAuthorizationCodeException;
 import com.pullanner.api.service.user.UserService;
-import com.pullanner.global.api.ApiResponseCode;
-import com.pullanner.global.api.ApiResponseMessage;
+import com.pullanner.api.ApiResponseCode;
+import com.pullanner.api.ApiResponseMessage;
 import com.pullanner.global.auth.jwt.argumentresolver.RefreshTokenId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,7 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import static com.pullanner.global.api.ApiUtil.getResponseEntity;
+import static com.pullanner.api.ApiUtil.getResponseEntity;
 
 @Tag(name = "User", description = "User API")
 @ApiResponses(

@@ -1,6 +1,6 @@
 package com.pullanner.global.auth.oauth2.handler;
 
-import com.pullanner.global.api.ApiResponseCode;
+import com.pullanner.api.ApiResponseCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;

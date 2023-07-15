@@ -1,6 +1,6 @@
 package com.pullanner.global.auth.jwt.controller;
 
-import static com.pullanner.global.api.ApiUtil.getResponseEntity;
+import static com.pullanner.api.ApiUtil.getResponseEntity;
 import static com.pullanner.global.auth.jwt.utils.TokenUtils.getRefreshTokenIdCookie;
 
 import com.pullanner.global.auth.jwt.argumentresolver.RefreshTokenId;
@@ -8,8 +8,8 @@ import com.pullanner.global.auth.jwt.dto.AccessTokenResponse;
 import com.pullanner.global.auth.jwt.exception.HackedTokenException;
 import com.pullanner.global.auth.jwt.exception.InvalidTokenException;
 import com.pullanner.global.auth.jwt.service.AccessTokenService;
-import com.pullanner.global.api.ApiResponseCode;
-import com.pullanner.global.api.ApiResponseMessage;
+import com.pullanner.api.ApiResponseCode;
+import com.pullanner.api.ApiResponseMessage;
 import com.pullanner.global.auth.jwt.service.RefreshTokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

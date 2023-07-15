@@ -1,7 +1,7 @@
 package com.pullanner.api.service.article;
 
-import com.pullanner.domain.article.entity.Article;
-import com.pullanner.domain.article.repository.ArticleRepository;
+import com.pullanner.domain.article.Article;
+import com.pullanner.domain.article.ArticleRepository;
 import com.pullanner.api.controller.article.dto.ArticleResponse;
 import com.pullanner.api.controller.article.dto.ArticleResponses;
 import com.pullanner.api.controller.article.dto.ArticleSaveRequest;

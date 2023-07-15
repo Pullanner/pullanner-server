@@ -5,7 +5,7 @@ import static com.pullanner.global.auth.jwt.utils.TokenUtils.parseAccessToken;
 
 import com.pullanner.global.auth.jwt.dto.JwtAuthenticationResult;
 import com.pullanner.global.auth.jwt.service.AccessTokenService;
-import com.pullanner.global.api.ApiResponseCode;
+import com.pullanner.api.ApiResponseCode;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

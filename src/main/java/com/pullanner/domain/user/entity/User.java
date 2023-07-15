@@ -1,6 +1,6 @@
 package com.pullanner.domain.user.entity;
 
-import com.pullanner.domain.article.entity.Article;
+import com.pullanner.domain.article.Article;
 import com.pullanner.global.domain.BaseTimeEntity;
 import com.pullanner.global.auth.oauth2.dto.OAuth2Provider;
 import jakarta.persistence.*;

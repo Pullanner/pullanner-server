@@ -1,6 +1,6 @@
 package com.pullanner.api.controller.article.dto;
 
-import com.pullanner.domain.article.entity.Article;
+import com.pullanner.domain.article.Article;
 import lombok.Getter;
 
 @Getter

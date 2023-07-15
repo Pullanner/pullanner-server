@@ -1,6 +1,6 @@
 package com.pullanner.api.controller.article.dto;
 
-import com.pullanner.domain.article.entity.Article;
+import com.pullanner.domain.article.Article;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;

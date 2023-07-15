@@ -1,4 +1,4 @@
-package com.pullanner.global.api;
+package com.pullanner.api;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
