@@ -1,9 +1,9 @@
-package com.pullanner.domain.user.controller;
+package com.pullanner.api.controller.user;
 
-import com.pullanner.domain.user.dto.UserResponse;
-import com.pullanner.domain.user.dto.UserUpdateRequest;
+import com.pullanner.api.controller.user.dto.UserResponse;
+import com.pullanner.api.controller.user.dto.UserUpdateRequest;
 import com.pullanner.domain.user.exception.InvalidMailAuthorizationCodeException;
-import com.pullanner.domain.user.service.UserService;
+import com.pullanner.api.service.user.UserService;
 import com.pullanner.global.api.ApiResponseCode;
 import com.pullanner.global.api.ApiResponseMessage;
 import com.pullanner.global.auth.jwt.argumentresolver.RefreshTokenId;

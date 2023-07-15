@@ -1,11 +1,11 @@
-package com.pullanner.domain.article.service;
+package com.pullanner.api.service.article;
 
 import com.pullanner.domain.article.entity.Article;
 import com.pullanner.domain.article.repository.ArticleRepository;
-import com.pullanner.domain.article.dto.ArticleResponse;
-import com.pullanner.domain.article.dto.ArticleResponses;
-import com.pullanner.domain.article.dto.ArticleSaveRequest;
-import com.pullanner.domain.article.dto.ArticleUpdateRequest;
+import com.pullanner.api.controller.article.dto.ArticleResponse;
+import com.pullanner.api.controller.article.dto.ArticleResponses;
+import com.pullanner.api.controller.article.dto.ArticleSaveRequest;
+import com.pullanner.api.controller.article.dto.ArticleUpdateRequest;
 import com.pullanner.domain.user.entity.User;
 import com.pullanner.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

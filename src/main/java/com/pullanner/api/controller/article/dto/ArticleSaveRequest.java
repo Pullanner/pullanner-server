@@ -1,4 +1,4 @@
-package com.pullanner.domain.article.dto;
+package com.pullanner.api.controller.article.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

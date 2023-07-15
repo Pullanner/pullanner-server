@@ -1,9 +1,9 @@
-package com.pullanner.domain.user.service;
+package com.pullanner.api.service.user;
 
 import static com.pullanner.global.api.ApiUtil.getResponseEntity;
 
-import com.pullanner.domain.user.dto.UserResponse;
-import com.pullanner.domain.user.dto.UserUpdateRequest;
+import com.pullanner.api.controller.user.dto.UserResponse;
+import com.pullanner.api.controller.user.dto.UserUpdateRequest;
 import com.pullanner.domain.user.entity.User;
 import com.pullanner.domain.user.exception.InvalidMailAuthorizationCodeException;
 import com.pullanner.domain.user.repository.MailAuthorizationCodeRepository;
