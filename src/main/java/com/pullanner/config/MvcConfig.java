@@ -1,4 +1,4 @@
-package com.pullanner.global.config;
+package com.pullanner.config;
 
 import com.pullanner.global.auth.jwt.argumentresolver.RefreshTokenIdArgumentResolver;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.pullanner.global.config;
+package com.pullanner.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

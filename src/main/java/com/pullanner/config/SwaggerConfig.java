@@ -1,4 +1,4 @@
-package com.pullanner.global.config;
+package com.pullanner.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

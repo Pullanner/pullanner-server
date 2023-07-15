@@ -1,4 +1,4 @@
-package com.pullanner.global.config;
+package com.pullanner.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;

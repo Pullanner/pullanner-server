@@ -1,4 +1,4 @@
-package com.pullanner.global.config;
+package com.pullanner.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

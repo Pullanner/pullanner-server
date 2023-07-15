@@ -1,4 +1,4 @@
-package com.pullanner.global.config;
+package com.pullanner.config;
 
 import com.pullanner.global.auth.oauth2.handler.CustomAuthenticationFailureHandler;
 import com.pullanner.global.auth.oauth2.handler.CustomAuthenticationSuccessHandler;
