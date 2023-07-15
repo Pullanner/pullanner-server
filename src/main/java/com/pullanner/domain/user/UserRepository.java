@@ -1,6 +1,6 @@
 package com.pullanner.domain.user;
 
-import com.pullanner.api.controller.oauth2.dto.OAuth2Provider;
+import com.pullanner.web.controller.oauth2.dto.OAuth2Provider;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

@@ -1,9 +1,9 @@
 package com.pullanner.config;
 
-import com.pullanner.api.controller.oauth2.CustomAuthenticationFailureHandler;
-import com.pullanner.api.controller.oauth2.CustomAuthenticationSuccessHandler;
-import com.pullanner.api.service.oauth2.CustomOAuth2UserService;
-import com.pullanner.api.filter.JwtAuthenticationFilter;
+import com.pullanner.web.controller.oauth2.CustomAuthenticationFailureHandler;
+import com.pullanner.web.controller.oauth2.CustomAuthenticationSuccessHandler;
+import com.pullanner.web.service.oauth2.CustomOAuth2UserService;
+import com.pullanner.web.filter.JwtAuthenticationFilter;
 import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

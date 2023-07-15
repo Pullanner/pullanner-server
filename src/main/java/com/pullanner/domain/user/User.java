@@ -2,7 +2,7 @@ package com.pullanner.domain.user;
 
 import com.pullanner.domain.article.Article;
 import com.pullanner.domain.BaseTimeEntity;
-import com.pullanner.api.controller.oauth2.dto.OAuth2Provider;
+import com.pullanner.web.controller.oauth2.dto.OAuth2Provider;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
