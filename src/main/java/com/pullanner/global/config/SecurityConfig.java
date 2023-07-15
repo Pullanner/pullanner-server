@@ -49,9 +49,7 @@ public class SecurityConfig {
             .successHandler(successHandler)
             .failureHandler(failureHandler)
         .and()
-            .addFilterAfter(jwtAuthenticationFilter, CorsFilter.class)
-            .headers()
-            .xssProtection();
+            .addFilterAfter(jwtAuthenticationFilter, CorsFilter.class);
 
         return http.build();
     }
