@@ -1,4 +1,4 @@
-package com.pullanner.global.auth.jwt.exception;
+package com.pullanner.exception.token;
 
 public class InvalidTokenException extends RuntimeException {
 

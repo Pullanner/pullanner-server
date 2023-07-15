@@ -1,4 +1,4 @@
-package com.pullanner.global.auth.jwt.repository;
+package com.pullanner.domain.token;
 
 import java.util.Optional;
 import java.util.Set;

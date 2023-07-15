@@ -1,8 +1,8 @@
-package com.pullanner.global.auth.oauth2.dto;
+package com.pullanner.api.controller.oauth2.dto;
 
 import com.pullanner.domain.user.Role;
 import com.pullanner.domain.user.User;
-import com.pullanner.global.auth.oauth2.exception.UnsupportedOAuth2ProviderException;
+import com.pullanner.exception.oauth2.UnsupportedOAuth2ProviderException;
 import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;

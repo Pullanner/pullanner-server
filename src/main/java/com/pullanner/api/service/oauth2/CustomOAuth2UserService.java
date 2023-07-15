@@ -1,7 +1,7 @@
-package com.pullanner.global.auth.oauth2.service;
+package com.pullanner.api.service.oauth2;
 
-import com.pullanner.global.auth.oauth2.dto.CustomOAuth2User;
-import com.pullanner.global.auth.oauth2.dto.OAuthAttributes;
+import com.pullanner.api.controller.oauth2.dto.CustomOAuth2User;
+import com.pullanner.api.controller.oauth2.dto.OAuthAttributes;
 import com.pullanner.domain.user.User;
 import com.pullanner.domain.user.UserRepository;
 import java.util.Collections;

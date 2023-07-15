@@ -1,4 +1,4 @@
-package com.pullanner.global.auth.oauth2.dto;
+package com.pullanner.api.controller.oauth2.dto;
 
 import java.util.Collection;
 import java.util.Map;

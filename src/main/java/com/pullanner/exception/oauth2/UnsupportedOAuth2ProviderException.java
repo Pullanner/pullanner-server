@@ -1,4 +1,4 @@
-package com.pullanner.global.auth.oauth2.exception;
+package com.pullanner.exception.oauth2;
 
 import org.springframework.security.core.AuthenticationException;
 

@@ -1,4 +1,4 @@
-package com.pullanner.domain.user;
+package com.pullanner.exception.user;
 
 public class InvalidMailAuthorizationCodeException extends RuntimeException {
 

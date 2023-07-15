@@ -1,8 +1,8 @@
 package com.pullanner.api.service.token;
 
-import com.pullanner.global.auth.jwt.exception.HackedTokenException;
-import com.pullanner.global.auth.jwt.exception.InvalidTokenException;
-import com.pullanner.global.auth.jwt.repository.RefreshTokenRepository;
+import com.pullanner.exception.token.HackedTokenException;
+import com.pullanner.exception.token.InvalidTokenException;
+import com.pullanner.domain.token.RefreshTokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;

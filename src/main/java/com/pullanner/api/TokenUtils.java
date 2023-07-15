@@ -1,6 +1,6 @@
-package com.pullanner.global.auth.jwt.utils;
+package com.pullanner.api;
 
-import com.pullanner.global.auth.jwt.exception.InvalidTokenException;
+import com.pullanner.exception.token.InvalidTokenException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;

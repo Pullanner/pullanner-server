@@ -1,4 +1,4 @@
-package com.pullanner.global.auth.oauth2.handler;
+package com.pullanner.api.controller.oauth2;
 
 import com.pullanner.api.ApiResponseCode;
 import jakarta.servlet.http.HttpServletRequest;

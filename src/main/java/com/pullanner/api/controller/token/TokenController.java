@@ -5,8 +5,8 @@ import static com.pullanner.api.TokenUtils.getRefreshTokenIdCookie;
 
 import com.pullanner.api.argumentresolver.RefreshTokenId;
 import com.pullanner.api.controller.token.dto.AccessTokenResponse;
-import com.pullanner.global.auth.jwt.exception.HackedTokenException;
-import com.pullanner.global.auth.jwt.exception.InvalidTokenException;
+import com.pullanner.exception.token.HackedTokenException;
+import com.pullanner.exception.token.InvalidTokenException;
 import com.pullanner.api.service.token.AccessTokenService;
 import com.pullanner.api.ApiResponseCode;
 import com.pullanner.api.ApiResponseMessage;
