@@ -40,7 +40,7 @@ public class SwaggerConfig {
         components.addSecuritySchemes(accessTokenSchemeName, new SecurityScheme()
             .name(accessTokenSchemeName)
             .type(Type.HTTP)
-            .scheme("beared")
+            .scheme("bearer")
             .bearerFormat("JWT")
         );
 
