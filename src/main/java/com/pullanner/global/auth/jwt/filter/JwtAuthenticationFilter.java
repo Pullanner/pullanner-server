@@ -1,6 +1,6 @@
 package com.pullanner.global.auth.jwt.filter;
 
-import static com.pullanner.global.servlet.ServletUtil.setApiResponse;
+import static com.pullanner.api.ServletUtil.setApiResponse;
 import static com.pullanner.global.auth.jwt.utils.TokenUtils.parseAccessToken;
 
 import com.pullanner.global.auth.jwt.dto.JwtAuthenticationResult;

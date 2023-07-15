@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-import static com.pullanner.global.servlet.ServletUtil.setApiResponse;
+import static com.pullanner.api.ServletUtil.setApiResponse;
 
 @Component
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
