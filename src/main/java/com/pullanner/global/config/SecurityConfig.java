@@ -49,11 +49,7 @@ public class SecurityConfig {
             .successHandler(successHandler)
             .failureHandler(failureHandler)
         .and()
-            .addFilterAfter(jwtAuthenticationFilter, CorsFilter.class)
-            .headers()
-            .xssProtection()
-        .and()
-            .contentSecurityPolicy("script-src 'self");
+            .addFilterAfter(jwtAuthenticationFilter, CorsFilter.class);
 
         return http.build();
     }

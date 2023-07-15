@@ -11,6 +11,13 @@ import com.pullanner.global.auth.jwt.service.AccessTokenService;
 import com.pullanner.global.api.ApiResponseCode;
 import com.pullanner.global.api.ApiResponseMessage;
 import com.pullanner.global.auth.jwt.service.RefreshTokenService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +26,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Token", description = "Token API")
+@ApiResponses(
+    {
+        @ApiResponse(responseCode = "401", description = "INVALID AUTHENTICATION REQUEST", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class))),
+        @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
+    }
+)
 @RequiredArgsConstructor
 @RestController
 public class TokenController {
@@ -26,8 +40,12 @@ public class TokenController {
     private final AccessTokenService accessTokenService;
     private final RefreshTokenService refreshTokenService;
 
+    @Operation(summary = "Access Token 재발급 요청", description = "Refresh Token 을 이용하여 Access Token 을 재발급받는 요청입니다.")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = AccessTokenResponse.class)))
     @PostMapping("/api/tokens")
-    public ResponseEntity<AccessTokenResponse> reissue(@RefreshTokenId String refreshTokenId, HttpServletResponse response) {
+    public ResponseEntity<AccessTokenResponse> reissue(
+        @RefreshTokenId @Parameter(hidden = true) String refreshTokenId,
+        HttpServletResponse response) {
         String refreshToken = refreshTokenService.validateAndGetToken(refreshTokenId);
 
         String renewedAccessToken = accessTokenService.renewAccessToken(refreshToken);
@@ -51,8 +69,12 @@ public class TokenController {
                 );
     }
 
+    @Operation(summary = "로그아웃 요청", description = "사용자의 Refresh Token 을 폐기하여 로그아웃을 처리하는 요청입니다.")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
     @DeleteMapping("/api/tokens")
-    public ResponseEntity<ApiResponseMessage> logout(@RefreshTokenId String refreshTokenId) {
+    public ResponseEntity<ApiResponseMessage> logout(
+        @RefreshTokenId @Parameter(hidden = true) String refreshTokenId
+    ) {
         refreshTokenService.deleteToken(refreshTokenId);
         return getResponseEntity(ApiResponseCode.USER_LOGOUT_SUCCESS);
     }
