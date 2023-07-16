@@ -46,7 +46,7 @@ public class TokenUtils {
         Cookie accessTokenCookie = new Cookie(ACCESS_TOKEN_COOKIE_NAME, accessToken);
         accessTokenCookie.setPath("/");
         accessTokenCookie.setHttpOnly(false);
-        //accessTokenCookie.setSecure(true);
+        accessTokenCookie.setSecure(true);
         accessTokenCookie.setAttribute("SameSite", "Strict");
         accessTokenCookie.setMaxAge(ACCESS_TOKEN_COOKIE_DURATION);
 
@@ -57,7 +57,7 @@ public class TokenUtils {
         Cookie refreshTokenCookie = new Cookie(REFRESH_TOKEN_ID_COOKIE_NAME, refreshTokenId);
         refreshTokenCookie.setPath("/");
         refreshTokenCookie.setHttpOnly(true);
-        //refreshTokenCookie.setSecure(true);
+        refreshTokenCookie.setSecure(true);
         refreshTokenCookie.setAttribute("SameSite", "Strict");
         refreshTokenCookie.setMaxAge(REFRESH_TOKEN_ID_COOKIE_DURATION);
 
