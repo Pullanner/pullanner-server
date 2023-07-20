@@ -66,12 +66,12 @@ public class UserController {
     }
 
     @Operation(summary = "사용자 프로필 사진 수정", description = "사용자의 프로필 사진을 수정할 수 있는 기능입니다.")
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = UserResponse.class)))
     @PatchMapping("/api/users")
-    public ResponseEntity<ApiResponseMessage> update(
+    public UserResponse update(
         @AuthenticationPrincipal Long userId,
         @Valid @RequestBody @Parameter(name = "profileImage", description = "사용자 프로필 사진 URL") UserProfileImageUpdateRequest userInfo) {
-        return null;
+        return userService.updateProfileImage(userId, userInfo);
     }
 
     @Operation(summary = "사용자 이메일 인증 코드 발송", description = "사용자의 회원 탈퇴 요청을 처리하기 위해 사용자 이메일로 인증 코드를 발송하는 기능입니다.")

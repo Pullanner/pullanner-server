@@ -2,6 +2,7 @@ package com.pullanner.web.service.user;
 
 import static com.pullanner.web.ApiUtil.getResponseEntity;
 
+import com.pullanner.web.controller.user.dto.UserProfileImageUpdateRequest;
 import com.pullanner.web.controller.user.dto.UserResponse;
 import com.pullanner.web.controller.user.dto.UserNicknameUpdateRequest;
 import com.pullanner.domain.user.User;
@@ -49,6 +50,18 @@ public class UserService {
         User user = getUserById(userId);
 
         user.updateNickName(userInfo.getNickname());
+
+        return UserResponse.from(user);
+    }
+
+    @Transactional
+    public UserResponse updateProfileImage(Long userId, UserProfileImageUpdateRequest userInfo) {
+        User user = getUserById(userId);
+
+        user.updateProfileImage(userInfo.getProfileImage());
+
+        // TODO : AWS 에 이미지 저장
+
 
         return UserResponse.from(user);
     }
