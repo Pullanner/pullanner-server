@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Getter
 @NoArgsConstructor
-public class UserUpdateRequest {
+public class UserNicknameUpdateRequest {
 
     @Length(min = 2, max = 8)
     private String nickname;

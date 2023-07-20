@@ -3,7 +3,7 @@ package com.pullanner.web.service.user;
 import static com.pullanner.web.ApiUtil.getResponseEntity;
 
 import com.pullanner.web.controller.user.dto.UserResponse;
-import com.pullanner.web.controller.user.dto.UserUpdateRequest;
+import com.pullanner.web.controller.user.dto.UserNicknameUpdateRequest;
 import com.pullanner.domain.user.User;
 import com.pullanner.exception.user.InvalidMailAuthorizationCodeException;
 import com.pullanner.domain.user.MailAuthorizationCodeRepository;
@@ -45,7 +45,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponse register(Long userId, UserUpdateRequest userInfo) {
+    public UserResponse register(Long userId, UserNicknameUpdateRequest userInfo) {
         User user = getUserById(userId);
 
         user.updateNickName(userInfo.getNickname());
