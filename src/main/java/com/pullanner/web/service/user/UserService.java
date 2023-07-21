@@ -2,7 +2,6 @@ package com.pullanner.web.service.user;
 
 import static com.pullanner.web.ApiUtil.getResponseEntity;
 
-import com.pullanner.web.controller.user.dto.UserProfileImageUpdateRequest;
 import com.pullanner.web.controller.user.dto.UserResponse;
 import com.pullanner.web.controller.user.dto.UserNicknameUpdateRequest;
 import com.pullanner.domain.user.User;
@@ -12,6 +11,7 @@ import com.pullanner.domain.user.UserRepository;
 import com.pullanner.web.ApiResponseCode;
 import com.pullanner.web.ApiResponseMessage;
 import com.pullanner.domain.token.RefreshTokenRepository;
+import com.pullanner.web.service.image.ImageService;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +19,14 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ImageService imageService;
 
     // 회원 탈퇴 처리를 위한 메일 발송 관련 의존성 주입
     private final JavaMailSender javaMailSender;
@@ -55,13 +57,15 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponse updateProfileImage(Long userId, UserProfileImageUpdateRequest userInfo) {
-        User user = getUserById(userId);
+    public UserResponse updateProfileImage(Long userId, MultipartFile profileImage) {
+        User user = getUserById(1L);
 
-        user.updateProfileImage(userInfo.getProfileImage());
+        if (user.hasProfileImageFileName()) {
+            imageService.deleteObject(user.getProfileImageFileName());
+        }
 
-        // TODO : AWS 에 이미지 저장
-
+        String imageUrl = imageService.uploadFiles(profileImage);
+        user.updateProfileImage(imageUrl);
 
         return UserResponse.from(user);
     }

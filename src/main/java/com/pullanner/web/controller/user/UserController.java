@@ -1,6 +1,6 @@
 package com.pullanner.web.controller.user;
 
-import com.pullanner.web.controller.user.dto.UserProfileImageUpdateRequest;
+import com.pullanner.exception.user.ProfileImageUploadException;
 import com.pullanner.web.controller.user.dto.UserResponse;
 import com.pullanner.web.controller.user.dto.UserNicknameUpdateRequest;
 import com.pullanner.exception.user.InvalidMailAuthorizationCodeException;
@@ -16,11 +16,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.pullanner.web.ApiUtil.getResponseEntity;
 
@@ -70,8 +72,8 @@ public class UserController {
     @PatchMapping("/api/users")
     public UserResponse update(
         @AuthenticationPrincipal Long userId,
-        @Valid @RequestBody @Parameter(name = "profileImage", description = "사용자 프로필 사진 URL") UserProfileImageUpdateRequest userInfo) {
-        return userService.updateProfileImage(userId, userInfo);
+        @RequestParam @NotNull @Parameter(name = "profileImage", description = "사용자 프로필 사진 파일") MultipartFile profileImage) {
+        return userService.updateProfileImage(userId, profileImage);
     }
 
     @Operation(summary = "사용자 이메일 인증 코드 발송", description = "사용자의 회원 탈퇴 요청을 처리하기 위해 사용자 이메일로 인증 코드를 발송하는 기능입니다.")
@@ -94,12 +96,20 @@ public class UserController {
     }
 
     @ExceptionHandler(InvalidMailAuthorizationCodeException.class)
-    public ResponseEntity<ApiResponseMessage> handleInvalidMailAuthorizationCodeException() {
+    public ResponseEntity<ApiResponseMessage> handleInvalidMailAuthorizationCodeException(InvalidMailAuthorizationCodeException e) {
+        e.printStackTrace();
         return getResponseEntity(ApiResponseCode.USER_INVALID_MAIL_AUTHORIZATION_CODE);
     }
 
     @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<ApiResponseMessage> handleUserNotFoundException() {
+    public ResponseEntity<ApiResponseMessage> handleUserNotFoundException(IllegalStateException e) {
+        e.printStackTrace();
         return getResponseEntity(ApiResponseCode.USER_NOT_FOUND);
+    }
+
+    @ExceptionHandler(ProfileImageUploadException.class)
+    public ResponseEntity<ApiResponseMessage> handleProfileImageUploadException(ProfileImageUploadException e) {
+        e.printStackTrace();
+        return getResponseEntity(ApiResponseCode.USER_PROFILE_IMAGE_UPLOAD_FAIL);
     }
 }
