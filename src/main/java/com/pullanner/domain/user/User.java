@@ -34,8 +34,10 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String email;
 
-    @Column(length = 500, name = "picture")
-    private String picture;
+    @Column(length = 500, name = "profile_image_url")
+    private String profileImageUrl;
+
+    private String profileImageFileName;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -49,18 +51,27 @@ public class User extends BaseTimeEntity {
     private List<Article> articles = new ArrayList<>();
 
     @Builder
-    public User(String name, String nickName, String email, String picture,
+    public User(String name, String nickName, String email, String profileImageUrl,
         OAuth2Provider provider, Role role) {
         this.name = name;
         this.nickName = nickName;
         this.email = email;
-        this.picture = picture;
+        this.profileImageUrl = profileImageUrl;
         this.provider = provider;
         this.role = role;
     }
 
     public void updateNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public boolean hasProfileImageFileName() {
+        return profileImageFileName != null;
+    }
+
+    public void updateProfileImage(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+        this.profileImageFileName = profileImageUrl.substring(profileImageUrl.lastIndexOf("/") + 1);
     }
 
     public String getRoleKey() {

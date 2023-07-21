@@ -14,7 +14,7 @@ public class UserResponse {
     private String profileImage;
     private String oauthProvider;
     private Integer level;
-    private Integer journalCount;
+    private Integer planCount;
 
     @Builder
     private UserResponse(Long userId, String name, String nickname, String email,
@@ -33,7 +33,7 @@ public class UserResponse {
             .name(user.getName())
             .nickname(user.getNickName())
             .email(user.getEmail())
-            .profileImage(user.getPicture())
+            .profileImage(user.getProfileImageUrl())
             .oauthProvider(user.getProvider().name())
             .build();
     }

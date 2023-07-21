@@ -3,7 +3,7 @@ package com.pullanner.web.service.user;
 import static com.pullanner.web.ApiUtil.getResponseEntity;
 
 import com.pullanner.web.controller.user.dto.UserResponse;
-import com.pullanner.web.controller.user.dto.UserUpdateRequest;
+import com.pullanner.web.controller.user.dto.UserNicknameUpdateRequest;
 import com.pullanner.domain.user.User;
 import com.pullanner.exception.user.InvalidMailAuthorizationCodeException;
 import com.pullanner.domain.user.MailAuthorizationCodeRepository;
@@ -11,6 +11,7 @@ import com.pullanner.domain.user.UserRepository;
 import com.pullanner.web.ApiResponseCode;
 import com.pullanner.web.ApiResponseMessage;
 import com.pullanner.domain.token.RefreshTokenRepository;
+import com.pullanner.web.service.image.ImageService;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,14 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ImageService imageService;
 
     // 회원 탈퇴 처리를 위한 메일 발송 관련 의존성 주입
     private final JavaMailSender javaMailSender;
@@ -45,10 +48,24 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponse register(Long userId, UserUpdateRequest userInfo) {
+    public UserResponse register(Long userId, UserNicknameUpdateRequest userInfo) {
         User user = getUserById(userId);
 
         user.updateNickName(userInfo.getNickname());
+
+        return UserResponse.from(user);
+    }
+
+    @Transactional
+    public UserResponse updateProfileImage(Long userId, MultipartFile profileImage) {
+        User user = getUserById(1L);
+
+        if (user.hasProfileImageFileName()) {
+            imageService.deleteObject(user.getProfileImageFileName());
+        }
+
+        String imageUrl = imageService.uploadFiles(profileImage);
+        user.updateProfileImage(imageUrl);
 
         return UserResponse.from(user);
     }

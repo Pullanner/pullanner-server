@@ -85,7 +85,7 @@ public class OAuthAttributes {
             .name(name)
             .email(email)
             .provider(provider)
-            .picture(picture)
+            .profileImageUrl(picture)
             .role(Role.USER)
             .build();
     }

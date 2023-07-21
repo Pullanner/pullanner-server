@@ -1,3 +1,4 @@
+data.sql
 application-prod.yml
 application-ssl.yml
 keystore.p12
