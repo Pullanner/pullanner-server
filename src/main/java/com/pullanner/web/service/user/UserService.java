@@ -58,7 +58,7 @@ public class UserService {
 
     @Transactional
     public UserResponse updateProfileImage(Long userId, MultipartFile profileImage) {
-        User user = getUserById(1L);
+        User user = getUserById(userId);
 
         if (user.hasProfileImageFileName()) {
             imageService.deleteObject(user.getProfileImageFileName());
