@@ -10,6 +10,7 @@ import com.pullanner.web.ApiResponseMessage;
 import com.pullanner.web.argumentresolver.RefreshTokenId;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -72,7 +73,7 @@ public class UserController {
     @PatchMapping("/api/users")
     public UserResponse update(
         @AuthenticationPrincipal Long userId,
-        @RequestParam @NotNull @Parameter(name = "profileImage", description = "사용자 프로필 사진 파일") MultipartFile profileImage) {
+        @RequestParam @NotNull @Parameter(name = "profileImage", description = "사용자 프로필 사진 파일", in = ParameterIn.QUERY) MultipartFile profileImage) {
         return userService.updateProfileImage(userId, profileImage);
     }
 
