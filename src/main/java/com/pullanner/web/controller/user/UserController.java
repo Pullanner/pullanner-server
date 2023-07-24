@@ -18,8 +18,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.constraints.Length;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -55,7 +56,7 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
     @GetMapping("/api/users/duplicate")
     public ResponseEntity<ApiResponseMessage> validate(
-        @RequestParam @Length(min = NICKNAME_MIN_LENGTH, max = NICKNAME_MAX_LENGTH) @Parameter(name = "nickname", description = "사용자 닉네임", example = "ikjo") String nickname) {
+        @RequestParam @Size(min = NICKNAME_MIN_LENGTH, max = NICKNAME_MAX_LENGTH) @Parameter(name = "nickname", description = "사용자 닉네임", example = "ikjo") String nickname) {
         return userService.validateDuplicate(nickname);
     }
 
