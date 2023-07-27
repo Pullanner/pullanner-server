@@ -14,8 +14,9 @@ public enum ApiResponseCode {
 
     USER_NOT_FOUND("U01", 404, "존재하지 않는 회원입니다."),
     USER_PROFILE_IMAGE_UPLOAD_FAIL("U02", 500, "프로필 이미지 업로드에 실패했습니다."),
-    USER_DUPLICATE_NICKNAME("U03", 200, "이미 존재하는 닉네임입니다."),
+    USER_DUPLICATE_NICKNAME("U03", 400, "이미 존재하는 닉네임입니다."),
     USER_NOT_DUPLICATE_NICKNAME("U04", 200, "사용 가능한 닉네임입니다."),
+    USER_INVALID_NICKNAME("U05", 400, "유효하지 않는 닉네임입니다."),
     USER_EMAIL_SENDING_SUCCESS("U06", 200, "사용자의 이메일로 인증 코드가 발송되었습니다."),
     USER_INVALID_MAIL_AUTHORIZATION_CODE("U07", 401, "유효하지 않은 인증 코드입니다."),
     USER_DELETED_SUCCESS("U08", 200, "사용자의 회원 정보가 삭제되었습니다."),
