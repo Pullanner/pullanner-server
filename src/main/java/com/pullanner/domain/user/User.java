@@ -51,6 +51,9 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "writer")
     private List<Plan> plans = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<UserRoadmap> userRoadmaps = new ArrayList<>();
+
     @OneToMany(mappedBy = "author")
     private List<Article> articles = new ArrayList<>();
 

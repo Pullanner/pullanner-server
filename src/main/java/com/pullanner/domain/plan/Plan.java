@@ -1,6 +1,7 @@
 package com.pullanner.domain.plan;
 
 import com.pullanner.domain.user.User;
+import com.pullanner.domain.user.UserRoadmap;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -29,10 +30,6 @@ public class Plan {
     @Column(name = "plan_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User writer;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private PlanType planType;
@@ -47,6 +44,14 @@ public class Plan {
     private LocalDateTime planDateTime;
 
     private String mainColor; // TODO : #FFFFFF 형식 검증 필요
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User writer;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_roadmap_id", nullable = false)
+    private UserRoadmap userRoadmap;
 
     @Builder
     public Plan(User writer, PlanType planType, String name, String note,
