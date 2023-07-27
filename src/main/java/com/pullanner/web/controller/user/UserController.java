@@ -18,7 +18,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
@@ -50,6 +49,7 @@ public class UserController {
     }
 
     @Operation(summary = "사용자 닉네임 중복 검사", description = "사용자 닉네임의 중복 여부를 검사하는 기능입니다.")
+    @ApiResponse(responseCode = "400", description = "유효하지 않은 닉네임(글자수 제약 위반)", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
     @GetMapping("/api/users/duplicate")
     public ResponseEntity<ApiResponseMessage> validate(
