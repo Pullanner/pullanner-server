@@ -2,6 +2,7 @@ package com.pullanner.domain.user;
 
 import com.pullanner.domain.article.Article;
 import com.pullanner.domain.BaseTimeEntity;
+import com.pullanner.domain.plan.Plan;
 import com.pullanner.web.controller.oauth2.dto.OAuth2Provider;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -46,6 +47,9 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "writer")
+    private List<Plan> plans = new ArrayList<>();
 
     @OneToMany(mappedBy = "author")
     private List<Article> articles = new ArrayList<>();
