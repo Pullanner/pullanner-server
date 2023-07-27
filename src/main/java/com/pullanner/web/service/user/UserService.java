@@ -25,6 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class UserService {
 
+    private static final int NICKNAME_MIN_LENGTH = 2;
+    private static final int NICKNAME_MAX_LENGTH = 8;
+
     private final UserRepository userRepository;
     private final ImageService imageService;
 
@@ -39,12 +42,19 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseEntity<ApiResponseMessage> validateDuplicate(String nickName) {
-        if (userRepository.findByNickName(nickName).isPresent()) {
+    public ResponseEntity<ApiResponseMessage> validateDuplicate(String nickname) {
+        if (validateLengthOfNickname(nickname)) {
+            return getResponseEntity(ApiResponseCode.USER_INVALID_NICKNAME);
+        } else if (userRepository.findByNickName(nickname).isPresent()) {
             return getResponseEntity(ApiResponseCode.USER_DUPLICATE_NICKNAME);
         } else {
             return getResponseEntity(ApiResponseCode.USER_NOT_DUPLICATE_NICKNAME);
         }
+    }
+
+    private boolean validateLengthOfNickname(String nickname) {
+        int length = nickname.length();
+        return length < NICKNAME_MIN_LENGTH || length > NICKNAME_MAX_LENGTH;
     }
 
     @Transactional

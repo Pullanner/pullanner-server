@@ -83,4 +83,5 @@ jobs:
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/pullanner:${GITHUB_SHA::7}
             docker stop pullanner-spring-container
+            docker image rm -f $(docker images --filter "reference=${{ secrets.DOCKER_USERNAME }}/pullanner")
             docker run -d --rm --name pullanner-spring-container -e CLIENT_URL=${{ secrets.CLIENT_URL }} -e JWT_SECRET=${{ secrets.JWT_SECRET }} -e TZ=Asia/Seoul -p 8080:8080 --net mynet --ip 172.19.0.3 ${{ secrets.DOCKER_USERNAME }}/pullanner:${GITHUB_SHA::7}

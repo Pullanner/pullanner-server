@@ -40,9 +40,6 @@ import static com.pullanner.web.ApiUtil.getResponseEntity;
 @RestController
 public class UserController {
 
-    private static final int NICKNAME_MIN_LENGTH = 2;
-    private static final int NICKNAME_MAX_LENGTH = 8;
-
     private final UserService userService;
 
     @Operation(summary = "사용자 정보 조회", description = "사용자 정보를 조회하는 기능입니다.")
@@ -56,7 +53,7 @@ public class UserController {
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
     @GetMapping("/api/users/duplicate")
     public ResponseEntity<ApiResponseMessage> validate(
-        @RequestParam @Size(min = NICKNAME_MIN_LENGTH, max = NICKNAME_MAX_LENGTH) @Parameter(name = "nickname", description = "사용자 닉네임", example = "ikjo") String nickname) {
+        @RequestParam @Parameter(name = "nickname", description = "사용자 닉네임", example = "ikjo") String nickname) {
         return userService.validateDuplicate(nickname);
     }
 
