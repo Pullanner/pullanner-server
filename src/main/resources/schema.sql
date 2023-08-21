@@ -1,15 +1,15 @@
-DROP TABLE IF EXISTS plan_roadmap;
+DROP TABLE IF EXISTS plan_workout;
 DROP TABLE IF EXISTS plan;
 DROP TABLE IF EXISTS article;
-DROP TABLE IF EXISTS user_roadmap;
+DROP TABLE IF EXISTS user_workout;
 DROP TABLE IF EXISTS `user`;
-DROP TABLE IF EXISTS roadmap;
+DROP TABLE IF EXISTS workout;
 
-CREATE TABLE roadmap
+CREATE TABLE workout
 (
-    roadmap_id INT AUTO_INCREMENT,
+    workout_id INT AUTO_INCREMENT,
     name       VARCHAR(255) NOT NULL,
-    PRIMARY KEY (roadmap_id)
+    PRIMARY KEY (workout_id)
 );
 
 CREATE TABLE `user`
@@ -29,14 +29,14 @@ CREATE TABLE `user`
     UNIQUE INDEX index_nickname (nickname)
 );
 
-CREATE TABLE user_roadmap
+CREATE TABLE user_workout
 (
-    user_roadmap_id BIGINT AUTO_INCREMENT,
+    user_workout_id BIGINT AUTO_INCREMENT,
     user_id         BIGINT NOT NULL,
-    roadmap_id      INT    NOT NULL,
-    PRIMARY KEY (user_roadmap_id),
+    workout_id      INT    NOT NULL,
+    PRIMARY KEY (user_workout_id),
     FOREIGN KEY (user_id) REFERENCES `user` (user_id),
-    FOREIGN KEY (roadmap_id) REFERENCES roadmap (roadmap_id)
+    FOREIGN KEY (workout_id) REFERENCES workout (workout_id)
 );
 
 CREATE TABLE article
@@ -67,12 +67,12 @@ CREATE TABLE plan
     FOREIGN KEY (user_id) REFERENCES `user` (user_id)
 );
 
-CREATE TABLE plan_roadmap
+CREATE TABLE plan_workout
 (
-    plan_roadmap_id BIGINT AUTO_INCREMENT,
+    plan_workout_id BIGINT AUTO_INCREMENT,
     plan_id         BIGINT NOT NULL,
-    user_roadmap_id BIGINT NOT NULL,
-    PRIMARY KEY (plan_roadmap_id),
+    user_workout_id BIGINT NOT NULL,
+    PRIMARY KEY (plan_workout_id),
     FOREIGN KEY (plan_id) REFERENCES plan (plan_id),
-    FOREIGN KEY (user_roadmap_id) REFERENCES user_roadmap (user_roadmap_id)
+    FOREIGN KEY (user_workout_id) REFERENCES user_workout (user_workout_id)
 );

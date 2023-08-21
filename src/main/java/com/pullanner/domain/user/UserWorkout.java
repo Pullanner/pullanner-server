@@ -1,7 +1,7 @@
 package com.pullanner.domain.user;
 
 import com.pullanner.domain.plan.Plan;
-import com.pullanner.domain.roadmap.Roadmap;
+import com.pullanner.domain.workout.Workout;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,13 +17,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "user_roadmap")
+@Table(name = "user_workout")
 @Entity
-public class UserRoadmap {
+public class UserWorkout {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_roadmap_id")
+    @Column(name = "user_workout_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -31,8 +31,8 @@ public class UserRoadmap {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "roadmap_id", nullable = false)
-    private Roadmap roadmap;
+    @JoinColumn(name = "workout_id", nullable = false)
+    private Workout workout;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "plan_id", nullable = false)

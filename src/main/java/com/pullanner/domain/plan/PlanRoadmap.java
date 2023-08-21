@@ -1,6 +1,6 @@
 package com.pullanner.domain.plan;
 
-import com.pullanner.domain.user.UserRoadmap;
+import com.pullanner.domain.user.UserWorkout;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,13 +16,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "plan_roadmap")
+@Table(name = "plan_workout")
 @Entity
 public class PlanRoadmap {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "plan_roadmap_id")
+    @Column(name = "plan_workout_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -30,6 +30,6 @@ public class PlanRoadmap {
     private Plan plan;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_roadmap_id", nullable = false)
-    private UserRoadmap userRoadmap;
+    @JoinColumn(name = "user_workout_id", nullable = false)
+    private UserWorkout userWorkout;
 }

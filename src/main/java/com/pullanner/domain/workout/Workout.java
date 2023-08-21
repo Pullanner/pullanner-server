@@ -1,6 +1,6 @@
-package com.pullanner.domain.roadmap;
+package com.pullanner.domain.workout;
 
-import com.pullanner.domain.user.UserRoadmap;
+import com.pullanner.domain.user.UserWorkout;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,17 +16,17 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "roadmap")
+@Table(name = "workout")
 @Entity
-public class Roadmap {
+public class Workout {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "roadmap_id")
+    @Column(name = "workout_id")
     private Integer id;
 
     private String name;
 
-    @OneToMany(mappedBy = "roadmap")
-    private List<UserRoadmap> userRoadmaps = new ArrayList<>();
+    @OneToMany(mappedBy = "workout")
+    private List<UserWorkout> userWorkouts = new ArrayList<>();
 }

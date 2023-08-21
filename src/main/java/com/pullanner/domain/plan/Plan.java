@@ -1,7 +1,7 @@
 package com.pullanner.domain.plan;
 
 import com.pullanner.domain.user.User;
-import com.pullanner.domain.user.UserRoadmap;
+import com.pullanner.domain.user.UserWorkout;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -50,8 +50,8 @@ public class Plan {
     private User writer;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_roadmap_id", nullable = false)
-    private UserRoadmap userRoadmap;
+    @JoinColumn(name = "user_workout_id", nullable = false)
+    private UserWorkout userWorkout;
 
     @Builder
     public Plan(User writer, PlanType planType, String name, String note,
@@ -63,6 +63,4 @@ public class Plan {
         this.planDateTime = planDateTime;
         this.mainColor = mainColor;
     }
-
-
 }
