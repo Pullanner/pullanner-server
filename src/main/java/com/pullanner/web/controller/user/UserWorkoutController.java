@@ -5,6 +5,7 @@ import com.pullanner.web.ApiResponseMessage;
 import com.pullanner.web.controller.user.dto.UserWorkoutResponse;
 import com.pullanner.web.controller.user.dto.UserWorkoutSaveRequest;
 import com.pullanner.web.service.user.UserWorkoutService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -37,6 +38,8 @@ public class UserWorkoutController {
         return null;
     }
 
+    @Operation(summary = "사용자 가능 철봉 동작 등록", description = "사용자가 수행할 수 있는 철봉 동작들을 등록하는 기능입니다.")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
     @PostMapping("/api/users/workouts")
     public ResponseEntity<ApiResponseMessage> register(
             @AuthenticationPrincipal Long userId,
