@@ -22,6 +22,8 @@ public enum ApiResponseCode {
     USER_DELETED_SUCCESS("U08", 200, "사용자의 회원 정보가 삭제되었습니다."),
     USER_LOGOUT_SUCCESS("U09", 200, "로그아웃이 정상적으로 처리되었습니다."),
 
+    USER_WORKOUT_CREATED("UW01", 200, "사용자가 할 수 있는 철봉 동작들이 등록되었습니다."),
+
     ARTICLE_DELETE_COMPLETED("B01", 200, "게시글이 삭제되었습니다."),
 
     REQUEST_RESOURCE_NOT_FOUND("R1", 404, "요청하신 데이터가 존재하지 않습니다."),
