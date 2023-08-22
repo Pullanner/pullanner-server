@@ -7,6 +7,8 @@ import com.pullanner.web.controller.oauth2.dto.OAuth2Provider;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +16,18 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NamedEntityGraph(
+        name = "UserWithWorkouts",
+        attributeNodes = {
+                @NamedAttributeNode(value = "userWorkouts", subgraph = "userWorkouts")
+        },
+        subgraphs = @NamedSubgraph(
+                name = "userWorkouts",
+                attributeNodes = {
+                        @NamedAttributeNode("workout")
+                }
+        )
+)
 @Table(name = "`user`", indexes = {
     @Index(name = "index_email_provider", columnList = "email, provider"),
     @Index(name = "index_nickname", columnList = "nickname", unique = true)
@@ -85,8 +99,22 @@ public class User extends BaseTimeEntity {
         return this.role.getKey();
     }
 
+    public void addPlan(Plan plan) {
+        plans.add(plan);
+    }
+
+    public void addUserWorkout(UserWorkout userWorkout) {
+        userWorkouts.add(userWorkout);
+    }
+
     public void addArticle(Article article) {
         articles.add(article);
+    }
+
+    public List<Integer> getIdsOfWorkout() {
+        return userWorkouts.stream()
+                .map(UserWorkout::getIdOfWorkout)
+                .collect(Collectors.toList());
     }
 
     @PreRemove

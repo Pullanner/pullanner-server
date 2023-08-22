@@ -33,9 +33,11 @@ public class UserWorkoutController {
 
     private final UserWorkoutService userWorkoutService;
 
+    @Operation(summary = "사용자 가능 철봉 동작 조회", description = "사용자가 수행할 수 있는 철봉 동작들을 조회하는 기능입니다.")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
     @GetMapping("/api/users/workouts")
     public UserWorkoutResponse find(@AuthenticationPrincipal Long userId) {
-        return null;
+        return userWorkoutService.findByUserId(userId);
     }
 
     @Operation(summary = "사용자 가능 철봉 동작 등록", description = "사용자가 수행할 수 있는 철봉 동작들을 등록하는 기능입니다.")

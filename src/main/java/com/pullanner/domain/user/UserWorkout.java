@@ -37,4 +37,8 @@ public class UserWorkout extends BaseTimeEntity {
         this.user = user;
         this.workout = workout;
     }
+
+    public Integer getIdOfWorkout() {
+        return workout.getId();
+    }
 }
