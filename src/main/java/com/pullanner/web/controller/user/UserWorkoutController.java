@@ -3,7 +3,7 @@ package com.pullanner.web.controller.user;
 import com.pullanner.web.ApiResponseCode;
 import com.pullanner.web.ApiResponseMessage;
 import com.pullanner.web.controller.user.dto.UserWorkoutResponse;
-import com.pullanner.web.controller.user.dto.UserWorkoutSaveRequest;
+import com.pullanner.web.controller.user.dto.UserWorkoutSaveOrUpdateRequest;
 import com.pullanner.web.service.user.UserWorkoutService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,7 +34,7 @@ public class UserWorkoutController {
     private final UserWorkoutService userWorkoutService;
 
     @Operation(summary = "사용자 가능 철봉 동작 조회", description = "사용자가 수행할 수 있는 철봉 동작들을 조회하는 기능입니다.")
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = UserWorkoutResponse.class)))
     @GetMapping("/api/users/workouts")
     public UserWorkoutResponse find(@AuthenticationPrincipal Long userId) {
         return userWorkoutService.findByUserId(userId);
@@ -45,14 +45,20 @@ public class UserWorkoutController {
     @PostMapping("/api/users/workouts")
     public ResponseEntity<ApiResponseMessage> register(
             @AuthenticationPrincipal Long userId,
-            @Valid @RequestBody UserWorkoutSaveRequest userWorkoutInfo
+            @Valid @RequestBody UserWorkoutSaveOrUpdateRequest userWorkoutInfo
             ) {
         userWorkoutService.save(userId, userWorkoutInfo);
         return getResponseEntity(ApiResponseCode.USER_WORKOUT_CREATED);
     }
 
+    @Operation(summary = "사용자 가능 철봉 동작 수정", description = "사용자가 수행할 수 있는 철봉 동작들을 수정하는 기능입니다.")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
     @PatchMapping("/api/users/workouts")
-    public ResponseEntity<ApiResponseMessage> update(@AuthenticationPrincipal Long userId) {
-        return null;
+    public ResponseEntity<ApiResponseMessage> update(
+            @AuthenticationPrincipal Long userId,
+            @Valid @RequestBody UserWorkoutSaveOrUpdateRequest userWorkoutInfo
+    ) {
+        userWorkoutService.update(userId, userWorkoutInfo);
+        return getResponseEntity(ApiResponseCode.USER_WORKOUT_UPDATED);
     }
 }

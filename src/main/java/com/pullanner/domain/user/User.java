@@ -96,7 +96,7 @@ public class User extends BaseTimeEntity {
     }
 
     public String getRoleKey() {
-        return this.role.getKey();
+        return role.getKey();
     }
 
     public void addPlan(Plan plan) {
@@ -118,7 +118,9 @@ public class User extends BaseTimeEntity {
     }
 
     @PreRemove
-    public void clearArticles() {
+    public void clearUserInformation() {
+        plans.clear();
+        userWorkouts.clear();
         articles.clear();
     }
 }

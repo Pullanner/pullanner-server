@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class UserWorkoutSaveRequest {
+public class UserWorkoutSaveOrUpdateRequest {
 
     @Size(min = 1, max = 8)
     private List<Integer> workouts;
