@@ -9,6 +9,8 @@ CREATE TABLE workout
 (
     workout_id INT AUTO_INCREMENT,
     name       VARCHAR(255) NOT NULL,
+    created_date            TIMESTAMP    NOT NULL,
+    modified_date           TIMESTAMP    NOT NULL,
     PRIMARY KEY (workout_id)
 );
 
@@ -34,6 +36,8 @@ CREATE TABLE user_workout
     user_workout_id BIGINT AUTO_INCREMENT,
     user_id         BIGINT NOT NULL,
     workout_id      INT    NOT NULL,
+    created_date            TIMESTAMP    NOT NULL,
+    modified_date           TIMESTAMP    NOT NULL,
     PRIMARY KEY (user_workout_id),
     FOREIGN KEY (user_id) REFERENCES `user` (user_id),
     FOREIGN KEY (workout_id) REFERENCES workout (workout_id)
@@ -72,7 +76,12 @@ CREATE TABLE plan_workout
     plan_workout_id BIGINT AUTO_INCREMENT,
     plan_id         BIGINT NOT NULL,
     user_workout_id BIGINT NOT NULL,
+    created_date            TIMESTAMP    NOT NULL,
+    modified_date           TIMESTAMP    NOT NULL,
     PRIMARY KEY (plan_workout_id),
     FOREIGN KEY (plan_id) REFERENCES plan (plan_id),
     FOREIGN KEY (user_workout_id) REFERENCES user_workout (user_workout_id)
 );
+
+INSERT INTO workout (name, created_date, modified_date)
+VALUES ('Hanging', NOW(), NOW()), ('Jumping Pull-up', NOW(), NOW()), ('Band Pull-up', NOW(), NOW()), ('Chin-up', NOW(), NOW()), ('Pull-up', NOW(), NOW()), ('Chest to Bar Pull-up', NOW(), NOW()), ('Archer Pull-up', NOW(), NOW()), ('Muscle up', NOW(), NOW());

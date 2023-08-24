@@ -1,5 +1,6 @@
 package com.pullanner.domain.workout;
 
+import com.pullanner.domain.BaseTimeEntity;
 import com.pullanner.domain.user.UserWorkout;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "workout")
 @Entity
-public class Workout {
+public class Workout extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,4 +30,8 @@ public class Workout {
 
     @OneToMany(mappedBy = "workout")
     private List<UserWorkout> userWorkouts = new ArrayList<>();
+
+    public void addUserWorkout(UserWorkout userWorkout) {
+        userWorkouts.add(userWorkout);
+    }
 }

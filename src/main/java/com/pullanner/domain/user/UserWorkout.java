@@ -1,6 +1,6 @@
 package com.pullanner.domain.user;
 
-import com.pullanner.domain.plan.Plan;
+import com.pullanner.domain.BaseTimeEntity;
 import com.pullanner.domain.workout.Workout;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,15 +11,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user_workout")
 @Entity
-public class UserWorkout {
+public class UserWorkout extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +32,13 @@ public class UserWorkout {
     @JoinColumn(name = "workout_id", nullable = false)
     private Workout workout;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "plan_id", nullable = false)
-    private Plan plan;
+    @Builder
+    public UserWorkout(User user, Workout workout) {
+        this.user = user;
+        this.workout = workout;
+    }
+
+    public Integer getIdOfWorkout() {
+        return workout.getId();
+    }
 }
