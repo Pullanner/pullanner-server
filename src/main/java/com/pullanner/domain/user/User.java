@@ -116,11 +116,4 @@ public class User extends BaseTimeEntity {
                 .map(UserWorkout::getIdOfWorkout)
                 .collect(Collectors.toList());
     }
-
-    @PreRemove
-    public void clearUserInformation() {
-        plans.clear();
-        userWorkouts.clear();
-        articles.clear();
-    }
 }

@@ -39,7 +39,7 @@ CREATE TABLE user_workout
     created_date            TIMESTAMP    NOT NULL,
     modified_date           TIMESTAMP    NOT NULL,
     PRIMARY KEY (user_workout_id),
-    FOREIGN KEY (user_id) REFERENCES `user` (user_id),
+    FOREIGN KEY (user_id) REFERENCES `user` (user_id) ON DELETE CASCADE,
     FOREIGN KEY (workout_id) REFERENCES workout (workout_id)
 );
 
@@ -53,7 +53,7 @@ CREATE TABLE article
     created_date  TIMESTAMP     NOT NULL,
     modified_date TIMESTAMP     NOT NULL,
     PRIMARY KEY (article_id),
-    FOREIGN KEY (user_id) REFERENCES `user` (user_id)
+    FOREIGN KEY (user_id) REFERENCES `user` (user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE plan
@@ -68,7 +68,7 @@ CREATE TABLE plan
     created_date  TIMESTAMP    NOT NULL,
     modified_date TIMESTAMP    NOT NULL,
     PRIMARY KEY (plan_id),
-    FOREIGN KEY (user_id) REFERENCES `user` (user_id)
+    FOREIGN KEY (user_id) REFERENCES `user` (user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE plan_workout

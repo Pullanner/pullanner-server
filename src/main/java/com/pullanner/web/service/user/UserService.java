@@ -105,6 +105,7 @@ public class UserService {
     @Transactional
     public void deleteUser(Long userId, String refreshTokenId, Integer code) {
         User user = getUserById(userId);
+
         if (mailAuthorizationCodeRepository.validateCode(user.getEmail(), code)) {
             userRepository.delete(user);
             refreshTokenRepository.deleteByKey(refreshTokenId);
