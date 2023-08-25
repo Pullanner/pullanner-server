@@ -1,4 +1,22 @@
-## Pullanner Server Project Introduction
+<div align="center">
+<img src="https://github.com/Pullanner/pullanner-web/assets/85419343/1257948b-d1b2-464e-a56e-1e761d5aaa91" width="1000" style="border-radius: 15px;"/>
+  <br />
+    <h1>Pullanner: Pull-up Planner</h1>
+    <p>
+        풀래너는 풀업이 어려운 사람들도 차근차근 단계별로 풀업 동작을 익혀나갈 수 있도록 로드맵을 제공합니다. <br />
+        또한 동기부여를 잃지 않고 꾸준히 운동할 수 있도록, 미션을 완료하면 귀여운 배지도 얻을 수 있어요. <br />
+        풀래너와 함께 풀업 운동을 배우고 지속하며 멋진 근육을 만들고, 건강해지는 자신을 만나보세요! 💪 
+    </p>
+</div>
+<br /><br />
+
+## 1. About "Pullanner"
+
+### Pull-up Roadmap
+
+![pullanner-main](https://github.com/Pullanner/pullanner-web/assets/85419343/254342ea-1a66-438b-9030-895a2739adac)
+
+### Pull-up Plan
 
 <br>
 
