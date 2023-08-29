@@ -81,7 +81,7 @@ CREATE TABLE plan_workout
     created_date            TIMESTAMP    NOT NULL,
     modified_date           TIMESTAMP    NOT NULL,
     PRIMARY KEY (plan_workout_id),
-    FOREIGN KEY (plan_workout_plan_id) REFERENCES plan (plan_id),
+    FOREIGN KEY (plan_workout_plan_id) REFERENCES plan (plan_id) ON DELETE CASCADE,
     FOREIGN KEY (plan_workout_workout_id) REFERENCES workout (workout_id)
 );
 
