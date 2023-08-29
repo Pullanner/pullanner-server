@@ -28,12 +28,4 @@ public class PlanSaveOrUpdateRequest {
 
     @Pattern(regexp = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")
     private String mainColor;
-
-    public Map<Integer, PlanWorkoutRequest> getIdsOfWorkouts() {
-        return workouts.stream()
-                .collect(Collectors.toMap(
-                        PlanWorkoutRequest::getStep,
-                        planWorkoutRequest -> planWorkoutRequest
-                ));
-    }
 }

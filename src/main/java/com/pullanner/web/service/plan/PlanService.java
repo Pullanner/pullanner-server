@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -41,7 +42,7 @@ public class PlanService {
 
         user.addPlan(plan);
 
-        Map<Integer, PlanWorkoutRequest> planWorkoutRequestByWorkoutId = request.getIdsOfWorkouts();
+        Map<Integer, PlanWorkoutRequest> planWorkoutRequestByWorkoutId = getIdsOfWorkouts(request);
 
         List<PlanWorkout> planWorkouts = workoutRepository.findAllByIdIn(planWorkoutRequestByWorkoutId.keySet())
                 .stream()
@@ -63,5 +64,14 @@ public class PlanService {
 
         planRepository.save(plan);
         planWorkoutRepository.saveAll(planWorkouts);
+    }
+
+    private Map<Integer, PlanWorkoutRequest> getIdsOfWorkouts(PlanSaveOrUpdateRequest request) {
+        return request.getWorkouts()
+                .stream()
+                .collect(Collectors.toMap(
+                        PlanWorkoutRequest::getStep,
+                        planWorkoutRequest -> planWorkoutRequest
+                ));
     }
 }
