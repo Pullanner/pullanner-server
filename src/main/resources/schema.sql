@@ -34,53 +34,55 @@ CREATE TABLE `user`
 CREATE TABLE user_workout
 (
     user_workout_id BIGINT AUTO_INCREMENT,
-    user_id         BIGINT NOT NULL,
-    workout_id      INT    NOT NULL,
+    user_workout_user_id         BIGINT NOT NULL,
+    user_workout_workout_id      INT    NOT NULL,
     created_date            TIMESTAMP    NOT NULL,
     modified_date           TIMESTAMP    NOT NULL,
     PRIMARY KEY (user_workout_id),
-    FOREIGN KEY (user_id) REFERENCES `user` (user_id) ON DELETE CASCADE,
-    FOREIGN KEY (workout_id) REFERENCES workout (workout_id)
+    FOREIGN KEY (user_workout_user_id) REFERENCES `user` (user_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_workout_workout_id) REFERENCES workout (workout_id)
 );
 
 CREATE TABLE article
 (
     article_id    BIGINT AUTO_INCREMENT,
-    user_id       BIGINT        NOT NULL,
+    article_user_id       BIGINT        NOT NULL,
     title         VARCHAR(100)  NOT NULL,
     content       VARCHAR(1500) NOT NULL,
     hit           INT DEFAULT 0,
     created_date  TIMESTAMP     NOT NULL,
     modified_date TIMESTAMP     NOT NULL,
     PRIMARY KEY (article_id),
-    FOREIGN KEY (user_id) REFERENCES `user` (user_id) ON DELETE CASCADE
+    FOREIGN KEY (article_user_id) REFERENCES `user` (user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE plan
 (
     plan_id       BIGINT AUTO_INCREMENT,
-    user_id       BIGINT       NOT NULL,
+    plan_user_id       BIGINT       NOT NULL,
     plan_type     VARCHAR(255) NOT NULL COMMENT 'strength | master',
     name          VARCHAR(255) NOT NULL,
-    note          VARCHAR(300) NOT NULL,
+    note          VARCHAR(300) NULL,
     main_color    VARCHAR(255) NOT NULL,
-    plan_datetime TIMESTAMP    NOT NULL,
+    plan_date TIMESTAMP    NOT NULL,
     created_date  TIMESTAMP    NOT NULL,
     modified_date TIMESTAMP    NOT NULL,
     PRIMARY KEY (plan_id),
-    FOREIGN KEY (user_id) REFERENCES `user` (user_id) ON DELETE CASCADE
+    FOREIGN KEY (plan_user_id) REFERENCES `user` (user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE plan_workout
 (
     plan_workout_id BIGINT AUTO_INCREMENT,
-    plan_id         BIGINT NOT NULL,
-    user_workout_id BIGINT NOT NULL,
+    plan_workout_plan_id         BIGINT NOT NULL,
+    plan_workout_workout_id      INT NOT NULL,
+    count_per_set   INT NOT NULL,
+    set_count       INT NOT NULL,
     created_date            TIMESTAMP    NOT NULL,
     modified_date           TIMESTAMP    NOT NULL,
     PRIMARY KEY (plan_workout_id),
-    FOREIGN KEY (plan_id) REFERENCES plan (plan_id),
-    FOREIGN KEY (user_workout_id) REFERENCES user_workout (user_workout_id)
+    FOREIGN KEY (plan_workout_plan_id) REFERENCES plan (plan_id),
+    FOREIGN KEY (plan_workout_workout_id) REFERENCES workout (workout_id)
 );
 
 INSERT INTO workout (name, created_date, modified_date)

@@ -38,7 +38,7 @@ public class Article extends BaseTimeEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "article_user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User author;
 

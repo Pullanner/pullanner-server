@@ -27,12 +27,12 @@ public class UserWorkout extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_workout_user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "workout_id", nullable = false)
+    @JoinColumn(name = "user_workout_workout_id", nullable = false)
     private Workout workout;
 
     @Builder

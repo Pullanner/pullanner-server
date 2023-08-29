@@ -1,6 +1,7 @@
 package com.pullanner.domain.workout;
 
 import com.pullanner.domain.BaseTimeEntity;
+import com.pullanner.domain.plan.PlanWorkout;
 import com.pullanner.domain.user.UserWorkout;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,7 +32,14 @@ public class Workout extends BaseTimeEntity {
     @OneToMany(mappedBy = "workout")
     private List<UserWorkout> userWorkouts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "workout")
+    private List<PlanWorkout> planWorkouts = new ArrayList<>();
+
     public void addUserWorkout(UserWorkout userWorkout) {
         userWorkouts.add(userWorkout);
+    }
+
+    public void addPlanWorkout(PlanWorkout planWorkout) {
+        planWorkouts.add(planWorkout);
     }
 }
