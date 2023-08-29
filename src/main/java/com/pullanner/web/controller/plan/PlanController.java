@@ -36,7 +36,7 @@ public class PlanController {
 
     private final PlanService planService;
 
-    @Operation(summary = " 조회", description = "사용자가 철봉 운동 계획을 등록할 수 있는 기능입니다.")
+    @Operation(summary = "철봉 운동 계획 생성", description = "사용자가 철봉 운동 계획을 등록할 수 있는 기능입니다.")
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
     @PostMapping("/api/plans")
     public ResponseEntity<ApiResponseMessage> register(
