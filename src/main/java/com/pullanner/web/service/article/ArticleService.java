@@ -71,20 +71,14 @@ public class ArticleService {
     }
 
     private User getUserById(Long userId) {
-        User user = userRepository.findById(userId)
-            .orElseThrow(() -> {
-                throw new IllegalStateException("해당 사용자가 존재하지 않습니다.");
-            });
-
-        return user;
+        return userRepository.findById(userId)
+            .orElseThrow(() -> new IllegalStateException("해당 사용자가 존재하지 않습니다."));
     }
 
     private Article getArticleById(Long articleId) {
-        Article article = articleRepository.findById(articleId)
+        return articleRepository.findById(articleId)
             .orElseThrow(
                 () -> new IllegalStateException("해당 게시글이 존재하지 않습니다.")
             );
-
-        return article;
     }
 }
