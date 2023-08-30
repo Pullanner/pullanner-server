@@ -12,7 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Set;
+import java.util.Arrays;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,22 +29,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final AccessTokenService accessTokenService;
 
-    private final Set<String> excludePathAndMethodSet = Set.of(
-            // OAuth
-            "/oauth2/authorization/google GET",
-            "/oauth2/authorization/naver GET",
-            "/oauth2/authorization/kakao GET",
-
-            // OAuth Redirect URL
-            "/login/oauth2/code/google GET",
-            "/login/oauth2/code/naver GET",
-            "login/oauth2/code/kakao GET",
-
-            "/api/tokens POST", "/api/tokens DELETE",
-            "/api/articles GET",
-            "/api/swagger-ui/index.html GET", "/api/docs GET"
-            //, "/api/plans POST", "/api/plans PATCH"
-    );
+    private final String[][] excludePathAndMethod = {
+            {"/login", "GET"}, {"/oauth2", "GET"}, {"/api/tokens", "POST"}, {"/api/tokens", "DELETE"},
+            {"/api/articles", "GET"}, {"/api/swagger-ui", "GET"}, {"/api/docs", "GET"}
+    };
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -83,6 +71,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         String method = request.getMethod();
 
-        return excludePathAndMethodSet.contains(path + " " +  method);
+        return Arrays.stream(excludePathAndMethod)
+                .anyMatch(e -> path.startsWith(e[0]) && e[1].equals(method));
     }
 }
