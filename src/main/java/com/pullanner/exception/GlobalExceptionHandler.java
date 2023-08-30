@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponseMessage> handleMethodArgumentTypeMismatchException(Exception e) {
+    public ResponseEntity<ApiResponseMessage> handleGlobalException(Exception e) {
         e.printStackTrace();
         return ApiUtil.getResponseEntity(ApiResponseCode.SERVER_INTERNAL_ERROR);
     }

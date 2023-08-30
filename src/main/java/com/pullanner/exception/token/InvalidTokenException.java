@@ -1,8 +1,10 @@
 package com.pullanner.exception.token;
 
+import com.pullanner.web.ApiResponseCode;
+
 public class InvalidTokenException extends RuntimeException {
 
     public InvalidTokenException() {
-        super("유효하지 않은 토큰입니다.");
+        super(ApiResponseCode.TOKEN_INVALID.getMessage());
     }
 }

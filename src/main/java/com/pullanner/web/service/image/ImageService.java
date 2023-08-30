@@ -43,7 +43,7 @@ public class ImageService {
 
             return amazonS3.getUrl(bucket, savedFileName).toString();
         } catch (IOException e) {
-            throw new ProfileImageUploadException("파일 업로드에 실패했습니다.");
+            throw new ProfileImageUploadException();
         }
     }
 
