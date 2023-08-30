@@ -25,8 +25,11 @@ public enum ApiResponseCode {
     USER_WORKOUT_CREATED("UW01", 200, "사용자가 할 수 있는 철봉 동작 정보가 등록되었습니다."),
     USER_WORKOUT_UPDATED("UW02", 200, "사용자가 할 수 있는 철봉 동작 정보가 수정되었습니다."),
 
-    PLAN_CREATED("P01", 200, "계획이 등록되었습니다."),
-    PLAN_DATETIME_INVALID("P02", 400, "오늘 이후의 날짜로만 계획을 등록할 수 있습니다."),
+    PLAN_SAVED("P01", 200, "철봉 운동 계획이 등록되었습니다."),
+    PLAN_SAVE_DATE_INVALID("P02", 400, "오늘 이후의 날짜로만 계획을 등록할 수 있습니다."),
+    PLAN_UPDATED("P03", 200, "철봉 운동 계획이 수정되었습니다."),
+    PLAN_UPDATE_DATETIME_INVALID("P03", 400, "현재 시간 보다 이전 시간으로는 계획을 수정할 수 없습니다."),
+    PLAN_UPDATE_NO_AUTHORITY("P04", 200, "철봉 운동 계획을 수정할 권한이 없습니다."),
 
     ARTICLE_DELETE_COMPLETED("B01", 200, "게시글이 삭제되었습니다."),
 

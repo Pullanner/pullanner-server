@@ -61,9 +61,8 @@ CREATE TABLE plan
     plan_id       BIGINT AUTO_INCREMENT,
     plan_user_id       BIGINT       NOT NULL,
     plan_type     VARCHAR(255) NOT NULL COMMENT 'strength | master',
-    name          VARCHAR(255) NOT NULL,
+    name          VARCHAR(20) NOT NULL,
     note          VARCHAR(300) NULL,
-    main_color    VARCHAR(255) NOT NULL,
     plan_date TIMESTAMP    NOT NULL,
     created_date  TIMESTAMP    NOT NULL,
     modified_date TIMESTAMP    NOT NULL,
@@ -81,7 +80,7 @@ CREATE TABLE plan_workout
     created_date            TIMESTAMP    NOT NULL,
     modified_date           TIMESTAMP    NOT NULL,
     PRIMARY KEY (plan_workout_id),
-    FOREIGN KEY (plan_workout_plan_id) REFERENCES plan (plan_id),
+    FOREIGN KEY (plan_workout_plan_id) REFERENCES plan (plan_id) ON DELETE CASCADE,
     FOREIGN KEY (plan_workout_workout_id) REFERENCES workout (workout_id)
 );
 

@@ -12,7 +12,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Set;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContext;
@@ -28,10 +29,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final AccessTokenService accessTokenService;
 
-    private final String[][] excludePathAndMethod = {
-        {"/login", "GET"}, {"/oauth2", "GET"}, {"/api/tokens", "POST"}, {"/api/tokens", "DELETE"},
-        {"/api/articles", "GET"}, {"/api/swagger-ui", "GET"}, {"/api/docs", "GET"}
-    };
+    private final Set<String> excludePathAndMethodSet = Set.of(
+            "/login GET", "/oauth2 GET", "/api/tokens POST", "/api/tokens DELETE",
+            "/api/articles GET", "/api/swagger-ui GET", "/api/docs GET"
+            //, "/api/plans POST", "/api/plans PATCH"
+    );
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -70,7 +72,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         String method = request.getMethod();
 
-        return Arrays.stream(excludePathAndMethod)
-            .anyMatch(e -> path.startsWith(e[0]) && e[1].equals(method));
+        return excludePathAndMethodSet.contains(path + " " +  method);
     }
 }

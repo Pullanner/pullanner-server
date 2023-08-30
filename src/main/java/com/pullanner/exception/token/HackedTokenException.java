@@ -1,8 +1,10 @@
 package com.pullanner.exception.token;
 
+import com.pullanner.web.ApiResponseCode;
+
 public class HackedTokenException extends RuntimeException {
 
     public HackedTokenException() {
-        super("토큰이 도용되었습니다.");
+        super(ApiResponseCode.TOKEN_HACKED.getMessage());
     }
 }
