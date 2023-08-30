@@ -30,8 +30,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final AccessTokenService accessTokenService;
 
     private final Set<String> excludePathAndMethodSet = Set.of(
-            "/login GET", "/oauth2 GET", "/api/tokens POST", "/api/tokens DELETE",
-            "/api/articles GET", "/api/swagger-ui GET", "/api/docs GET"
+            // OAuth
+            "/oauth2/authorization/google GET",
+            "/oauth2/authorization/naver GET",
+            "/oauth2/authorization/kakao GET",
+
+            // OAuth Redirect URL
+            "/login/oauth2/code/google GET",
+            "/login/oauth2/code/naver GET",
+            "login/oauth2/code/kakao GET",
+
+            "/api/tokens POST", "/api/tokens DELETE",
+            "/api/articles GET",
+            "/api/swagger-ui/index.html GET", "/api/docs GET"
             //, "/api/plans POST", "/api/plans PATCH"
     );
 
