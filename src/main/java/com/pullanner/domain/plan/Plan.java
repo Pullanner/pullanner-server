@@ -2,6 +2,7 @@ package com.pullanner.domain.plan;
 
 import com.pullanner.domain.BaseTimeEntity;
 import com.pullanner.domain.user.User;
+import com.pullanner.web.controller.plan.dto.PlanSaveOrUpdateRequest;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,13 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NamedEntityGraph(
+        name = "PlanWithWriterAndWorkouts",
+        attributeNodes = {
+                @NamedAttributeNode(value = "writer", subgraph = "writer"),
+                @NamedAttributeNode(value = "planWorkouts", subgraph = "planWorkouts")
+        }
+)
 @Table(name = "plan")
 @Entity
 public class Plan extends BaseTimeEntity {
@@ -30,7 +38,7 @@ public class Plan extends BaseTimeEntity {
     @Column(nullable = false)
     private PlanType planType;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String name;
 
     @Column(length = 300)
@@ -38,8 +46,6 @@ public class Plan extends BaseTimeEntity {
 
     @Column(nullable = false)
     private LocalDateTime planDate;
-
-    private String mainColor;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "plan_user_id", nullable = false)
@@ -51,17 +57,20 @@ public class Plan extends BaseTimeEntity {
 
     @Builder
     public Plan(User writer, PlanType planType, String name, String note,
-                LocalDateTime planDate, String mainColor) {
+                LocalDateTime planDate) {
         this.writer = writer;
         this.planType = planType;
         this.name = name;
         this.note = note;
         this.planDate = planDate;
-        this.mainColor = mainColor;
     }
 
     public void addPlanWorkout(PlanWorkout planWorkout) {
         planWorkouts.add(planWorkout);
     }
 
+    public void updatePlanInformation(PlanSaveOrUpdateRequest request) {
+        this.name = request.getPlanName();
+        this.planType = request.getPlanType();
+    }
 }

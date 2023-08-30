@@ -110,7 +110,7 @@ public class UserService {
             userRepository.delete(user);
             refreshTokenRepository.deleteByKey(refreshTokenId);
         } else {
-            throw new InvalidMailAuthorizationCodeException("회원 탈퇴 처리를 위한 인증 번호가 일치하지 않습니다.");
+            throw new InvalidMailAuthorizationCodeException();
         }
     }
 

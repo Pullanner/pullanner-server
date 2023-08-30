@@ -1,10 +1,14 @@
 package com.pullanner.web.controller.plan;
 
+import com.pullanner.exception.plan.PlanSaveDateException;
+import com.pullanner.exception.plan.PlanUpdateDateTimeException;
+import com.pullanner.exception.plan.PlanUpdateNoAuthorityException;
 import com.pullanner.web.ApiResponseCode;
 import com.pullanner.web.ApiResponseMessage;
 import com.pullanner.web.controller.plan.dto.PlanSaveOrUpdateRequest;
 import com.pullanner.web.service.plan.PlanService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,11 +18,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.pullanner.web.ApiUtil.getResponseEntity;
 
@@ -43,13 +43,37 @@ public class PlanController {
             @AuthenticationPrincipal Long userId,
             @Valid @RequestBody PlanSaveOrUpdateRequest request
             ) {
-        planService.save(userId, request);
-        return getResponseEntity(ApiResponseCode.PLAN_CREATED);
+        planService.save(1L, request);
+        return getResponseEntity(ApiResponseCode.PLAN_SAVED);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponseMessage> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    @Operation(summary = "철봉 운동 계획 수정", description = "사용자가 철봉 운동 계획을 수정할 수 있는 기능입니다.")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
+    @PatchMapping("/api/plans/{id}")
+    public ResponseEntity<ApiResponseMessage> update(
+            @AuthenticationPrincipal Long userId,
+            @PathVariable("id") @Parameter(name = "Plan id", description = "수정할 철봉 운동 계획의 고유 아이디 값", example = "1") Long planId,
+            @Valid @RequestBody PlanSaveOrUpdateRequest request
+    ) {
+        planService.update(1L, planId, request);
+        return getResponseEntity(ApiResponseCode.PLAN_UPDATED);
+    }
+
+    @ExceptionHandler(PlanSaveDateException.class)
+    public ResponseEntity<ApiResponseMessage> handlePlanSaveDateTimeException(PlanSaveDateException e) {
         e.printStackTrace();
-        return getResponseEntity(ApiResponseCode.PLAN_DATETIME_INVALID);
+        return getResponseEntity(ApiResponseCode.PLAN_SAVE_DATE_INVALID);
+    }
+
+    @ExceptionHandler(PlanUpdateDateTimeException.class)
+    public ResponseEntity<ApiResponseMessage> handlePlanUpdateDateTimeException(PlanUpdateDateTimeException e) {
+        e.printStackTrace();
+        return getResponseEntity(ApiResponseCode.PLAN_UPDATE_DATETIME_INVALID);
+    }
+
+    @ExceptionHandler(PlanUpdateNoAuthorityException.class)
+    public ResponseEntity<ApiResponseMessage> handlePlanUpdateNoAuthorityException(PlanUpdateNoAuthorityException e) {
+        e.printStackTrace();
+        return getResponseEntity(ApiResponseCode.PLAN_UPDATE_NO_AUTHORITY);
     }
 }
