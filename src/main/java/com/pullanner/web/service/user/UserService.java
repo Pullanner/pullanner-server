@@ -2,6 +2,7 @@ package com.pullanner.web.service.user;
 
 import static com.pullanner.web.ApiUtil.getResponseEntity;
 
+import com.pullanner.exception.user.UserNotFoundedException;
 import com.pullanner.web.controller.user.dto.UserResponse;
 import com.pullanner.web.controller.user.dto.UserNicknameUpdateRequest;
 import com.pullanner.domain.user.User;
@@ -116,7 +117,7 @@ public class UserService {
 
     private User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(
-                () -> new IllegalStateException("식별 번호가 " + id + "에 해당되는 사용자가 없습니다.")
+                () -> new UserNotFoundedException("식별 번호가 " + id + "에 해당되는 사용자가 없습니다.")
         );
     }
 }

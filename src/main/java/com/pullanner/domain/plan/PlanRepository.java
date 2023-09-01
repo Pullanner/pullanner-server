@@ -9,4 +9,7 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
 
     @EntityGraph(value = "PlanWithWriterAndWorkouts")
     Optional<Plan> findWithWriterAndWorkoutsById(Long id);
+
+    @EntityGraph(value = "PlanWithWorkouts")
+    Optional<Plan> findWithWorkoutsById(Long id);
 }

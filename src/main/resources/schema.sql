@@ -77,6 +77,7 @@ CREATE TABLE plan_workout
     plan_workout_workout_id      INT NOT NULL,
     count_per_set   INT NOT NULL,
     set_count       INT NOT NULL,
+    done            BOOLEAN NOT NULL,
     created_date            TIMESTAMP    NOT NULL,
     modified_date           TIMESTAMP    NOT NULL,
     PRIMARY KEY (plan_workout_id),

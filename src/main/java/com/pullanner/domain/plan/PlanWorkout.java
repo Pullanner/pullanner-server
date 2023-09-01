@@ -38,15 +38,21 @@ public class PlanWorkout extends BaseTimeEntity {
     @JoinColumn(name = "plan_workout_workout_id", nullable = false)
     private Workout workout;
 
+    @Column(nullable = false)
     private int countPerSet;
 
+    @Column(nullable = false)
     private int setCount;
 
+    @Column(nullable = false)
+    private Boolean done;
+
     @Builder
-    public PlanWorkout(Plan plan, Workout workout, int countPerSet, int set) {
+    public PlanWorkout(Plan plan, Workout workout, int countPerSet, int set, boolean done) {
         this.plan = plan;
         this.workout = workout;
         this.countPerSet = countPerSet;
         this.setCount = set;
+        this.done = done;
     }
 }

@@ -30,6 +30,8 @@ public enum ApiResponseCode {
     PLAN_UPDATED("P03", 200, "철봉 운동 계획이 수정되었습니다."),
     PLAN_UPDATE_DATETIME_INVALID("P03", 400, "현재 시간 보다 이전 시간으로는 계획을 수정할 수 없습니다."),
     PLAN_UPDATE_NO_AUTHORITY("P04", 200, "철봉 운동 계획을 수정할 권한이 없습니다."),
+    PLAN_NOT_FOUNDED("P05", 404, "등록된 철봉 운동 계획이 없습니다."),
+    PLAN_WORKOUT_NOT_FOUNDED("P06", 404, "해당 철봉 운동 계획에 등록된 활동이 없습니다."),
 
     ARTICLE_DELETE_COMPLETED("B01", 200, "게시글이 삭제되었습니다."),
 

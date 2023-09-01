@@ -20,12 +20,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
+@RequiredArgsConstructor
 @Tag(name = "Token", description = "Token API")
 @ApiResponses(
     {
@@ -33,7 +36,6 @@ import org.springframework.web.bind.annotation.RestController;
         @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
     }
 )
-@RequiredArgsConstructor
 @RestController
 public class TokenController {
 
@@ -81,13 +83,13 @@ public class TokenController {
 
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<ApiResponseMessage> handleInvalidTokenException(InvalidTokenException e) {
-        e.printStackTrace();
+        log.error("", e);
         return getResponseEntity(ApiResponseCode.TOKEN_INVALID);
     }
 
     @ExceptionHandler(HackedTokenException.class)
     public ResponseEntity<ApiResponseMessage> handleHackedTokenException(HackedTokenException e) {
-        e.printStackTrace();
+        log.error("", e);
         return getResponseEntity(ApiResponseCode.TOKEN_HACKED);
     }
 }
