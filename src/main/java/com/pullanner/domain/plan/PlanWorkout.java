@@ -55,4 +55,12 @@ public class PlanWorkout extends BaseTimeEntity {
         this.setCount = set;
         this.done = done;
     }
+
+    public void updateStatus(boolean done) {
+        this.done = done;
+    }
+
+    public int getStepOfWorkout() {
+        return workout.getId();
+    }
 }

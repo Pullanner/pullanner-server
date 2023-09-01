@@ -8,16 +8,16 @@ import com.pullanner.domain.user.User;
 import com.pullanner.domain.user.UserRepository;
 import com.pullanner.domain.workout.WorkoutRepository;
 import com.pullanner.exception.plan.PlanNotFoundedException;
-import com.pullanner.web.controller.plan.dto.PlanResponse;
-import com.pullanner.web.controller.plan.dto.PlanSaveOrUpdateRequest;
-import com.pullanner.web.controller.plan.dto.PlanWorkoutRequest;
-import com.pullanner.web.controller.plan.dto.PlanWorkoutResponse;
+import com.pullanner.exception.plan.PlanWorkoutNotFoundedException;
+import com.pullanner.exception.user.UserNotFoundedException;
+import com.pullanner.web.controller.plan.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -47,7 +47,7 @@ public class PlanService {
     @Transactional
     public void save(Long userId, PlanSaveOrUpdateRequest request) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new PlanNotFoundedException("식별 번호가 " + userId + "에 해당되는 사용자가 없습니다.")
+                () -> new UserNotFoundedException("식별 번호가 " + userId + "에 해당되는 사용자가 없습니다.")
         );
 
         planValidationService.validatePlanSaveDate(request);
@@ -85,6 +85,44 @@ public class PlanService {
         List<PlanWorkout> newPlanWorkouts = getPlanWorkouts(request, plan);
 
         planWorkoutRepository.saveAll(newPlanWorkouts);
+    }
+
+    @Transactional
+    public void check(Long userId, Long planId, PlanCheckAndNoteRequest request) {
+        Plan plan = planRepository.findWithWriterById(planId).orElseThrow(
+                () -> new PlanNotFoundedException("식별 번호가 " + planId + "에 해당되는 계획이 없습니다.")
+        );
+
+        planValidationService.validateOwnerOfPlan(userId, plan);
+
+        List<PlanWorkoutCheckRequest> planWorkoutChecks = request.getWorkouts();
+
+        Map<Integer, PlanWorkout> planWorkoutByStep = planRepository.findWithWorkoutsById(planId)
+                .orElseThrow(PlanWorkoutNotFoundedException::new)
+                .getPlanWorkouts()
+                .stream()
+                .collect(Collectors.toMap(PlanWorkout::getStepOfWorkout, Function.identity(), (key1, key2) -> key1));
+
+        for (PlanWorkoutCheckRequest planWorkoutCheck : planWorkoutChecks) {
+            int step = planWorkoutCheck.getStep();
+            if (planWorkoutByStep.containsKey(step)) {
+                PlanWorkout planWorkout = planWorkoutByStep.get(step);
+                planWorkout.updateStatus(planWorkoutCheck.getDone());
+            }
+        }
+
+        plan.updateNote(request.getNote());
+    }
+
+    @Transactional
+    public void delete(Long userId, Long planId) {
+        Plan plan = planRepository.findWithWriterById(planId).orElseThrow(
+                () -> new PlanNotFoundedException("식별 번호가 " + planId + "에 해당되는 계획이 없습니다.")
+        );
+
+        planValidationService.validateOwnerOfPlan(userId, plan);
+
+        planRepository.delete(plan);
     }
 
     private List<PlanWorkout> getPlanWorkouts(
