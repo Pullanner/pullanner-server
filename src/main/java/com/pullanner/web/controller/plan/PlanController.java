@@ -1,8 +1,10 @@
 package com.pullanner.web.controller.plan;
 
 import com.pullanner.exception.plan.*;
+import com.pullanner.exception.user.UserNotFoundedException;
 import com.pullanner.web.ApiResponseCode;
 import com.pullanner.web.ApiResponseMessage;
+import com.pullanner.web.controller.plan.dto.PlanCheckAndNoteRequest;
 import com.pullanner.web.controller.plan.dto.PlanResponse;
 import com.pullanner.web.controller.plan.dto.PlanSaveOrUpdateRequest;
 import com.pullanner.web.service.plan.PlanService;
@@ -68,6 +70,29 @@ public class PlanController {
         return getResponseEntity(ApiResponseCode.PLAN_UPDATED);
     }
 
+    @Operation(summary = "철봉 운동 계획 달성 체크 및 노트 추가", description = "사용자가 철봉 운동 계획의 달성 여부를 체크하고 노트를 추가할 수 있는 기능입니다.")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
+    @PatchMapping("/api/plans/{id}/check")
+    public ResponseEntity<ApiResponseMessage> check(
+            @AuthenticationPrincipal Long userId,
+            @PathVariable("id") @Parameter(name = "Plan id", description = "수정할 철봉 운동 계획의 고유 아이디 값", example = "1") Long planId,
+            @Valid @RequestBody PlanCheckAndNoteRequest request
+    ) {
+        planService.check(userId, planId, request);
+        return getResponseEntity(ApiResponseCode.PLAN_CHECKED);
+    }
+
+    @Operation(summary = "철봉 운동 계획 삭제", description = "사용자가 자신의 철봉 운동 계획을 삭제할 수 있는 기능입니다.")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
+    @DeleteMapping("/api/plans/{id}")
+    public ResponseEntity<ApiResponseMessage> delete(
+            @AuthenticationPrincipal Long userId,
+            @PathVariable("id") @Parameter(name = "Plan id", description = "삭제할 철봉 운동 계획의 고유 아이디 값", example = "1") Long planId
+    ) {
+        planService.delete(userId, planId);
+        return getResponseEntity(ApiResponseCode.PLAN_DELETED);
+    }
+
     @ExceptionHandler(PlanSaveDateException.class)
     public ResponseEntity<ApiResponseMessage> handlePlanSaveDateTimeException(PlanSaveDateException e) {
         log.error("", e);
@@ -84,6 +109,12 @@ public class PlanController {
     public ResponseEntity<ApiResponseMessage> handlePlanUpdateNoAuthorityException(PlanUpdateNoAuthorityException e) {
         log.error("", e);
         return getResponseEntity(ApiResponseCode.PLAN_UPDATE_NO_AUTHORITY);
+    }
+
+    @ExceptionHandler(UserNotFoundedException.class)
+    public ResponseEntity<ApiResponseMessage> handleUserNotFoundedException(UserNotFoundedException e) {
+        log.error("", e);
+        return getResponseEntity(ApiResponseCode.USER_NOT_FOUND);
     }
 
     @ExceptionHandler(PlanNotFoundedException.class)

@@ -23,6 +23,12 @@ import org.hibernate.annotations.OnDeleteAction;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @NamedEntityGraphs({
         @NamedEntityGraph(
+                name = "PlanWithWriter",
+                attributeNodes = {
+                        @NamedAttributeNode(value = "writer", subgraph = "writer")
+                }
+        ),
+        @NamedEntityGraph(
                 name = "PlanWithWriterAndWorkouts",
                 attributeNodes = {
                         @NamedAttributeNode(value = "writer", subgraph = "writer"),
@@ -103,7 +109,7 @@ public class Plan extends BaseTimeEntity {
         List<PlanWorkout> workouts = getPlanWorkouts();
         return (int) workouts.stream()
                 .filter(PlanWorkout::getDone)
-                .count() / workouts.size();
+                .count() * 100 / workouts.size();
     }
 
     public int getMainWorkoutStep() {
@@ -123,5 +129,9 @@ public class Plan extends BaseTimeEntity {
         }
 
         return maxWorkoutStep;
+    }
+
+    public void updateNote(String note) {
+        this.note = note;
     }
 }
