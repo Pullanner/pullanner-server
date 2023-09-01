@@ -32,6 +32,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final String[][] excludePathAndMethod = {
             {"/login", "GET"}, {"/oauth2", "GET"}, {"/api/tokens", "POST"}, {"/api/tokens", "DELETE"},
             {"/api/articles", "GET"}, {"/api/swagger-ui", "GET"}, {"/api/docs", "GET"}
+            //, {"/api/plans", "POST"}, {"/api/plans", "PATCH"}, {"/api/plans", "GET"}
     };
 
     @Override

@@ -1,6 +1,7 @@
 package com.pullanner.web.controller.user;
 
 import com.pullanner.exception.user.ProfileImageUploadException;
+import com.pullanner.exception.user.UserNotFoundedException;
 import com.pullanner.web.controller.user.dto.UserResponse;
 import com.pullanner.web.controller.user.dto.UserNicknameUpdateRequest;
 import com.pullanner.exception.user.InvalidMailAuthorizationCodeException;
@@ -20,6 +21,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import static com.pullanner.web.ApiUtil.getResponseEntity;
 
+@Slf4j
+@RequiredArgsConstructor
 @Tag(name = "User", description = "User API")
 @ApiResponses(
     {
@@ -35,7 +39,6 @@ import static com.pullanner.web.ApiUtil.getResponseEntity;
         @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
     }
 )
-@RequiredArgsConstructor
 @RestController
 public class UserController {
 
@@ -96,19 +99,19 @@ public class UserController {
 
     @ExceptionHandler(InvalidMailAuthorizationCodeException.class)
     public ResponseEntity<ApiResponseMessage> handleInvalidMailAuthorizationCodeException(InvalidMailAuthorizationCodeException e) {
-        e.printStackTrace();
+        log.error("", e);
         return getResponseEntity(ApiResponseCode.USER_INVALID_MAIL_AUTHORIZATION_CODE);
     }
 
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<ApiResponseMessage> handleUserNotFoundException(IllegalStateException e) {
-        e.printStackTrace();
+    @ExceptionHandler(UserNotFoundedException.class)
+    public ResponseEntity<ApiResponseMessage> handleUserNotFoundedException(UserNotFoundedException e) {
+        log.error("", e);
         return getResponseEntity(ApiResponseCode.USER_NOT_FOUND);
     }
 
     @ExceptionHandler(ProfileImageUploadException.class)
     public ResponseEntity<ApiResponseMessage> handleProfileImageUploadException(ProfileImageUploadException e) {
-        e.printStackTrace();
+        log.error("", e);
         return getResponseEntity(ApiResponseCode.USER_PROFILE_IMAGE_UPLOAD_FAIL);
     }
 }

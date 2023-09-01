@@ -6,6 +6,7 @@ import com.pullanner.domain.user.UserWorkout;
 import com.pullanner.domain.user.UserWorkoutRepository;
 import com.pullanner.domain.workout.Workout;
 import com.pullanner.domain.workout.WorkoutRepository;
+import com.pullanner.exception.user.UserNotFoundedException;
 import com.pullanner.web.controller.user.dto.UserWorkoutResponse;
 import com.pullanner.web.controller.user.dto.UserWorkoutSaveOrUpdateRequest;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class UserWorkoutService {
     @Transactional(readOnly = true)
     public UserWorkoutResponse findByUserId(Long userId) {
         User user = userRepository.findWithWorkoutsById(userId).orElseThrow(
-                () -> new IllegalStateException("식별 번호가 " + userId + "에 해당되는 사용자가 없습니다.")
+                () -> new UserNotFoundedException("식별 번호가 " + userId + "에 해당되는 사용자가 없습니다.")
         );
 
         return UserWorkoutResponse.from(user);
@@ -34,7 +35,7 @@ public class UserWorkoutService {
     @Transactional
     public void save(Long userId, UserWorkoutSaveOrUpdateRequest userWorkoutInfo) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalStateException("식별 번호가 " + userId + "에 해당되는 사용자가 없습니다.")
+                () -> new UserNotFoundedException("식별 번호가 " + userId + "에 해당되는 사용자가 없습니다.")
         );
 
         List<UserWorkout> userWorkouts = getUserWorkouts(userWorkoutInfo, user);
@@ -63,7 +64,7 @@ public class UserWorkoutService {
     @Transactional
     public void update(Long userId, UserWorkoutSaveOrUpdateRequest userWorkoutInfo) {
         User user = userRepository.findWithWorkoutsById(userId).orElseThrow(
-                () -> new IllegalStateException("식별 번호가 " + userId + "에 해당되는 사용자가 없습니다.")
+                () -> new UserNotFoundedException("식별 번호가 " + userId + "에 해당되는 사용자가 없습니다.")
         );
 
         userWorkoutRepository.deleteAllInBatch(user.getUserWorkouts());

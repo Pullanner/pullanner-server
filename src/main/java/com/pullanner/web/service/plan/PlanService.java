@@ -7,8 +7,11 @@ import com.pullanner.domain.plan.PlanWorkoutRepository;
 import com.pullanner.domain.user.User;
 import com.pullanner.domain.user.UserRepository;
 import com.pullanner.domain.workout.WorkoutRepository;
+import com.pullanner.exception.plan.PlanNotFoundedException;
+import com.pullanner.web.controller.plan.dto.PlanResponse;
 import com.pullanner.web.controller.plan.dto.PlanSaveOrUpdateRequest;
 import com.pullanner.web.controller.plan.dto.PlanWorkoutRequest;
+import com.pullanner.web.controller.plan.dto.PlanWorkoutResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,10 +31,23 @@ public class PlanService {
     private final WorkoutRepository workoutRepository;
     private final PlanWorkoutRepository planWorkoutRepository;
 
+    @Transactional(readOnly = true)
+    public PlanResponse find(Long planId) {
+        Plan plan = planRepository.findWithWorkoutsById(planId).orElseThrow(
+                () -> new PlanNotFoundedException("식별 번호가 " + planId + "에 해당되는 계획이 없습니다.")
+        );
+
+        List<PlanWorkoutResponse> planWorkoutResponses = plan.getPlanWorkoutResponses();
+        int progress = plan.getProgress();
+        int mainWorkoutStep = plan.getMainWorkoutStep();
+
+        return PlanResponse.of(plan, planWorkoutResponses, progress, mainWorkoutStep);
+    }
+
     @Transactional
     public void save(Long userId, PlanSaveOrUpdateRequest request) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalStateException("식별 번호가 " + userId + "에 해당되는 사용자가 없습니다.")
+                () -> new PlanNotFoundedException("식별 번호가 " + userId + "에 해당되는 사용자가 없습니다.")
         );
 
         planValidationService.validatePlanSaveDate(request);
@@ -56,7 +72,7 @@ public class PlanService {
         planValidationService.validatePlanUpdateDateTime(request);
 
         Plan plan = planRepository.findWithWriterAndWorkoutsById(planId).orElseThrow(
-                () -> new IllegalStateException("식별 번호가 " + planId + "에 해당되는 계획이 없습니다.")
+                () -> new PlanNotFoundedException("식별 번호가 " + planId + "에 해당되는 계획이 없습니다.")
         );
 
         planValidationService.validateOwnerOfPlan(userId, plan);

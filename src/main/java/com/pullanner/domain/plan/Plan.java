@@ -2,12 +2,15 @@ package com.pullanner.domain.plan;
 
 import com.pullanner.domain.BaseTimeEntity;
 import com.pullanner.domain.user.User;
+import com.pullanner.exception.plan.PlanWorkoutNotFoundedException;
 import com.pullanner.web.controller.plan.dto.PlanSaveOrUpdateRequest;
+import com.pullanner.web.controller.plan.dto.PlanWorkoutResponse;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -18,13 +21,27 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@NamedEntityGraph(
-        name = "PlanWithWriterAndWorkouts",
-        attributeNodes = {
-                @NamedAttributeNode(value = "writer", subgraph = "writer"),
-                @NamedAttributeNode(value = "planWorkouts", subgraph = "planWorkouts")
-        }
-)
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = "PlanWithWriterAndWorkouts",
+                attributeNodes = {
+                        @NamedAttributeNode(value = "writer", subgraph = "writer"),
+                        @NamedAttributeNode(value = "planWorkouts", subgraph = "planWorkouts")
+                }
+        ),
+        @NamedEntityGraph(
+                name = "PlanWithWorkouts",
+                attributeNodes = {
+                        @NamedAttributeNode(value = "planWorkouts", subgraph = "planWorkouts")
+                },
+                subgraphs = @NamedSubgraph(
+                        name = "planWorkouts",
+                        attributeNodes = {
+                                @NamedAttributeNode("workout")
+                        }
+                )
+        )
+})
 @Table(name = "plan")
 @Entity
 public class Plan extends BaseTimeEntity {
@@ -52,6 +69,7 @@ public class Plan extends BaseTimeEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User writer;
 
+    @Getter
     @OneToMany(mappedBy = "plan")
     private List<PlanWorkout> planWorkouts = new ArrayList<>();
 
@@ -72,5 +90,38 @@ public class Plan extends BaseTimeEntity {
     public void updatePlanInformation(PlanSaveOrUpdateRequest request) {
         this.name = request.getPlanName();
         this.planType = request.getPlanType();
+    }
+
+    public List<PlanWorkoutResponse> getPlanWorkoutResponses() {
+        return getPlanWorkouts()
+                .stream()
+                .map(PlanWorkoutResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    public int getProgress() {
+        List<PlanWorkout> workouts = getPlanWorkouts();
+        return (int) workouts.stream()
+                .filter(PlanWorkout::getDone)
+                .count() / workouts.size();
+    }
+
+    public int getMainWorkoutStep() {
+        List<PlanWorkout> workouts = getPlanWorkouts();
+
+        int prevCount = 0, maxWorkoutStep = 0;
+        for (PlanWorkout workout : workouts) {
+            int totalCount = workout.getCountPerSet() * workout.getSetCount();
+            if (prevCount < totalCount) {
+                prevCount = totalCount;
+                maxWorkoutStep = workout.getWorkout().getId();
+            }
+        }
+
+        if (maxWorkoutStep == 0) {
+            throw new PlanWorkoutNotFoundedException();
+        }
+
+        return maxWorkoutStep;
     }
 }

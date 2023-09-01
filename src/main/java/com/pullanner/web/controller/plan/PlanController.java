@@ -1,10 +1,9 @@
 package com.pullanner.web.controller.plan;
 
-import com.pullanner.exception.plan.PlanSaveDateException;
-import com.pullanner.exception.plan.PlanUpdateDateTimeException;
-import com.pullanner.exception.plan.PlanUpdateNoAuthorityException;
+import com.pullanner.exception.plan.*;
 import com.pullanner.web.ApiResponseCode;
 import com.pullanner.web.ApiResponseMessage;
+import com.pullanner.web.controller.plan.dto.PlanResponse;
 import com.pullanner.web.controller.plan.dto.PlanSaveOrUpdateRequest;
 import com.pullanner.web.service.plan.PlanService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,12 +15,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import static com.pullanner.web.ApiUtil.getResponseEntity;
 
+@Slf4j
+@RequiredArgsConstructor
 @Tag(name = "Plan", description = "Plan API")
 @ApiResponses(
         {
@@ -30,11 +32,18 @@ import static com.pullanner.web.ApiUtil.getResponseEntity;
                 @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
         }
 )
-@RequiredArgsConstructor
 @RestController
 public class PlanController {
 
     private final PlanService planService;
+    @Operation(summary = "철봉 운동 계획 단건 조회", description = "사용자가 등록한 철봉 운동 계획을 조회할 수 있는 기능입니다.")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = PlanResponse.class)))
+    @GetMapping("/api/plans/{id}")
+    public PlanResponse find(
+            @PathVariable("id") @Parameter(name = "Plan id", description = "조회할 철봉 운동 계획의 고유 아이디 값", example = "1") Long planId
+    ) {
+        return planService.find(planId);
+    }
 
     @Operation(summary = "철봉 운동 계획 생성", description = "사용자가 철봉 운동 계획을 등록할 수 있는 기능입니다.")
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
@@ -43,7 +52,7 @@ public class PlanController {
             @AuthenticationPrincipal Long userId,
             @Valid @RequestBody PlanSaveOrUpdateRequest request
             ) {
-        planService.save(1L, request);
+        planService.save(userId, request);
         return getResponseEntity(ApiResponseCode.PLAN_SAVED);
     }
 
@@ -55,25 +64,37 @@ public class PlanController {
             @PathVariable("id") @Parameter(name = "Plan id", description = "수정할 철봉 운동 계획의 고유 아이디 값", example = "1") Long planId,
             @Valid @RequestBody PlanSaveOrUpdateRequest request
     ) {
-        planService.update(1L, planId, request);
+        planService.update(userId, planId, request);
         return getResponseEntity(ApiResponseCode.PLAN_UPDATED);
     }
 
     @ExceptionHandler(PlanSaveDateException.class)
     public ResponseEntity<ApiResponseMessage> handlePlanSaveDateTimeException(PlanSaveDateException e) {
-        e.printStackTrace();
+        log.error("", e);
         return getResponseEntity(ApiResponseCode.PLAN_SAVE_DATE_INVALID);
     }
 
     @ExceptionHandler(PlanUpdateDateTimeException.class)
     public ResponseEntity<ApiResponseMessage> handlePlanUpdateDateTimeException(PlanUpdateDateTimeException e) {
-        e.printStackTrace();
+        log.error("", e);
         return getResponseEntity(ApiResponseCode.PLAN_UPDATE_DATETIME_INVALID);
     }
 
     @ExceptionHandler(PlanUpdateNoAuthorityException.class)
     public ResponseEntity<ApiResponseMessage> handlePlanUpdateNoAuthorityException(PlanUpdateNoAuthorityException e) {
-        e.printStackTrace();
+        log.error("", e);
         return getResponseEntity(ApiResponseCode.PLAN_UPDATE_NO_AUTHORITY);
+    }
+
+    @ExceptionHandler(PlanNotFoundedException.class)
+    public ResponseEntity<ApiResponseMessage> handlePlanNotFoundedException(PlanNotFoundedException e) {
+        log.error("", e);
+        return getResponseEntity(ApiResponseCode.PLAN_NOT_FOUNDED);
+    }
+
+    @ExceptionHandler(PlanWorkoutNotFoundedException.class)
+    public ResponseEntity<ApiResponseMessage> handlePlanWorkoutNotFoundedException(PlanWorkoutNotFoundedException e) {
+        log.error("", e);
+        return getResponseEntity(ApiResponseCode.PLAN_WORKOUT_NOT_FOUNDED);
     }
 }
