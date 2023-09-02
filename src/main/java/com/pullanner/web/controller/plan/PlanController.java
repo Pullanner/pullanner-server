@@ -58,7 +58,7 @@ public class PlanController {
             @RequestParam @Parameter(name = "년도", description = "철봉 운동 계획 목록 조회 시 기준 년도", example = "2023") Integer year,
             @RequestParam @Parameter(name = "월", description = "철봉 운동 계획 목록 조회 시 기준 월", example = "8") Integer month
     ) {
-        return planService.findByMonth(userId, year, month);
+        return planService.findByMonth(1L, year, month);
     }
 
     @Operation(summary = "철봉 운동 계획 생성", description = "사용자가 철봉 운동 계획을 등록할 수 있는 기능입니다.")
