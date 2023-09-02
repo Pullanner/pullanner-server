@@ -10,5 +10,4 @@ public class PlanWorkoutRequest {
     private int step;
     private int count;
     private int set;
-    private int total;
 }

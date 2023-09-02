@@ -29,7 +29,7 @@ public enum ApiResponseCode {
     PLAN_SAVE_DATE_INVALID("P02", 400, "오늘 이후의 날짜로만 계획을 등록할 수 있습니다."),
     PLAN_UPDATED("P03", 200, "철봉 운동 계획이 수정되었습니다."),
     PLAN_UPDATE_DATETIME_INVALID("P04", 400, "현재 시간 보다 이전 시간으로는 계획을 수정할 수 없습니다."),
-    PLAN_UPDATE_NO_AUTHORITY("P05", 200, "철봉 운동 계획을 수정할 권한이 없습니다."),
+    PLAN_ACCESS_NO_AUTHORITY("P05", 200, "철봉 운동 계획을 수정할 권한이 없습니다."),
     PLAN_NOT_FOUNDED("P06", 404, "등록된 철봉 운동 계획이 없습니다."),
     PLAN_WORKOUT_NOT_FOUNDED("P07", 404, "해당 철봉 운동 계획에 등록된 활동이 없습니다."),
     PLAN_CHECKED("P08", 200, "해당 철봉 운동 계획의 달성 여부를 체크했습니다."),

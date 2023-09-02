@@ -7,6 +7,7 @@ import com.pullanner.domain.plan.PlanWorkoutRepository;
 import com.pullanner.domain.user.User;
 import com.pullanner.domain.user.UserRepository;
 import com.pullanner.domain.workout.WorkoutRepository;
+import com.pullanner.exception.plan.PlanAccessNoAuthorityException;
 import com.pullanner.exception.plan.PlanNotFoundedException;
 import com.pullanner.exception.plan.PlanWorkoutNotFoundedException;
 import com.pullanner.exception.user.UserNotFoundedException;
@@ -32,8 +33,11 @@ public class PlanService {
     private final PlanWorkoutRepository planWorkoutRepository;
 
     @Transactional(readOnly = true)
-    public PlanResponse find(Long planId) {
-        Plan plan = planRepository.findWithWorkoutsById(planId).orElseThrow(
+    public PlanResponse find(Long userId, Long planId) {
+        // validate access authority of plan
+        planRepository.findByPlanIdAndUserId(userId, planId).orElseThrow(PlanAccessNoAuthorityException::new);
+
+        Plan plan = planRepository.findWithPlanWorkoutsAndWorkoutsById(planId).orElseThrow(
                 () -> new PlanNotFoundedException("식별 번호가 " + planId + "에 해당되는 계획이 없습니다.")
         );
 
@@ -44,13 +48,20 @@ public class PlanService {
         return PlanResponse.of(plan, planWorkoutResponses, progress, mainWorkoutStep);
     }
 
+    @Transactional(readOnly = true)
+    public PlanResponsesByMonth findByMonth(Long userId, Integer year, Integer month) {
+
+        return null;
+    }
+
     @Transactional
     public void save(Long userId, PlanSaveOrUpdateRequest request) {
+        // validate date of plan to save
+        planValidationService.validatePlanSaveDate(request);
+
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundedException("식별 번호가 " + userId + "에 해당되는 사용자가 없습니다.")
         );
-
-        planValidationService.validatePlanSaveDate(request);
 
         Plan plan = Plan.builder()
                 .writer(user)
@@ -69,13 +80,15 @@ public class PlanService {
 
     @Transactional
     public void update(Long userId, Long planId, PlanSaveOrUpdateRequest request) {
+        // validate access authority of plan
+        planRepository.findByPlanIdAndUserId(userId, planId).orElseThrow(PlanAccessNoAuthorityException::new);
+
+        // validate datetime of plan to update
         planValidationService.validatePlanUpdateDateTime(request);
 
-        Plan plan = planRepository.findWithWriterAndWorkoutsById(planId).orElseThrow(
+        Plan plan = planRepository.findWithPlanWorkoutsById(planId).orElseThrow(
                 () -> new PlanNotFoundedException("식별 번호가 " + planId + "에 해당되는 계획이 없습니다.")
         );
-
-        planValidationService.validateOwnerOfPlan(userId, plan);
 
         List<PlanWorkout> planWorkouts = plan.getPlanWorkouts();
         planWorkoutRepository.deleteAllInBatch(planWorkouts);
@@ -89,15 +102,12 @@ public class PlanService {
 
     @Transactional
     public void check(Long userId, Long planId, PlanCheckAndNoteRequest request) {
-        Plan plan = planRepository.findWithWriterById(planId).orElseThrow(
-                () -> new PlanNotFoundedException("식별 번호가 " + planId + "에 해당되는 계획이 없습니다.")
-        );
-
-        planValidationService.validateOwnerOfPlan(userId, plan);
+        // validate access authority of plan
+        Plan plan = planRepository.findByPlanIdAndUserId(userId, planId).orElseThrow(PlanAccessNoAuthorityException::new);
 
         List<PlanWorkoutCheckRequest> planWorkoutChecks = request.getWorkouts();
 
-        Map<Integer, PlanWorkout> planWorkoutByStep = planRepository.findWithWorkoutsById(planId)
+        Map<Integer, PlanWorkout> planWorkoutByStep = planRepository.findWithPlanWorkoutsAndWorkoutsById(planId)
                 .orElseThrow(PlanWorkoutNotFoundedException::new)
                 .getPlanWorkouts()
                 .stream()
@@ -116,11 +126,8 @@ public class PlanService {
 
     @Transactional
     public void delete(Long userId, Long planId) {
-        Plan plan = planRepository.findWithWriterById(planId).orElseThrow(
-                () -> new PlanNotFoundedException("식별 번호가 " + planId + "에 해당되는 계획이 없습니다.")
-        );
-
-        planValidationService.validateOwnerOfPlan(userId, plan);
+        // validate access authority of plan
+        Plan plan = planRepository.findByPlanIdAndUserId(userId, planId).orElseThrow(PlanAccessNoAuthorityException::new);
 
         planRepository.delete(plan);
     }

@@ -59,7 +59,7 @@ CREATE TABLE article
 CREATE TABLE plan
 (
     plan_id       BIGINT AUTO_INCREMENT,
-    plan_user_id       BIGINT       NOT NULL,
+    plan_user_id  BIGINT       NOT NULL,
     plan_type     VARCHAR(255) NOT NULL COMMENT 'strength | master',
     name          VARCHAR(20) NOT NULL,
     note          VARCHAR(300) NULL,

@@ -6,6 +6,7 @@ import com.pullanner.web.ApiResponseCode;
 import com.pullanner.web.ApiResponseMessage;
 import com.pullanner.web.controller.plan.dto.PlanCheckAndNoteRequest;
 import com.pullanner.web.controller.plan.dto.PlanResponse;
+import com.pullanner.web.controller.plan.dto.PlanResponsesByMonth;
 import com.pullanner.web.controller.plan.dto.PlanSaveOrUpdateRequest;
 import com.pullanner.web.service.plan.PlanService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,13 +39,26 @@ import static com.pullanner.web.ApiUtil.getResponseEntity;
 public class PlanController {
 
     private final PlanService planService;
+
     @Operation(summary = "철봉 운동 계획 단건 조회", description = "사용자가 등록한 철봉 운동 계획을 조회할 수 있는 기능입니다.")
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = PlanResponse.class)))
     @GetMapping("/api/plans/{id}")
     public PlanResponse find(
+            @AuthenticationPrincipal Long userId,
             @PathVariable("id") @Parameter(name = "Plan id", description = "조회할 철봉 운동 계획의 고유 아이디 값", example = "1") Long planId
     ) {
-        return planService.find(planId);
+        return planService.find(1L, planId);
+    }
+
+    @Operation(summary = "월별 철봉 운동 계획 목록 조회", description = "사용자가 등록한 철봉 운동 계획을 월별로 조회할 수 있는 기능입니다.")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = PlanResponsesByMonth.class)))
+    @GetMapping("/api/plans")
+    public PlanResponsesByMonth findByMonth(
+            @AuthenticationPrincipal Long userId,
+            @RequestParam @Parameter(name = "년도", description = "철봉 운동 계획 목록 조회 시 기준 년도", example = "2023") Integer year,
+            @RequestParam @Parameter(name = "월", description = "철봉 운동 계획 목록 조회 시 기준 월", example = "8") Integer month
+    ) {
+        return planService.findByMonth(userId, year, month);
     }
 
     @Operation(summary = "철봉 운동 계획 생성", description = "사용자가 철봉 운동 계획을 등록할 수 있는 기능입니다.")
@@ -54,7 +68,7 @@ public class PlanController {
             @AuthenticationPrincipal Long userId,
             @Valid @RequestBody PlanSaveOrUpdateRequest request
             ) {
-        planService.save(userId, request);
+        planService.save(1L, request);
         return getResponseEntity(ApiResponseCode.PLAN_SAVED);
     }
 
@@ -66,7 +80,7 @@ public class PlanController {
             @PathVariable("id") @Parameter(name = "Plan id", description = "수정할 철봉 운동 계획의 고유 아이디 값", example = "1") Long planId,
             @Valid @RequestBody PlanSaveOrUpdateRequest request
     ) {
-        planService.update(userId, planId, request);
+        planService.update(1L, planId, request);
         return getResponseEntity(ApiResponseCode.PLAN_UPDATED);
     }
 
@@ -78,7 +92,7 @@ public class PlanController {
             @PathVariable("id") @Parameter(name = "Plan id", description = "수정할 철봉 운동 계획의 고유 아이디 값", example = "1") Long planId,
             @Valid @RequestBody PlanCheckAndNoteRequest request
     ) {
-        planService.check(userId, planId, request);
+        planService.check(1L, planId, request);
         return getResponseEntity(ApiResponseCode.PLAN_CHECKED);
     }
 
@@ -89,7 +103,7 @@ public class PlanController {
             @AuthenticationPrincipal Long userId,
             @PathVariable("id") @Parameter(name = "Plan id", description = "삭제할 철봉 운동 계획의 고유 아이디 값", example = "1") Long planId
     ) {
-        planService.delete(userId, planId);
+        planService.delete(1L, planId);
         return getResponseEntity(ApiResponseCode.PLAN_DELETED);
     }
 
@@ -105,10 +119,10 @@ public class PlanController {
         return getResponseEntity(ApiResponseCode.PLAN_UPDATE_DATETIME_INVALID);
     }
 
-    @ExceptionHandler(PlanUpdateNoAuthorityException.class)
-    public ResponseEntity<ApiResponseMessage> handlePlanUpdateNoAuthorityException(PlanUpdateNoAuthorityException e) {
+    @ExceptionHandler(PlanAccessNoAuthorityException.class)
+    public ResponseEntity<ApiResponseMessage> handlePlanUpdateNoAuthorityException(PlanAccessNoAuthorityException e) {
         log.error("", e);
-        return getResponseEntity(ApiResponseCode.PLAN_UPDATE_NO_AUTHORITY);
+        return getResponseEntity(ApiResponseCode.PLAN_ACCESS_NO_AUTHORITY);
     }
 
     @ExceptionHandler(UserNotFoundedException.class)

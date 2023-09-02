@@ -23,25 +23,18 @@ import org.hibernate.annotations.OnDeleteAction;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @NamedEntityGraphs({
         @NamedEntityGraph(
-                name = "PlanWithWriter",
+                name = "PlanWithPlanWorkouts",
                 attributeNodes = {
-                        @NamedAttributeNode(value = "writer", subgraph = "writer")
-                }
-        ),
-        @NamedEntityGraph(
-                name = "PlanWithWriterAndWorkouts",
-                attributeNodes = {
-                        @NamedAttributeNode(value = "writer", subgraph = "writer"),
                         @NamedAttributeNode(value = "planWorkouts", subgraph = "planWorkouts")
                 }
         ),
         @NamedEntityGraph(
-                name = "PlanWithWorkouts",
+                name = "PlanWithPlanWorkoutsAndWorkouts",
                 attributeNodes = {
-                        @NamedAttributeNode(value = "planWorkouts", subgraph = "planWorkouts")
+                        @NamedAttributeNode(value = "planWorkouts", subgraph = "workouts")
                 },
                 subgraphs = @NamedSubgraph(
-                        name = "planWorkouts",
+                        name = "workouts",
                         attributeNodes = {
                                 @NamedAttributeNode("workout")
                         }
