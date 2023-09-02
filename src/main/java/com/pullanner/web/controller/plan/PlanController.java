@@ -47,7 +47,7 @@ public class PlanController {
             @AuthenticationPrincipal Long userId,
             @PathVariable("id") @Parameter(name = "Plan id", description = "조회할 철봉 운동 계획의 고유 아이디 값", example = "1") Long planId
     ) {
-        return planService.find(1L, planId);
+        return planService.find(userId, planId);
     }
 
     @Operation(summary = "월별 철봉 운동 계획 목록 조회", description = "사용자가 등록한 철봉 운동 계획을 월별로 조회할 수 있는 기능입니다.")
@@ -58,7 +58,7 @@ public class PlanController {
             @RequestParam @Parameter(name = "년도", description = "철봉 운동 계획 목록 조회 시 기준 년도", example = "2023") Integer year,
             @RequestParam @Parameter(name = "월", description = "철봉 운동 계획 목록 조회 시 기준 월", example = "8") Integer month
     ) {
-        return planService.findByMonth(1L, year, month);
+        return planService.findByMonth(userId, year, month);
     }
 
     @Operation(summary = "철봉 운동 계획 생성", description = "사용자가 철봉 운동 계획을 등록할 수 있는 기능입니다.")
@@ -68,7 +68,7 @@ public class PlanController {
             @AuthenticationPrincipal Long userId,
             @Valid @RequestBody PlanSaveOrUpdateRequest request
             ) {
-        planService.save(1L, request);
+        planService.save(userId, request);
         return getResponseEntity(ApiResponseCode.PLAN_SAVED);
     }
 
@@ -80,7 +80,7 @@ public class PlanController {
             @PathVariable("id") @Parameter(name = "Plan id", description = "수정할 철봉 운동 계획의 고유 아이디 값", example = "1") Long planId,
             @Valid @RequestBody PlanSaveOrUpdateRequest request
     ) {
-        planService.update(1L, planId, request);
+        planService.update(userId, planId, request);
         return getResponseEntity(ApiResponseCode.PLAN_UPDATED);
     }
 
@@ -92,7 +92,7 @@ public class PlanController {
             @PathVariable("id") @Parameter(name = "Plan id", description = "수정할 철봉 운동 계획의 고유 아이디 값", example = "1") Long planId,
             @Valid @RequestBody PlanCheckAndNoteRequest request
     ) {
-        planService.check(1L, planId, request);
+        planService.check(userId, planId, request);
         return getResponseEntity(ApiResponseCode.PLAN_CHECKED);
     }
 
@@ -103,7 +103,7 @@ public class PlanController {
             @AuthenticationPrincipal Long userId,
             @PathVariable("id") @Parameter(name = "Plan id", description = "삭제할 철봉 운동 계획의 고유 아이디 값", example = "1") Long planId
     ) {
-        planService.delete(1L, planId);
+        planService.delete(userId, planId);
         return getResponseEntity(ApiResponseCode.PLAN_DELETED);
     }
 
