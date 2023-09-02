@@ -48,6 +48,12 @@ public class PlanService {
         return PlanResponse.of(plan, planWorkoutResponses, progress, mainWorkoutStep);
     }
 
+    @Transactional(readOnly = true)
+    public PlanResponsesByMonth findByMonth(Long userId, Integer year, Integer month) {
+
+        return null;
+    }
+
     @Transactional
     public void save(Long userId, PlanSaveOrUpdateRequest request) {
         // validate date of plan to save

@@ -54,11 +54,11 @@ public class PlanController {
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = PlanResponsesByMonth.class)))
     @GetMapping("/api/plans")
     public PlanResponsesByMonth findByMonth(
+            @AuthenticationPrincipal Long userId,
             @RequestParam @Parameter(name = "년도", description = "철봉 운동 계획 목록 조회 시 기준 년도", example = "2023") Integer year,
             @RequestParam @Parameter(name = "월", description = "철봉 운동 계획 목록 조회 시 기준 월", example = "8") Integer month
     ) {
-
-        return null;
+        return planService.findByMonth(userId, year, month);
     }
 
     @Operation(summary = "철봉 운동 계획 생성", description = "사용자가 철봉 운동 계획을 등록할 수 있는 기능입니다.")
