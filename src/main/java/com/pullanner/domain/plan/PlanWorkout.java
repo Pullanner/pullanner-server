@@ -60,7 +60,7 @@ public class PlanWorkout extends BaseTimeEntity {
         this.done = done;
     }
 
-    public int getStepOfWorkout() {
+    public int getIdOfWorkout() {
         return workout.getId();
     }
 }

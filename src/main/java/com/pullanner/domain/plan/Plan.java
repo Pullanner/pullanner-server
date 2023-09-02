@@ -7,6 +7,7 @@ import com.pullanner.web.controller.plan.dto.PlanSaveOrUpdateRequest;
 import com.pullanner.web.controller.plan.dto.PlanWorkoutResponse;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,18 +28,6 @@ import org.hibernate.annotations.OnDeleteAction;
                 attributeNodes = {
                         @NamedAttributeNode(value = "planWorkouts", subgraph = "planWorkouts")
                 }
-        ),
-        @NamedEntityGraph(
-                name = "PlanWithPlanWorkoutsAndWorkouts",
-                attributeNodes = {
-                        @NamedAttributeNode(value = "planWorkouts", subgraph = "workouts")
-                },
-                subgraphs = @NamedSubgraph(
-                        name = "workouts",
-                        attributeNodes = {
-                                @NamedAttributeNode("workout")
-                        }
-                )
         )
 })
 @Table(name = "plan")
@@ -92,28 +81,24 @@ public class Plan extends BaseTimeEntity {
     }
 
     public List<PlanWorkoutResponse> getPlanWorkoutResponses() {
-        return getPlanWorkouts()
-                .stream()
+        return planWorkouts.stream()
                 .map(PlanWorkoutResponse::from)
                 .collect(Collectors.toList());
     }
 
     public int getProgress() {
-        List<PlanWorkout> workouts = getPlanWorkouts();
-        return (int) workouts.stream()
+        return (int) planWorkouts.stream()
                 .filter(PlanWorkout::getDone)
-                .count() * 100 / workouts.size();
+                .count() * 100 / planWorkouts.size();
     }
 
     public int getMainWorkoutStep() {
-        List<PlanWorkout> workouts = getPlanWorkouts();
-
         int prevCount = 0, maxWorkoutStep = 0;
-        for (PlanWorkout workout : workouts) {
+        for (PlanWorkout workout : planWorkouts) {
             int totalCount = workout.getCountPerSet() * workout.getSetCount();
             if (prevCount < totalCount) {
                 prevCount = totalCount;
-                maxWorkoutStep = workout.getWorkout().getId();
+                maxWorkoutStep = workout.getIdOfWorkout();
             }
         }
 
@@ -126,5 +111,9 @@ public class Plan extends BaseTimeEntity {
 
     public void updateNote(String note) {
         this.note = note;
+    }
+
+    public LocalDate getPlanDateValue() {
+        return planDate.toLocalDate();
     }
 }

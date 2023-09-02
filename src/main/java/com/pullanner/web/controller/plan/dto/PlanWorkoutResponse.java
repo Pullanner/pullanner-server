@@ -25,7 +25,7 @@ public class PlanWorkoutResponse {
                 .count(planWorkout.getCountPerSet())
                 .set(planWorkout.getSetCount())
                 .done(planWorkout.getDone())
-                .step(planWorkout.getWorkout().getId())
+                .step(planWorkout.getIdOfWorkout())
                 .build();
     }
 }

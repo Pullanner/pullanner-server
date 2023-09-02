@@ -16,8 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -37,21 +38,39 @@ public class PlanService {
         // validate access authority of plan
         planRepository.findByPlanIdAndUserId(userId, planId).orElseThrow(PlanAccessNoAuthorityException::new);
 
-        Plan plan = planRepository.findWithPlanWorkoutsAndWorkoutsById(planId).orElseThrow(
+        Plan plan = planRepository.findWithPlanWorkoutsById(planId).orElseThrow(
                 () -> new PlanNotFoundedException("식별 번호가 " + planId + "에 해당되는 계획이 없습니다.")
         );
 
-        List<PlanWorkoutResponse> planWorkoutResponses = plan.getPlanWorkoutResponses();
-        int progress = plan.getProgress();
-        int mainWorkoutStep = plan.getMainWorkoutStep();
-
-        return PlanResponse.of(plan, planWorkoutResponses, progress, mainWorkoutStep);
+        return getPlanResponse(plan);
     }
 
     @Transactional(readOnly = true)
     public PlanResponsesByMonth findByMonth(Long userId, Integer year, Integer month) {
+        LocalDateTime firstDateOfThisMonth = LocalDateTime.of(year, month, 1, 0, 0);
+        LocalDateTime lastDateOfThisMonth = LocalDateTime.of(year, month, firstDateOfThisMonth.getDayOfMonth(), 23, 59);
 
-        return null;
+        LocalDateTime startDate = firstDateOfThisMonth.minusDays(14);
+        LocalDateTime endDate = lastDateOfThisMonth.plusDays(14);
+
+        Map<LocalDate, List<PlanResponse>> planInformationByDate = new TreeMap<>();
+
+        List<Plan> plans = planRepository.findAllWithPlanWorkoutsForPeriodByUserId(startDate, endDate, userId);
+
+        for (Plan plan : plans) {
+            LocalDate date = plan.getPlanDateValue();
+
+            if (planInformationByDate.containsKey(date)) {
+                List<PlanResponse> planResponses = planInformationByDate.get(date);
+                planResponses.add(getPlanResponse(plan));
+            } else {
+                List<PlanResponse> planResponses = new ArrayList<>();
+                planResponses.add(getPlanResponse(plan));
+                planInformationByDate.put(date, planResponses);
+            }
+        }
+
+        return PlanResponsesByMonth.from(planInformationByDate);
     }
 
     @Transactional
@@ -72,7 +91,7 @@ public class PlanService {
 
         user.addPlan(plan);
 
-        List<PlanWorkout> planWorkouts = getPlanWorkouts(request, plan);
+        List<PlanWorkout> planWorkouts = getPlanWorkoutsForPlanSaveOrUpdate(request, plan);
 
         planRepository.save(plan);
         planWorkoutRepository.saveAll(planWorkouts);
@@ -95,7 +114,7 @@ public class PlanService {
 
         plan.updatePlanInformation(request);
 
-        List<PlanWorkout> newPlanWorkouts = getPlanWorkouts(request, plan);
+        List<PlanWorkout> newPlanWorkouts = getPlanWorkoutsForPlanSaveOrUpdate(request, plan);
 
         planWorkoutRepository.saveAll(newPlanWorkouts);
     }
@@ -107,11 +126,11 @@ public class PlanService {
 
         List<PlanWorkoutCheckRequest> planWorkoutChecks = request.getWorkouts();
 
-        Map<Integer, PlanWorkout> planWorkoutByStep = planRepository.findWithPlanWorkoutsAndWorkoutsById(planId)
+        Map<Integer, PlanWorkout> planWorkoutByStep = planRepository.findWithPlanWorkoutsById(planId)
                 .orElseThrow(PlanWorkoutNotFoundedException::new)
                 .getPlanWorkouts()
                 .stream()
-                .collect(Collectors.toMap(PlanWorkout::getStepOfWorkout, Function.identity(), (key1, key2) -> key1));
+                .collect(Collectors.toMap(PlanWorkout::getIdOfWorkout, Function.identity(), (key1, key2) -> key1));
 
         for (PlanWorkoutCheckRequest planWorkoutCheck : planWorkoutChecks) {
             int step = planWorkoutCheck.getStep();
@@ -132,7 +151,15 @@ public class PlanService {
         planRepository.delete(plan);
     }
 
-    private List<PlanWorkout> getPlanWorkouts(
+    private PlanResponse getPlanResponse(Plan plan) {
+        List<PlanWorkoutResponse> planWorkoutResponses = plan.getPlanWorkoutResponses();
+        int progress = plan.getProgress();
+        int mainWorkoutStep = plan.getMainWorkoutStep();
+
+        return PlanResponse.of(plan, planWorkoutResponses, progress, mainWorkoutStep);
+    }
+
+    private List<PlanWorkout> getPlanWorkoutsForPlanSaveOrUpdate(
             PlanSaveOrUpdateRequest request,
             Plan plan
     ) {
