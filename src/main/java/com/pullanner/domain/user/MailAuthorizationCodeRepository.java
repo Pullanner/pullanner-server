@@ -20,4 +20,8 @@ public class MailAuthorizationCodeRepository {
     public boolean validateCode(String email, Integer code) {
         return String.valueOf(code).equals(redisTemplate.opsForValue().get(email));
     }
+
+    public boolean isAlreadySent(String email) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey(email));
+    }
 }

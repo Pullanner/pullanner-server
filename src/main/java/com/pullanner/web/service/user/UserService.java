@@ -2,6 +2,7 @@ package com.pullanner.web.service.user;
 
 import static com.pullanner.web.ApiUtil.getResponseEntity;
 
+import com.pullanner.exception.user.AlreadySentAuthorizationCodeException;
 import com.pullanner.exception.user.UserNotFoundedException;
 import com.pullanner.web.controller.user.dto.UserResponse;
 import com.pullanner.web.controller.user.dto.UserNicknameUpdateRequest;
@@ -81,10 +82,15 @@ public class UserService {
         return UserResponse.from(user);
     }
 
-    // 메일 전송의 경우 Transactional 선언 X (Connection 리소스 절약)
     public void sendMail(Long userId) {
         User user = getUserById(userId);
-        SimpleMailMessage mailMessage = createMailMessage(user.getEmail());
+        String email = user.getEmail();
+
+        if (mailAuthorizationCodeRepository.isAlreadySent(email)) {
+            throw new AlreadySentAuthorizationCodeException();
+        }
+
+        SimpleMailMessage mailMessage = createMailMessage(email);
         javaMailSender.send(mailMessage);
     }
 
@@ -92,7 +98,8 @@ public class UserService {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setTo(email);
         simpleMailMessage.setSubject("[Pullanner] 회원 탈퇴 인증 코드 발송");
-        simpleMailMessage.setText("안녕하세요,\n\n귀하께서 요청하신 회원 탈퇴 처리를 위한 인증 코드를 다음과 같이 안내해드립니다.\n\n인증 코드 : " + createAuthorizationCode(email));
+        int authorizationCode = createAuthorizationCode(email);
+        simpleMailMessage.setText("안녕하세요,\n\n귀하께서 요청하신 회원 탈퇴 처리를 위한 인증 코드를 다음과 같이 안내해드립니다.\n\n인증 코드 : " + authorizationCode);
 
         return simpleMailMessage;
     }
