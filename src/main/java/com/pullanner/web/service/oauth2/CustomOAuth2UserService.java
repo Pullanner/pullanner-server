@@ -47,7 +47,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     private User saveOrUpdate(OAuthAttributes attributes) {
         User user = userRepository.findByEmailAndProvider(attributes.getEmail(), attributes.getProvider())
-            .orElse(attributes.toEntity());
+            .orElse(attributes.createNewUser());
 
         // user 의 식별자가 존재하지 않는 경우 insert
         // user 의 식별자가 존재하는 경우 select 후 data 변경 있으면 update, data 변경 없으면 종료

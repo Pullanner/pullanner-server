@@ -80,13 +80,14 @@ public class OAuthAttributes {
             .build();
     }
 
-    public User toEntity() {
+    public User createNewUser() {
         return User.builder()
             .name(name)
             .email(email)
             .provider(provider)
             .profileImageUrl(picture)
             .role(Role.USER)
+            .experiencePoint(10)
             .build();
     }
 }

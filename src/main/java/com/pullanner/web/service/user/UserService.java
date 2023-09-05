@@ -122,9 +122,9 @@ public class UserService {
         }
     }
 
-    private User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(
-                () -> new UserNotFoundedException("식별 번호가 " + id + "에 해당되는 사용자가 없습니다.")
+    private User getUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(
+                () -> new UserNotFoundedException(userId)
         );
     }
 }

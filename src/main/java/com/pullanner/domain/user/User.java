@@ -62,6 +62,9 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private Role role;
 
+    @Column(nullable = false)
+    private Integer experiencePoint;
+
     @OneToMany(mappedBy = "writer")
     private List<Plan> plans = new ArrayList<>();
 
@@ -73,13 +76,14 @@ public class User extends BaseTimeEntity {
 
     @Builder
     public User(String name, String nickName, String email, String profileImageUrl,
-        OAuth2Provider provider, Role role) {
+        OAuth2Provider provider, Role role, Integer experiencePoint) {
         this.name = name;
         this.nickName = nickName;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
         this.provider = provider;
         this.role = role;
+        this.experiencePoint = experiencePoint;
     }
 
     public void updateNickName(String nickName) {
@@ -115,5 +119,9 @@ public class User extends BaseTimeEntity {
         return userWorkouts.stream()
                 .map(UserWorkout::getIdOfWorkout)
                 .collect(Collectors.toList());
+    }
+
+    public void updateExperiencePoint(ExperiencePolicy policy) {
+        this.experiencePoint += policy.getPoint();
     }
 }

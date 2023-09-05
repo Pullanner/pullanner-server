@@ -14,7 +14,7 @@ public class UserResponse {
     private String profileImage;
     private String oauthProvider;
     private Integer level;
-    private Integer planCount;
+    private Integer experiencePoint;
 
     @Builder
     private UserResponse(Long userId, String name, String nickname, String email,
