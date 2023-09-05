@@ -2,6 +2,7 @@ package com.pullanner.domain.plan;
 
 import com.pullanner.domain.BaseTimeEntity;
 import com.pullanner.domain.workout.Workout;
+import com.pullanner.exception.plan.PlanWorkoutDoneException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -57,6 +58,10 @@ public class PlanWorkout extends BaseTimeEntity {
     }
 
     public void updateStatus(boolean done) {
+        if (this.done && !done) {
+            throw new PlanWorkoutDoneException();
+        }
+
         this.done = done;
     }
 
