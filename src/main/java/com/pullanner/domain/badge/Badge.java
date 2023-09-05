@@ -17,5 +17,6 @@ public class Badge extends BaseTimeEntity {
     @Column(name = "badge_id")
     private Integer id;
 
+    @Column(nullable = false)
     private String name;
 }

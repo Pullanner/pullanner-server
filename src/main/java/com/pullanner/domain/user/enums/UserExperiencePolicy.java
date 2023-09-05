@@ -1,11 +1,11 @@
-package com.pullanner.domain.user;
+package com.pullanner.domain.user.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ExperiencePolicy {
+public enum UserExperiencePolicy {
 
     JOIN(10),
     PLAN_COMPLETED(2),

@@ -3,6 +3,8 @@ package com.pullanner.domain.user;
 import com.pullanner.domain.article.Article;
 import com.pullanner.domain.BaseTimeEntity;
 import com.pullanner.domain.plan.Plan;
+import com.pullanner.domain.user.enums.UserExperiencePolicy;
+import com.pullanner.domain.user.enums.UserRole;
 import com.pullanner.web.controller.oauth2.dto.OAuth2Provider;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -60,7 +62,7 @@ public class User extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private UserRole userRole;
 
     @Column(nullable = false)
     private Integer experiencePoint;
@@ -76,13 +78,13 @@ public class User extends BaseTimeEntity {
 
     @Builder
     public User(String name, String nickName, String email, String profileImageUrl,
-        OAuth2Provider provider, Role role, Integer experiencePoint) {
+                OAuth2Provider provider, UserRole userRole, Integer experiencePoint) {
         this.name = name;
         this.nickName = nickName;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
         this.provider = provider;
-        this.role = role;
+        this.userRole = userRole;
         this.experiencePoint = experiencePoint;
     }
 
@@ -100,7 +102,7 @@ public class User extends BaseTimeEntity {
     }
 
     public String getRoleKey() {
-        return role.getKey();
+        return userRole.getKey();
     }
 
     public void addPlan(Plan plan) {
@@ -121,7 +123,7 @@ public class User extends BaseTimeEntity {
                 .collect(Collectors.toList());
     }
 
-    public void updateExperiencePoint(ExperiencePolicy policy) {
+    public void updateExperiencePoint(UserExperiencePolicy policy) {
         this.experiencePoint += policy.getPoint();
     }
 }

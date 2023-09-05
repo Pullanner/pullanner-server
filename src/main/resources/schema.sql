@@ -106,8 +106,8 @@ CREATE TABLE user_badge
     count                       INT NOT NULL,
     created_date                TIMESTAMP    NOT NULL,
     modified_date               TIMESTAMP    NOT NULL,
-    PRIMARY KEY (badge_id),
-    FOREIGN KEY (user_badge_user_id)    REFERENCES `user`` (user_id) ON DELETE CASCADE,
+    PRIMARY KEY (user_badge_id),
+    FOREIGN KEY (user_badge_user_id)  REFERENCES `user` (user_id) ON DELETE CASCADE,
     FOREIGN KEY (user_badge_badge_id) REFERENCES badge (badge_id)
 );
 

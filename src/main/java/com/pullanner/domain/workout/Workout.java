@@ -27,6 +27,7 @@ public class Workout extends BaseTimeEntity {
     @Column(name = "workout_id")
     private Integer id;
 
+    @Column(nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "workout")
