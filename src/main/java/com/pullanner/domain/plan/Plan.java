@@ -50,6 +50,9 @@ public class Plan extends BaseTimeEntity {
     private String note;
 
     @Column(nullable = false)
+    private Boolean completed;
+
+    @Column(nullable = false)
     private LocalDateTime planDate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -115,5 +118,21 @@ public class Plan extends BaseTimeEntity {
 
     public LocalDate getPlanDateValue() {
         return planDate.toLocalDate();
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public boolean checkCompletion() {
+        for (PlanWorkout planWorkout : planWorkouts) {
+            if (!planWorkout.getDone()) {
+                return false;
+            }
+        }
+
+        completed = true;
+
+        return true;
     }
 }
