@@ -4,12 +4,17 @@ import com.pullanner.domain.article.Article;
 import com.pullanner.domain.BaseTimeEntity;
 import com.pullanner.domain.plan.Plan;
 import com.pullanner.domain.user.enums.UserExperiencePolicy;
+import com.pullanner.domain.user.enums.UserLevelPolicy;
 import com.pullanner.domain.user.enums.UserRole;
+import com.pullanner.exception.user.NotSupportedLevelException;
 import com.pullanner.web.controller.oauth2.dto.OAuth2Provider;
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -18,21 +23,17 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@NamedEntityGraph(
-        name = "UserWithWorkouts",
-        attributeNodes = {
-                @NamedAttributeNode(value = "userWorkouts", subgraph = "userWorkouts")
-        },
-        subgraphs = @NamedSubgraph(
-                name = "userWorkouts",
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = "UserWithUserWorkouts",
                 attributeNodes = {
-                        @NamedAttributeNode("workout")
+                        @NamedAttributeNode(value = "userWorkouts", subgraph = "userWorkouts")
                 }
         )
-)
+})
 @Table(name = "`user`", indexes = {
-    @Index(name = "index_email_provider", columnList = "email, provider"),
-    @Index(name = "index_nickname", columnList = "nickname", unique = true)
+        @Index(name = "index_email_provider", columnList = "email, provider"),
+        @Index(name = "index_nickname", columnList = "nickname", unique = true)
 })
 @Entity
 public class User extends BaseTimeEntity {
@@ -117,13 +118,36 @@ public class User extends BaseTimeEntity {
         articles.add(article);
     }
 
-    public List<Integer> getIdsOfWorkout() {
+    public List<Integer> getIdListOfPossibleWorkout() {
         return userWorkouts.stream()
                 .map(UserWorkout::getIdOfWorkout)
                 .collect(Collectors.toList());
     }
 
+    public Set<Integer> getIdSetOfPossibleWorkout() {
+        return userWorkouts.stream()
+                .map(UserWorkout::getIdOfWorkout)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Integer> getIdSetOfImpossibleWorkout() {
+        Set<Integer> idsOfAllWorkouts = IntStream.rangeClosed(1, 8).boxed().collect(Collectors.toSet());
+        idsOfAllWorkouts.removeAll(getIdSetOfPossibleWorkout());
+
+        return idsOfAllWorkouts;
+    }
+
     public void updateExperiencePoint(UserExperiencePolicy policy) {
         this.experiencePoint += policy.getPoint();
+    }
+
+    public int getLevel() {
+        for (UserLevelPolicy userLevelPolicy : UserLevelPolicy.values()) {
+            if (experiencePoint <= userLevelPolicy.getMaxExperiencePoint()) {
+                return userLevelPolicy.getLevel();
+            }
+        }
+
+        throw new NotSupportedLevelException();
     }
 }
