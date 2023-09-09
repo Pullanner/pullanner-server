@@ -18,7 +18,7 @@ public class UserWorkoutResponse {
 
     public static UserWorkoutResponse from(User user) {
         return UserWorkoutResponse.builder()
-                .workouts(user.getIdsOfWorkout())
+                .workouts(user.getIdListOfPossibleWorkout())
                 .build();
     }
 }

@@ -68,6 +68,9 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer experiencePoint;
 
+    @Column(nullable = false)
+    private Integer sequenceCompletionDays;
+
     @OneToMany(mappedBy = "writer")
     private List<Plan> plans = new ArrayList<>();
 
@@ -164,5 +167,17 @@ public class User extends BaseTimeEntity {
         }
 
         throw new NotSupportedLevelException();
+    }
+
+    public boolean isAllWorkoutsPossible() {
+        return getIdSetOfImpossibleWorkout().isEmpty();
+    }
+
+    public void initSequenceCompletionDays() {
+        this.sequenceCompletionDays = 0;
+    }
+
+    public void plusSequenceCompletionDays() {
+        this.sequenceCompletionDays++;
     }
 }

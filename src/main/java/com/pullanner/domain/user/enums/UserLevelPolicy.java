@@ -7,10 +7,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum UserLevelPolicy {
 
-    LEVEL_ONE(99),
-    LEVEL_TWO(299),
-    LEVEL_THREE(699),
-    LEVEL_FOUR(1499);
+    LEVEL_ONE(1, 99),
+    LEVEL_TWO(2, 299),
+    LEVEL_THREE(3, 699),
+    LEVEL_FOUR(4, 1499),
+    LEVEL_FIVE(5, Integer.MAX_VALUE);
 
+    private final int level;
     private final int maxExperiencePoint;
 }

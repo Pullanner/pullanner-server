@@ -1,8 +1,10 @@
 package com.pullanner.exception.user;
 
+import com.pullanner.web.ApiResponseCode;
+
 public class InvalidMailAuthorizationCodeException extends RuntimeException {
 
     public InvalidMailAuthorizationCodeException() {
-        super("회원 탈퇴 처리를 위한 인증 번호가 일치하지 않습니다.");
+        super(ApiResponseCode.USER_INVALID_MAIL_AUTHORIZATION_CODE.getMessage());
     }
 }

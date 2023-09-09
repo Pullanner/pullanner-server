@@ -24,7 +24,7 @@ public class Badge extends BaseTimeEntity {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "badge")
     private List<UserBadge> userBadges = new ArrayList<>();
 
     /*

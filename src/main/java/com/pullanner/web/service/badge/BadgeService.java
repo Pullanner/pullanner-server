@@ -20,19 +20,44 @@ public class BadgeService {
     private final UserBadgeRepository userBadgeRepository;
 
     public void saveFirstPlanBadge(User user) {
-        Badge firstPlanBadge = getBadgeByBadgeIdEnum(BADGE_FIRST_PLAN);
+        saveBadge(user, BADGE_FIRST_PLAN);
+    }
 
-        UserBadge userBadge = createUserBadge(user, firstPlanBadge);
+    public void saveOneHundredPlanBadge(User user) {
+        saveBadge(user, BADGE_ONE_HUNDRED_PLAN);
+    }
+
+    public void saveAllRounderBadge(User user) {
+        saveBadge(user, BADGE_ALL_ROUNDER);
+    }
+
+    public void saveMuscleKingBadge(User user) {
+        saveBadge(user, BADGE_MUSCLE_KING);
+    }
+
+    public void saveExperienceKingBadge(User user) {
+        saveBadge(user, BADGE_EXPERIENCE_KING);
+    }
+
+    public void savePullUpKingBadge(User user) {
+        saveBadge(user, BADGE_PULL_UP_KING);
+    }
+
+    public void saveSevenSequencePlanCompletionBadge(User user) {
+        saveBadge(user, BADGE_SEVEN_SEQUENCE_PLAN_COMPLETED);
+    }
+
+    private void saveBadge(User user, BadgeIdEnum badgeIdEnum) {
+        Badge experienceKingBadge = getBadgeByBadgeIdEnum(badgeIdEnum);
+
+        UserBadge userBadge = createUserBadge(user, experienceKingBadge);
 
         userBadgeRepository.save(userBadge);
     }
 
-    public void saveOneHundredPlanBadge(User user) {
-        Badge oneHundredPlanBadge = getBadgeByBadgeIdEnum(BADGE_ONE_HUNDRED_PLAN);
-
-        UserBadge userBadge = createUserBadge(user, oneHundredPlanBadge);
-
-        userBadgeRepository.save(userBadge);
+    private Badge getBadgeByBadgeIdEnum(BadgeIdEnum badgeIdEnum) {
+        return badgeRepository.findById(badgeIdEnum.getId())
+                .orElseThrow(BadgeNotFoundedException::new);
     }
 
     private static UserBadge createUserBadge(User user, Badge firstPlanBadge) {
@@ -45,10 +70,5 @@ public class BadgeService {
         firstPlanBadge.addUserBadge(userBadge);
 
         return userBadge;
-    }
-
-    private Badge getBadgeByBadgeIdEnum(BadgeIdEnum badgeIdEnum) {
-        return badgeRepository.findById(badgeIdEnum.getId())
-                .orElseThrow(BadgeNotFoundedException::new);
     }
 }

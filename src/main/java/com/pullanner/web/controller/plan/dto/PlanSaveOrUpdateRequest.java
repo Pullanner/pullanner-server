@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -20,4 +22,10 @@ public class PlanSaveOrUpdateRequest {
     private PlanType planType;
 
     private List<PlanWorkoutRequest> workouts;
+
+    public Set<Integer> getWorkoutIdSetOfPlanSaveRequest() {
+        return workouts.stream()
+                .map(PlanWorkoutRequest::getStep)
+                .collect(Collectors.toSet());
+    }
 }

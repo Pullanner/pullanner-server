@@ -12,6 +12,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByNickName(String nickName);
 
-    @EntityGraph(value = "UserWithWorkouts")
-    Optional<User> findWithWorkoutsById(Long id);
+    @EntityGraph(value = "UserWithUserWorkouts")
+    Optional<User> findWithUserWorkoutsById(Long id);
 }

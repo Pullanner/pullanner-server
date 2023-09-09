@@ -26,9 +26,10 @@ CREATE TABLE `user`
     profile_image_file_name VARCHAR(255),
     provider                VARCHAR(255) NOT NULL,
     role                    VARCHAR(255) NOT NULL,
-    experience_point        INT          DEFAULT 0,
-    created_date            TIMESTAMP    NOT NULL,
-    modified_date           TIMESTAMP    NOT NULL,
+    experience_point          INT          DEFAULT 0,
+    sequence_completion_days  INT          DEFAULT 0,
+    created_date              TIMESTAMP    NOT NULL,
+    modified_date             TIMESTAMP    NOT NULL,
     PRIMARY KEY (user_id),
     UNIQUE INDEX index_email_provider (email, provider),
     UNIQUE INDEX index_nickname (nickname)
@@ -61,15 +62,16 @@ CREATE TABLE article
 
 CREATE TABLE plan
 (
-    plan_id       BIGINT AUTO_INCREMENT,
-    plan_user_id  BIGINT       NOT NULL,
-    plan_type     VARCHAR(255) NOT NULL COMMENT 'strength | master',
-    name          VARCHAR(20) NOT NULL,
-    note          VARCHAR(300) NULL,
-    completed     BOOLEAN  NOT NULL,
-    plan_date TIMESTAMP    NOT NULL,
-    created_date  TIMESTAMP    NOT NULL,
-    modified_date TIMESTAMP    NOT NULL,
+    plan_id          BIGINT AUTO_INCREMENT,
+    plan_user_id     BIGINT       NOT NULL,
+    plan_type        VARCHAR(255) NOT NULL COMMENT 'strength | master',
+    name             VARCHAR(20) NOT NULL,
+    note             VARCHAR(300) NULL,
+    completed        BOOLEAN  NOT NULL,
+    completed_date   TIMESTAMP,
+    plan_date        TIMESTAMP    NOT NULL,
+    created_date     TIMESTAMP    NOT NULL,
+    modified_date    TIMESTAMP    NOT NULL,
     PRIMARY KEY (plan_id),
     FOREIGN KEY (plan_user_id) REFERENCES `user` (user_id) ON DELETE CASCADE
 );

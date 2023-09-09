@@ -22,6 +22,7 @@ public enum ApiResponseCode {
     USER_DELETED_SUCCESS("U08", 200, "사용자의 회원 정보가 삭제되었습니다."),
     USER_LOGOUT_SUCCESS("U09", 200, "로그아웃이 정상적으로 처리되었습니다."),
     USER_ALREADY_SENT_AUTHORIZATION_CODE("U10", 400, "이미 사용자의 이메일로 인증 코드가 발송되었습니다."),
+    USER_LEVEL_NOT_SUPPORTED("U11", 500, "해당 사용자의 경험치로 레벨을 산출하는 것이 지원되지 않습니다."),
 
     USER_WORKOUT_CREATED("UW01", 200, "사용자가 할 수 있는 철봉 동작 정보가 등록되었습니다."),
     USER_WORKOUT_UPDATED("UW02", 200, "사용자가 할 수 있는 철봉 동작 정보가 수정되었습니다."),
@@ -37,6 +38,7 @@ public enum ApiResponseCode {
     PLAN_DELETED("P09", 200, "철봉 운동 계획이 삭제되었습니다."),
     PLAN_COMPLETED_NOT_CHANGED("P10", 400, "완료된 철봉 운동 계획은 변경할 수 없습니다."),
     PLAN_WORKOUT_DONE("P11", 400, "완료한 철봉 운동 활동은 변경할 수 없습니다."),
+    PLAN_INVALID_SAVE_REQUEST("P12", 400, "철봉 운동 계획 유형에 맞지 않는 철봉 운동 계획 등록 요청입니다."),
 
     ARTICLE_DELETE_COMPLETED("B01", 200, "게시글이 삭제되었습니다."),
 

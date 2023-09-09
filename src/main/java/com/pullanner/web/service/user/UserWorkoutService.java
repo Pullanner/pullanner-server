@@ -25,7 +25,7 @@ public class UserWorkoutService {
 
     @Transactional(readOnly = true)
     public UserWorkoutResponse findByUserId(Long userId) {
-        User user = userRepository.findWithWorkoutsById(userId).orElseThrow(
+        User user = userRepository.findWithUserWorkoutsById(userId).orElseThrow(
                 () -> new UserNotFoundedException(userId)
         );
 
@@ -63,7 +63,7 @@ public class UserWorkoutService {
 
     @Transactional
     public void update(Long userId, UserWorkoutSaveOrUpdateRequest userWorkoutInfo) {
-        User user = userRepository.findWithWorkoutsById(userId).orElseThrow(
+        User user = userRepository.findWithUserWorkoutsById(userId).orElseThrow(
                 () -> new UserNotFoundedException(userId)
         );
 
