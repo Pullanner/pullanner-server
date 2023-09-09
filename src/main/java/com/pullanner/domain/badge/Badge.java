@@ -1,10 +1,14 @@
 package com.pullanner.domain.badge;
 
 import com.pullanner.domain.BaseTimeEntity;
+import com.pullanner.domain.user.UserBadge;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -19,4 +23,19 @@ public class Badge extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String name;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserBadge> userBadges = new ArrayList<>();
+
+    /*
+           Relation methods : start
+    */
+
+    public void addUserBadge(UserBadge userBadge) {
+        userBadges.add(userBadge);
+    }
+
+    /*
+           Relation methods : end
+    */
 }

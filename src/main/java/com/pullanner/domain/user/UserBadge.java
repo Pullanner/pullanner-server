@@ -30,12 +30,9 @@ public class UserBadge extends BaseTimeEntity {
     @JoinColumn(name = "user_badge_badge_id", nullable = false)
     private Badge badge;
 
-    private Integer count;
-
     @Builder
-    public UserBadge(User user, Badge badge, Integer count) {
+    public UserBadge(User user, Badge badge) {
         this.user = user;
         this.badge = badge;
-        this.count = count;
     }
 }

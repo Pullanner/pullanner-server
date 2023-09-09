@@ -77,6 +77,9 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "author")
     private List<Article> articles = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<UserBadge> userBadges = new ArrayList<>();
+
     @Builder
     public User(String name, String nickName, String email, String profileImageUrl,
                 OAuth2Provider provider, UserRole userRole, Integer experiencePoint) {
@@ -88,6 +91,30 @@ public class User extends BaseTimeEntity {
         this.userRole = userRole;
         this.experiencePoint = experiencePoint;
     }
+
+    /*
+           Relation methods : start
+     */
+
+    public void addPlan(Plan plan) {
+        plans.add(plan);
+    }
+
+    public void addUserWorkout(UserWorkout userWorkout) {
+        userWorkouts.add(userWorkout);
+    }
+
+    public void addArticle(Article article) {
+        articles.add(article);
+    }
+
+    public void addUserBadge(UserBadge userBadge) {
+        userBadges.add(userBadge);
+    }
+
+    /*
+           Relation methods : end
+    */
 
     public void updateNickName(String nickName) {
         this.nickName = nickName;
@@ -104,18 +131,6 @@ public class User extends BaseTimeEntity {
 
     public String getRoleKey() {
         return userRole.getKey();
-    }
-
-    public void addPlan(Plan plan) {
-        plans.add(plan);
-    }
-
-    public void addUserWorkout(UserWorkout userWorkout) {
-        userWorkouts.add(userWorkout);
-    }
-
-    public void addArticle(Article article) {
-        articles.add(article);
     }
 
     public List<Integer> getIdListOfPossibleWorkout() {

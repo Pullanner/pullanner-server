@@ -103,7 +103,6 @@ CREATE TABLE user_badge
     user_badge_id               BIGINT AUTO_INCREMENT,
     user_badge_user_id          BIGINT NOT NULL,
     user_badge_badge_id         INT NOT NULL,
-    count                       INT NOT NULL,
     created_date                TIMESTAMP    NOT NULL,
     modified_date               TIMESTAMP    NOT NULL,
     PRIMARY KEY (user_badge_id),
