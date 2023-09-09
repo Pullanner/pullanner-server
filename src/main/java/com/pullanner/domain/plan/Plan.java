@@ -77,7 +77,7 @@ public class Plan extends BaseTimeEntity {
     }
 
     /*
-           Relation methods : start
+        Relation methods : start
      */
 
     public void addPlanWorkout(PlanWorkout planWorkout) {
@@ -85,7 +85,7 @@ public class Plan extends BaseTimeEntity {
     }
 
     /*
-           Relation methods : end
+        Relation methods : end
      */
 
     public void updatePlanInformation(PlanSaveOrUpdateRequest request) {

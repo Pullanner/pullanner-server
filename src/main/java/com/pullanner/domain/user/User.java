@@ -96,7 +96,7 @@ public class User extends BaseTimeEntity {
     }
 
     /*
-           Relation methods : start
+        Relation methods : start
      */
 
     public void addPlan(Plan plan) {
@@ -116,7 +116,7 @@ public class User extends BaseTimeEntity {
     }
 
     /*
-           Relation methods : end
+        Relation methods : end
     */
 
     public void updateNickName(String nickName) {

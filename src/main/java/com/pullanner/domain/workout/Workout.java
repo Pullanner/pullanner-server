@@ -36,6 +36,9 @@ public class Workout extends BaseTimeEntity {
     @OneToMany(mappedBy = "workout")
     private List<PlanWorkout> planWorkouts = new ArrayList<>();
 
+    /*
+        Relation methods : start
+    */
     public void addUserWorkout(UserWorkout userWorkout) {
         userWorkouts.add(userWorkout);
     }
@@ -43,4 +46,8 @@ public class Workout extends BaseTimeEntity {
     public void addPlanWorkout(PlanWorkout planWorkout) {
         planWorkouts.add(planWorkout);
     }
+
+    /*
+        Relation methods : end
+    */
 }

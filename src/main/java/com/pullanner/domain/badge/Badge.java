@@ -28,7 +28,7 @@ public class Badge extends BaseTimeEntity {
     private List<UserBadge> userBadges = new ArrayList<>();
 
     /*
-           Relation methods : start
+        Relation methods : start
     */
 
     public void addUserBadge(UserBadge userBadge) {
@@ -36,6 +36,6 @@ public class Badge extends BaseTimeEntity {
     }
 
     /*
-           Relation methods : end
+        Relation methods : end
     */
 }
