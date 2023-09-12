@@ -33,10 +33,12 @@ public class UserWorkoutService {
     }
 
     @Transactional
-    public void save(Long userId, UserWorkoutSaveOrUpdateRequest userWorkoutInfo) {
-        User user = userRepository.findById(userId).orElseThrow(
+    public void update(Long userId, UserWorkoutSaveOrUpdateRequest userWorkoutInfo) {
+        User user = userRepository.findWithWorkoutsById(userId).orElseThrow(
                 () -> new UserNotFoundedException("식별 번호가 " + userId + "에 해당되는 사용자가 없습니다.")
         );
+
+        userWorkoutRepository.deleteAllInBatch(user.getUserWorkouts());
 
         List<UserWorkout> userWorkouts = getUserWorkouts(userWorkoutInfo, user);
 
@@ -59,18 +61,5 @@ public class UserWorkoutService {
                     return userWorkout;
                 })
                 .toList();
-    }
-
-    @Transactional
-    public void update(Long userId, UserWorkoutSaveOrUpdateRequest userWorkoutInfo) {
-        User user = userRepository.findWithWorkoutsById(userId).orElseThrow(
-                () -> new UserNotFoundedException("식별 번호가 " + userId + "에 해당되는 사용자가 없습니다.")
-        );
-
-        userWorkoutRepository.deleteAllInBatch(user.getUserWorkouts());
-
-        List<UserWorkout> userWorkouts = getUserWorkouts(userWorkoutInfo, user);
-
-        userWorkoutRepository.saveAll(userWorkouts);
     }
 }

@@ -22,8 +22,7 @@ public enum ApiResponseCode {
     USER_DELETED_SUCCESS("U08", 200, "사용자의 회원 정보가 삭제되었습니다."),
     USER_LOGOUT_SUCCESS("U09", 200, "로그아웃이 정상적으로 처리되었습니다."),
 
-    USER_WORKOUT_CREATED("UW01", 200, "사용자가 할 수 있는 철봉 동작 정보가 등록되었습니다."),
-    USER_WORKOUT_UPDATED("UW02", 200, "사용자가 할 수 있는 철봉 동작 정보가 수정되었습니다."),
+    USER_WORKOUT_UPDATED("UW01", 200, "사용자가 할 수 있는 철봉 동작 정보가 등록(수정)되었습니다."),
 
     PLAN_SAVED("P01", 200, "철봉 운동 계획이 등록되었습니다."),
     PLAN_SAVE_DATE_INVALID("P02", 400, "오늘 이후의 날짜로만 계획을 등록할 수 있습니다."),

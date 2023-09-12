@@ -43,20 +43,9 @@ public class UserWorkoutController {
         return userWorkoutService.findByUserId(userId);
     }
 
-    @Operation(summary = "사용자 가능 철봉 동작 등록", description = "사용자가 수행할 수 있는 철봉 동작들을 등록하는 기능입니다.")
+    @Operation(summary = "사용자 가능 철봉 동작 등록 및 수정", description = "사용자가 수행할 수 있는 철봉 동작들을 등록하거나 수정할 수 있는 기능입니다.")
     @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
     @PostMapping("/api/users/workouts")
-    public ResponseEntity<ApiResponseMessage> register(
-            @AuthenticationPrincipal Long userId,
-            @Valid @RequestBody UserWorkoutSaveOrUpdateRequest userWorkoutInfo
-            ) {
-        userWorkoutService.save(userId, userWorkoutInfo);
-        return getResponseEntity(ApiResponseCode.USER_WORKOUT_CREATED);
-    }
-
-    @Operation(summary = "사용자 가능 철봉 동작 수정", description = "사용자가 수행할 수 있는 철봉 동작들을 수정하는 기능입니다.")
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = ApiResponseMessage.class)))
-    @PatchMapping("/api/users/workouts")
     public ResponseEntity<ApiResponseMessage> update(
             @AuthenticationPrincipal Long userId,
             @Valid @RequestBody UserWorkoutSaveOrUpdateRequest userWorkoutInfo
