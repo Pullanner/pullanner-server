@@ -161,26 +161,26 @@ public class PlanService {
 
             List<Plan> completedPlansOfUser = planRepository.findCompletedPlansByUserId(userId);
 
-            // check if completed plan is first
+            // 1. check if completed plan is first
             if (completedPlansOfUser.isEmpty()) {
                 user.updateExperiencePoint(EXPERIENCE_BADGE_FIRST_PLAN);
                 badgeService.saveFirstPlanBadge(user);
             } else {
-                // check if completed plan is hundredth
+                // 2. check if completed plan is hundredth
                 if (completedPlansOfUser.size() == 99) {
                     user.updateExperiencePoint(EXPERIENCE_BADGE_ONE_HUNDRED_PLAN);
                     badgeService.saveOneHundredPlanBadge(user);
-                    // check if completed plan is multiples of 1000
+                // 3. check if completed plan is multiples of 1000
                 } else if ((completedPlansOfUser.size() + 1) % 1000 == 0) {
                     user.updateExperiencePoint(EXPERIENCE_BADGE_PULL_UP_KING);
                     badgeService.savePullUpKingBadge(user);
                 }
 
-                // check if all workouts (set) is completed
-                //  - check if user chooses to be able to perform all of the actions
+                // 4. check if all workouts (set) is completed
+                // 4-1. check if user chooses to be able to perform all of the actions
                 if (user.isAllWorkoutsPossible()) {
                     Optional<UserBadge> allRoundBadge = userBadgeRepository.findAllRoundBadgeByUserId(userId);
-                    //  - check if user has not acquired all rounder badge
+                    // 4-2. check if user has not acquired all rounder badge
                     if (allRoundBadge.isEmpty()) {
                         List<Long> idsOfCompletedPlansOfUser = completedPlansOfUser.stream()
                                 .map(Plan::getId)
@@ -192,7 +192,7 @@ public class PlanService {
                                 .map(PlanWorkout::getIdOfWorkout)
                                 .collect(Collectors.toSet());
 
-                        //  - check if user has completed the plan for all pull-up workouts
+                        // 4-3. check if user has completed the plan for all pull-up workouts
                         if (idsOfCompletedWorkouts.size() == 8) {
                             user.updateExperiencePoint(EXPERIENCE_BADGE_ALL_ROUNDER);
                             badgeService.saveAllRounderBadge(user);
@@ -200,18 +200,17 @@ public class PlanService {
                     }
                 }
 
-                // check if plan of master type is multiples of 30
+                // 5. check if plan of master type is multiples of 30
                 if (plan.isMasterPlanType()) {
                     long countOfCompletedPlansOfMasterType = completedPlansOfUser.stream()
                             .filter(Plan::isMasterPlanType)
                             .count();
 
-
                     if ((countOfCompletedPlansOfMasterType + 1) % 30 == 0) {
                         user.updateExperiencePoint(EXPERIENCE_BADGE_EXPERIENCE_KING);
                         badgeService.saveExperienceKingBadge(user);
                     }
-                    // check if plan of strength type is multiples of 30
+                // 6. check if plan of strength type is multiples of 30
                 } else if (plan.isStrengthPlanType()) {
                     long countOfCompletedPlansOfStrengthType = completedPlansOfUser.stream()
                             .filter(Plan::isStrengthPlanType)
@@ -223,7 +222,7 @@ public class PlanService {
                     }
                 }
 
-                // check if user has achieved the plan for seven consecutive days
+                // 7. check if user has achieved the plan for seven consecutive days
                 LocalDate today = LocalDate.now();
                 for (Plan completedPlan : completedPlansOfUser) {
                     if (completedPlan.checkCompletionDateForSameDate(today)) {
