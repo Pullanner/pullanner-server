@@ -1,11 +1,11 @@
-package com.pullanner.domain.user;
+package com.pullanner.domain.user.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum Role {
+public enum UserRole {
 
     USER("ROLE_USER", "일반 사용자"),
     ADMIN("ROLE_ADMIN", "관리자");

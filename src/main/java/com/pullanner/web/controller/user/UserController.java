@@ -1,5 +1,6 @@
 package com.pullanner.web.controller.user;
 
+import com.pullanner.exception.user.AlreadySentAuthorizationCodeException;
 import com.pullanner.exception.user.ProfileImageUploadException;
 import com.pullanner.exception.user.UserNotFoundedException;
 import com.pullanner.web.controller.user.dto.UserResponse;
@@ -113,5 +114,11 @@ public class UserController {
     public ResponseEntity<ApiResponseMessage> handleProfileImageUploadException(ProfileImageUploadException e) {
         log.error("", e);
         return getResponseEntity(ApiResponseCode.USER_PROFILE_IMAGE_UPLOAD_FAIL);
+    }
+
+    @ExceptionHandler(AlreadySentAuthorizationCodeException.class)
+    public ResponseEntity<ApiResponseMessage> handleAlreadySentAuthorizationCodeException(AlreadySentAuthorizationCodeException e) {
+        log.error("", e);
+        return getResponseEntity(ApiResponseCode.USER_ALREADY_SENT_AUTHORIZATION_CODE);
     }
 }

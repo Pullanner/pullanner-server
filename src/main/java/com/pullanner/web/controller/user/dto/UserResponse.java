@@ -1,9 +1,15 @@
 package com.pullanner.web.controller.user.dto;
 
 import com.pullanner.domain.user.User;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class UserResponse {
 
@@ -14,18 +20,8 @@ public class UserResponse {
     private String profileImage;
     private String oauthProvider;
     private Integer level;
-    private Integer planCount;
-
-    @Builder
-    private UserResponse(Long userId, String name, String nickname, String email,
-        String profileImage, String oauthProvider) {
-        this.userId = userId;
-        this.name = name;
-        this.nickname = nickname;
-        this.email = email;
-        this.profileImage = profileImage;
-        this.oauthProvider = oauthProvider;
-    }
+    private Integer experiencePoint;
+    private LocalDateTime joinDate;
 
     public static UserResponse from(User user) {
         return UserResponse.builder()
@@ -35,6 +31,9 @@ public class UserResponse {
             .email(user.getEmail())
             .profileImage(user.getProfileImageUrl())
             .oauthProvider(user.getProvider().name())
+            .level(user.getLevel())
+            .experiencePoint(user.getExperiencePoint())
+            .joinDate(user.getCreatedDate())
             .build();
     }
 }

@@ -1,6 +1,6 @@
 package com.pullanner.web.controller.oauth2.dto;
 
-import com.pullanner.domain.user.Role;
+import com.pullanner.domain.user.enums.UserRole;
 import com.pullanner.domain.user.User;
 import com.pullanner.exception.oauth2.UnsupportedOAuth2ProviderException;
 import java.util.Map;
@@ -80,13 +80,14 @@ public class OAuthAttributes {
             .build();
     }
 
-    public User toEntity() {
+    public User createNewUser() {
         return User.builder()
             .name(name)
             .email(email)
             .provider(provider)
             .profileImageUrl(picture)
-            .role(Role.USER)
+            .userRole(UserRole.USER)
+            .experiencePoint(10)
             .build();
     }
 }

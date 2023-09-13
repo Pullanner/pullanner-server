@@ -10,4 +10,5 @@ public class PlanWorkoutRequest {
     private int step;
     private int count;
     private int set;
+    private Boolean done;
 }

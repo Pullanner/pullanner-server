@@ -142,4 +142,10 @@ public class PlanController {
         log.error("", e);
         return getResponseEntity(ApiResponseCode.PLAN_WORKOUT_NOT_FOUNDED);
     }
+
+    @ExceptionHandler(PlanCompletedNotChangedException.class)
+    public ResponseEntity<ApiResponseMessage> handlePlanCompletedNotChangedException(PlanCompletedNotChangedException e) {
+        log.error("", e);
+        return getResponseEntity(ApiResponseCode.PLAN_COMPLETED_NOT_CHANGED);
+    }
 }

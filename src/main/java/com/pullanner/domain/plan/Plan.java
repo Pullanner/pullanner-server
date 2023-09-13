@@ -52,6 +52,11 @@ public class Plan extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDateTime planDate;
 
+    @Column(nullable = false)
+    private Boolean completed;
+
+    private LocalDate completedDate;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "plan_user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -62,7 +67,7 @@ public class Plan extends BaseTimeEntity {
     private List<PlanWorkout> planWorkouts = new ArrayList<>();
 
     @Builder
-    public Plan(User writer, PlanType planType, String name, String note,
+    private Plan(User writer, PlanType planType, String name, String note,
                 LocalDateTime planDate) {
         this.writer = writer;
         this.planType = planType;
@@ -71,9 +76,17 @@ public class Plan extends BaseTimeEntity {
         this.planDate = planDate;
     }
 
+    /*
+        Relation methods : start
+     */
+
     public void addPlanWorkout(PlanWorkout planWorkout) {
         planWorkouts.add(planWorkout);
     }
+
+    /*
+        Relation methods : end
+     */
 
     public void updatePlanInformation(PlanSaveOrUpdateRequest request) {
         this.name = request.getPlanName();
@@ -115,5 +128,40 @@ public class Plan extends BaseTimeEntity {
 
     public LocalDate getPlanDateValue() {
         return planDate.toLocalDate();
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public boolean checkCompletion() {
+        for (PlanWorkout planWorkout : planWorkouts) {
+            if (!planWorkout.getDone()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public void completePlan() {
+        this.completed = true;
+        this.completedDate = LocalDate.now();
+    }
+
+    public boolean isMasterPlanType() {
+        return planType.equals(PlanType.MASTER);
+    }
+
+    public boolean isStrengthPlanType() {
+        return planType.equals(PlanType.STRENGTH);
+    }
+
+    public boolean checkCompletionDateForOneDayBefore(LocalDate date) {
+        return completedDate.plusDays(1).isEqual(date);
+    }
+
+    public boolean checkCompletionDateForSameDate(LocalDate date) {
+        return completedDate.isEqual(date);
     }
 }

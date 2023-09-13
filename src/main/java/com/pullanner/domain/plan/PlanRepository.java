@@ -14,6 +14,9 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
     @Query(value = "select p from Plan p where p.id = :planId and p.writer.id = :userId")
     Optional<Plan> findByPlanIdAndUserId(@Param("planId") Long planId, @Param("userId") Long userId);
 
+    @Query(value = "select p from Plan p where p.writer.id = :userId and p.completed = true order by p.completedDate desc")
+    List<Plan> findCompletedPlansByUserId(@Param("userId") Long userId);
+
     @Query(value = "select p from Plan p join fetch p.planWorkouts pw where p.planDate between :startDate and :endDate and p.writer.id = :userId")
     List<Plan> findAllWithPlanWorkoutsForPeriodByUserId(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, @Param("userId") Long userId);
 

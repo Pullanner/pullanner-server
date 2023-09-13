@@ -1,8 +1,10 @@
 package com.pullanner.exception.user;
 
+import com.pullanner.web.ApiResponseCode;
+
 public class ProfileImageUploadException extends RuntimeException {
 
     public ProfileImageUploadException() {
-        super("S3 에 파일 업로드를 실패했습니다.");
+        super(ApiResponseCode.USER_PROFILE_IMAGE_UPLOAD_FAIL.getMessage());
     }
 }

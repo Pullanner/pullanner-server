@@ -25,17 +25,17 @@ public class UserWorkoutService {
 
     @Transactional(readOnly = true)
     public UserWorkoutResponse findByUserId(Long userId) {
-        User user = userRepository.findWithWorkoutsById(userId).orElseThrow(
-                () -> new UserNotFoundedException("식별 번호가 " + userId + "에 해당되는 사용자가 없습니다.")
+        User user = userRepository.findWithUserWorkoutsById(userId).orElseThrow(
+                () -> new UserNotFoundedException(userId)
         );
 
         return UserWorkoutResponse.from(user);
     }
 
     @Transactional
-    public void update(Long userId, UserWorkoutSaveOrUpdateRequest userWorkoutInfo) {
-        User user = userRepository.findWithWorkoutsById(userId).orElseThrow(
-                () -> new UserNotFoundedException("식별 번호가 " + userId + "에 해당되는 사용자가 없습니다.")
+    public void save(Long userId, UserWorkoutSaveOrUpdateRequest userWorkoutInfo) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new UserNotFoundedException(userId)
         );
 
         userWorkoutRepository.deleteAllInBatch(user.getUserWorkouts());
