@@ -183,6 +183,7 @@ public class PlanService {
                     // 4-2. check if user has not acquired all rounder badge
                     if (allRoundBadge.isEmpty()) {
                         List<Long> idsOfCompletedPlansOfUser = completedPlansOfUser.stream()
+                                .filter(Plan::isStrengthPlanType)
                                 .map(Plan::getId)
                                 .toList();
 
