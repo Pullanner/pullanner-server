@@ -63,7 +63,7 @@ public class User extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserRole userRole;
+    private UserRole role;
 
     @Column(nullable = false)
     private Integer experiencePoint;
@@ -85,13 +85,13 @@ public class User extends BaseTimeEntity {
 
     @Builder
     public User(String name, String nickName, String email, String profileImageUrl,
-                OAuth2Provider provider, UserRole userRole, Integer experiencePoint) {
+                OAuth2Provider provider, UserRole role, Integer experiencePoint) {
         this.name = name;
         this.nickName = nickName;
         this.email = email;
         this.profileImageUrl = profileImageUrl;
         this.provider = provider;
-        this.userRole = userRole;
+        this.role = role;
         this.experiencePoint = experiencePoint;
     }
 
@@ -133,7 +133,7 @@ public class User extends BaseTimeEntity {
     }
 
     public String getRoleKey() {
-        return userRole.getKey();
+        return role.getKey();
     }
 
     public List<Integer> getIdListOfPossibleWorkout() {

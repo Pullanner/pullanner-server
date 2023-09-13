@@ -86,7 +86,7 @@ public class OAuthAttributes {
             .email(email)
             .provider(provider)
             .profileImageUrl(picture)
-            .userRole(UserRole.USER)
+            .role(UserRole.USER)
             .experiencePoint(10)
             .build();
     }
