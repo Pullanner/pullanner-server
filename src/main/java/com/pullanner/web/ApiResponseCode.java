@@ -24,8 +24,7 @@ public enum ApiResponseCode {
     USER_ALREADY_SENT_AUTHORIZATION_CODE("U10", 400, "이미 사용자의 이메일로 인증 코드가 발송되었습니다."),
     USER_LEVEL_NOT_SUPPORTED("U11", 500, "해당 사용자의 경험치로 레벨을 산출하는 것이 지원되지 않습니다."),
 
-    USER_WORKOUT_CREATED("UW01", 200, "사용자가 할 수 있는 철봉 동작 정보가 등록되었습니다."),
-    USER_WORKOUT_UPDATED("UW02", 200, "사용자가 할 수 있는 철봉 동작 정보가 수정되었습니다."),
+    USER_WORKOUT_UPDATED("UW01", 200, "사용자가 할 수 있는 철봉 동작 정보가 등록(수정)되었습니다."),
 
     PLAN_SAVED("P01", 200, "철봉 운동 계획이 등록되었습니다."),
     PLAN_SAVE_DATE_INVALID("P02", 400, "오늘 이후의 날짜로만 계획을 등록할 수 있습니다."),

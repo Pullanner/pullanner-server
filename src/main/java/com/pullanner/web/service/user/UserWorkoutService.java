@@ -38,6 +38,8 @@ public class UserWorkoutService {
                 () -> new UserNotFoundedException(userId)
         );
 
+        userWorkoutRepository.deleteAllInBatch(user.getUserWorkouts());
+
         List<UserWorkout> userWorkouts = getUserWorkouts(userWorkoutInfo, user);
 
         userWorkoutRepository.saveAll(userWorkouts);
@@ -59,18 +61,5 @@ public class UserWorkoutService {
                     return userWorkout;
                 })
                 .toList();
-    }
-
-    @Transactional
-    public void update(Long userId, UserWorkoutSaveOrUpdateRequest userWorkoutInfo) {
-        User user = userRepository.findWithUserWorkoutsById(userId).orElseThrow(
-                () -> new UserNotFoundedException(userId)
-        );
-
-        userWorkoutRepository.deleteAllInBatch(user.getUserWorkouts());
-
-        List<UserWorkout> userWorkouts = getUserWorkouts(userWorkoutInfo, user);
-
-        userWorkoutRepository.saveAll(userWorkouts);
     }
 }
