@@ -50,7 +50,7 @@ public class UserWorkoutController {
             @AuthenticationPrincipal Long userId,
             @Valid @RequestBody UserWorkoutSaveOrUpdateRequest userWorkoutInfo
     ) {
-        userWorkoutService.update(userId, userWorkoutInfo);
+        userWorkoutService.save(userId, userWorkoutInfo);
         return getResponseEntity(ApiResponseCode.USER_WORKOUT_UPDATED);
     }
 
