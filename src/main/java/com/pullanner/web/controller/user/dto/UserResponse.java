@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
@@ -19,6 +21,7 @@ public class UserResponse {
     private String oauthProvider;
     private Integer level;
     private Integer experiencePoint;
+    private LocalDateTime joinDate;
 
     public static UserResponse from(User user) {
         return UserResponse.builder()
@@ -30,6 +33,7 @@ public class UserResponse {
             .oauthProvider(user.getProvider().name())
             .level(user.getLevel())
             .experiencePoint(user.getExperiencePoint())
+            .joinDate(user.getCreatedDate())
             .build();
     }
 }
