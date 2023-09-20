@@ -4,6 +4,7 @@ import static com.pullanner.web.ApiUtil.getResponseEntity;
 
 import com.pullanner.exception.user.AlreadySentAuthorizationCodeException;
 import com.pullanner.exception.user.UserNotFoundedException;
+import com.pullanner.web.controller.user.dto.UserProfileImageUpdateRequest;
 import com.pullanner.web.controller.user.dto.UserResponse;
 import com.pullanner.web.controller.user.dto.UserNicknameUpdateRequest;
 import com.pullanner.domain.user.User;
@@ -69,14 +70,14 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponse updateProfileImage(Long userId, MultipartFile profileImage) {
+    public UserResponse updateProfileImage(Long userId, UserProfileImageUpdateRequest request) {
         User user = getUserById(userId);
 
         if (user.hasProfileImageFileName()) {
             imageService.deleteObject(user.getProfileImageFileName());
         }
 
-        String imageUrl = imageService.uploadFiles(profileImage);
+        String imageUrl = imageService.uploadFiles(request.getProfileImage());
         user.updateProfileImage(imageUrl);
 
         return UserResponse.from(user);

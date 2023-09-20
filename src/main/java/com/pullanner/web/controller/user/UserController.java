@@ -3,6 +3,7 @@ package com.pullanner.web.controller.user;
 import com.pullanner.exception.user.AlreadySentAuthorizationCodeException;
 import com.pullanner.exception.user.ProfileImageUploadException;
 import com.pullanner.exception.user.UserNotFoundedException;
+import com.pullanner.web.controller.user.dto.UserProfileImageUpdateRequest;
 import com.pullanner.web.controller.user.dto.UserResponse;
 import com.pullanner.web.controller.user.dto.UserNicknameUpdateRequest;
 import com.pullanner.exception.user.InvalidMailAuthorizationCodeException;
@@ -75,9 +76,8 @@ public class UserController {
     @PatchMapping("/api/users")
     public UserResponse update(
         @AuthenticationPrincipal Long userId,
-        @RequestPart @NotNull @Parameter(name = "profileImage", description = "사용자 프로필 사진 파일", in = ParameterIn.QUERY) MultipartFile profileImage) {
-        log.info("profileImage name : {}, size : {}", profileImage.getName(), profileImage.getSize());
-        return userService.updateProfileImage(userId, profileImage);
+        @Valid @ModelAttribute @Parameter(name = "request", description = "사용자 프로필 사진 파일", in = ParameterIn.QUERY) UserProfileImageUpdateRequest request) {
+        return userService.updateProfileImage(userId, request);
     }
 
     @Operation(summary = "사용자 이메일 인증 코드 발송", description = "사용자의 회원 탈퇴 요청을 처리하기 위해 사용자 이메일로 인증 코드를 발송하는 기능입니다.")
