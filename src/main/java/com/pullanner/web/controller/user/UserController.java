@@ -75,7 +75,7 @@ public class UserController {
     @PatchMapping("/api/users")
     public UserResponse update(
         @AuthenticationPrincipal Long userId,
-        @RequestParam @NotNull @Parameter(name = "profileImage", description = "사용자 프로필 사진 파일", in = ParameterIn.QUERY) MultipartFile profileImage) {
+        @RequestPart @NotNull @Parameter(name = "profileImage", description = "사용자 프로필 사진 파일", in = ParameterIn.QUERY) MultipartFile profileImage) {
         return userService.updateProfileImage(userId, profileImage);
     }
 
