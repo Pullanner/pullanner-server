@@ -76,6 +76,7 @@ public class UserController {
     public UserResponse update(
         @AuthenticationPrincipal Long userId,
         @RequestPart @NotNull @Parameter(name = "profileImage", description = "사용자 프로필 사진 파일", in = ParameterIn.QUERY) MultipartFile profileImage) {
+        log.info("profileImage name : {}, size : {}", profileImage.getName(), profileImage.getSize());
         return userService.updateProfileImage(userId, profileImage);
     }
 
