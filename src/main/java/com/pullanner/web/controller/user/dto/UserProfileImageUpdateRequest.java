@@ -14,5 +14,5 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserProfileImageUpdateRequest {
 
     @NotNull
-    MultipartFile profileImage;
+    private MultipartFile profileImage;
 }
