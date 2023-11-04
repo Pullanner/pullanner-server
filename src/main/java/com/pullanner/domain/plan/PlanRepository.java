@@ -22,4 +22,7 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
 
     @EntityGraph(value = "PlanWithPlanWorkouts")
     Optional<Plan> findWithPlanWorkoutsById(Long id);
+
+    @Query(value = "select p from Plan p join fetch p.planWorkouts pw where p.writer.id = :userId")
+    List<Plan> findAllByUserId(@Param("userId") Long userId);
 }
