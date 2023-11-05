@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -25,4 +26,7 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
 
     @Query(value = "select p from Plan p join fetch p.planWorkouts pw where p.writer.id = :userId")
     List<Plan> findAllByUserId(@Param("userId") Long userId);
+
+    @Query(value = "select p from Plan p join fetch p.planWorkouts pw where p.writer.id = :userId and p.planDate between :startDate and :endDate")
+    List<Plan> findAllByUserIdBetweenPeriod(@Param("userId") Long userId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ import java.util.Set;
 public class PlanValidationService {
 
     public void validatePlanSaveDate(PlanSaveOrUpdateRequest request) {
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now(ZoneId.of("Asia/Seoul"));
         LocalDate planDate = request.getPlanDateTime().toLocalDate();
 
         if (!planDate.isAfter(today)) {
@@ -26,7 +27,7 @@ public class PlanValidationService {
     }
 
     public void validatePlanUpdateDateTime(PlanSaveOrUpdateRequest request) {
-        LocalDateTime now = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul")).truncatedTo(ChronoUnit.MINUTES);
         LocalDateTime planDateTime = request.getPlanDateTime().truncatedTo(ChronoUnit.MINUTES);
 
         // 수정할 계획 일시(yyyy-MM-dd HH:mm 기준)가 현재 시간 보다 이전인 경우 예외 발생

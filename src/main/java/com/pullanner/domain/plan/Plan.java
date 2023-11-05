@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -146,7 +147,7 @@ public class Plan extends BaseTimeEntity {
 
     public void completePlan() {
         this.completed = true;
-        this.completedDate = LocalDate.now();
+        this.completedDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
     }
 
     public boolean isMasterPlanType() {

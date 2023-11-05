@@ -1,6 +1,7 @@
 package com.pullanner.web.controller.summary;
 
 import com.pullanner.web.ApiResponseMessage;
+import com.pullanner.web.controller.summary.dto.TotalMonthlyWorkoutCountResponse;
 import com.pullanner.web.controller.summary.dto.TotalWorkoutCountResponse;
 import com.pullanner.web.service.summary.SummaryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -37,9 +41,18 @@ public class SummaryController {
         return summaryService.getTotalCountByWorkout(userId);
     }
 
+    @Operation(summary = "풀업 운동별 월별 동작 횟수 조회", description = "사용자의 풀업 운동별 월별(최근 6개월) 동작 횟수를 조회할 수 있는 기능입니다.")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = TotalMonthlyWorkoutCountResponse.class)))
     @GetMapping("/api/summary/month-workout-count")
-    public void getTotalCountByMonthAndWorkout() {
+    public TotalMonthlyWorkoutCountResponse getTotalCountByMonthAndWorkout(@AuthenticationPrincipal Long userId) {
+        LocalDateTime endDate = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        LocalDateTime startDate = getSixMonthPreviousLocalDate(endDate);
+        return summaryService.getTotalCountByWorkoutNameForPeriod(userId, startDate, endDate);
+    }
 
+    private LocalDateTime getSixMonthPreviousLocalDate(LocalDateTime localDate) {
+        return localDate.minusMonths(5)
+                .minusDays(localDate.getDayOfMonth() - 1);
     }
 
     @GetMapping("/api/summary/completed-plan-count")
