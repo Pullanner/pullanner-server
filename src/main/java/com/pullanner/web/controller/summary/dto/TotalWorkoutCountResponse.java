@@ -1,5 +1,6 @@
 package com.pullanner.web.controller.summary.dto;
 
+import com.pullanner.domain.workout.WorkoutEnum;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +17,8 @@ public class TotalWorkoutCountResponse {
 
     public static TotalWorkoutCountResponse from(Map<String, Integer> totalCountByWorkout) {
         List<WorkoutCountResponse> workoutCountResponses = new ArrayList<>();
-        for (String workoutName : totalCountByWorkout.keySet()) {
+        List<String> workoutNames = WorkoutEnum.findAllWorkoutNames();
+        for (String workoutName : workoutNames) {
             workoutCountResponses.add(WorkoutCountResponse.of(workoutName, totalCountByWorkout.get(workoutName)));
         }
 

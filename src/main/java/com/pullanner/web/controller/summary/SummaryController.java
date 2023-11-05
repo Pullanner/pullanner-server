@@ -1,7 +1,6 @@
 package com.pullanner.web.controller.summary;
 
 import com.pullanner.web.ApiResponseMessage;
-import com.pullanner.web.controller.plan.dto.PlanResponse;
 import com.pullanner.web.controller.summary.dto.TotalWorkoutCountResponse;
 import com.pullanner.web.service.summary.SummaryService;
 import io.swagger.v3.oas.annotations.Operation;
