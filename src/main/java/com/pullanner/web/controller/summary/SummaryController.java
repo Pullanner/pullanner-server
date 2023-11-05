@@ -60,7 +60,7 @@ public class SummaryController {
     }
 
     @Operation(summary = "운동 시간대별 완료된 철봉 운동 계획 개수 조회", description = "사용자의 운동 시간대별 완료된 철봉 운동 계획 개수를 조회할 수 있는 기능입니다.")
-    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = TotalMonthlyWorkoutCountResponse.class)))
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = CompletedPlanCountByTime.class)))
     @GetMapping("/api/summary/completed-plan-count")
     public CompletedPlanCountByTime getCompletedPlanCountByTime(@AuthenticationPrincipal Long userId) {
         LocalDateTime endDate = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
