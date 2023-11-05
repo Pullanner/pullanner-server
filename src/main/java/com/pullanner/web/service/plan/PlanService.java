@@ -225,7 +225,7 @@ public class PlanService {
                 }
 
                 // 7. check if user has achieved the plan for seven consecutive days
-                LocalDate today = LocalDate.now(ZoneId.of("Asia/Seoul"));
+                LocalDateTime today = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
                 for (Plan completedPlan : completedPlansOfUser) {
                     if (completedPlan.checkCompletionDateForSameDate(today)) {
                         continue;

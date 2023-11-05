@@ -1,6 +1,7 @@
 package com.pullanner.web.controller.summary;
 
 import com.pullanner.web.ApiResponseMessage;
+import com.pullanner.web.controller.summary.dto.CompletedPlanCountByTime;
 import com.pullanner.web.controller.summary.dto.TotalMonthlyWorkoutCountResponse;
 import com.pullanner.web.controller.summary.dto.TotalWorkoutCountResponse;
 import com.pullanner.web.service.summary.SummaryService;
@@ -46,17 +47,24 @@ public class SummaryController {
     @GetMapping("/api/summary/month-workout-count")
     public TotalMonthlyWorkoutCountResponse getTotalCountByMonthAndWorkout(@AuthenticationPrincipal Long userId) {
         LocalDateTime endDate = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        LocalDateTime startDate = getSixMonthPreviousLocalDate(endDate);
+        LocalDateTime startDate = getPreviousMonthOfLocalDate(endDate, 5);
         return summaryService.getTotalCountByWorkoutNameForPeriod(userId, startDate, endDate);
     }
 
-    private LocalDateTime getSixMonthPreviousLocalDate(LocalDateTime localDate) {
-        return localDate.minusMonths(5)
-                .minusDays(localDate.getDayOfMonth() - 1);
+    private LocalDateTime getPreviousMonthOfLocalDate(LocalDateTime localDate, int previousMonth) {
+        return localDate.minusMonths(previousMonth)
+                .minusDays(localDate.getDayOfMonth() - 1)
+                .withHour(0)
+                .withMinute(0)
+                .withSecond(0);
     }
 
+    @Operation(summary = "운동 시간대별 완료된 철봉 운동 계획 개수 조회", description = "사용자의 운동 시간대별 완료된 철봉 운동 계획 개수를 조회할 수 있는 기능입니다.")
+    @ApiResponse(responseCode = "200", description = "OK", content = @Content(schema = @Schema(implementation = TotalMonthlyWorkoutCountResponse.class)))
     @GetMapping("/api/summary/completed-plan-count")
-    public void getCompletedPlanCountByTime() {
-
+    public CompletedPlanCountByTime getCompletedPlanCountByTime(@AuthenticationPrincipal Long userId) {
+        LocalDateTime endDate = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        LocalDateTime startDate = getPreviousMonthOfLocalDate(endDate, 1);
+        return summaryService.getCompletedPlanCountByTime(userId, startDate, endDate);
     }
 }

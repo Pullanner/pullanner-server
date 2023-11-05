@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,7 @@ public class Plan extends BaseTimeEntity {
     @Column(nullable = false)
     private Boolean completed;
 
-    private LocalDate completedDate;
+    private LocalDateTime completedDate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "plan_user_id", nullable = false)
@@ -147,7 +148,7 @@ public class Plan extends BaseTimeEntity {
 
     public void completePlan() {
         this.completed = true;
-        this.completedDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
+        this.completedDate = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
     }
 
     public boolean isMasterPlanType() {
@@ -158,11 +159,26 @@ public class Plan extends BaseTimeEntity {
         return planType.equals(PlanType.STRENGTH);
     }
 
-    public boolean checkCompletionDateForOneDayBefore(LocalDate date) {
+    public boolean checkCompletionDateForOneDayBefore(LocalDateTime date) {
         return completedDate.plusDays(1).isEqual(date);
     }
 
-    public boolean checkCompletionDateForSameDate(LocalDate date) {
+    public boolean checkCompletionDateForSameDate(LocalDateTime date) {
         return completedDate.isEqual(date);
+    }
+
+    public boolean matchGivenMonth(Month givenMonth) {
+        return completedDate.getMonth().equals(givenMonth);
+    }
+
+    public String getPlanCompletedTime() {
+        int hour = completedDate.getHour();
+        if (3 < hour && hour < 13) {
+            return PlanCompletedTimeEnum.MORNING.getTime();
+        } else if (11 < hour && hour < 21) {
+            return PlanCompletedTimeEnum.AFTER_NOON.getTime();
+        } else {
+            return PlanCompletedTimeEnum.EVENING.getTime();
+        }
     }
 }

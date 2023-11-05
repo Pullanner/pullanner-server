@@ -1,9 +1,11 @@
 package com.pullanner.web.service.summary;
 
 import com.pullanner.domain.plan.Plan;
+import com.pullanner.domain.plan.PlanCompletedTimeEnum;
 import com.pullanner.domain.plan.PlanRepository;
 import com.pullanner.domain.plan.PlanWorkout;
 import com.pullanner.domain.workout.WorkoutEnum;
+import com.pullanner.web.controller.summary.dto.CompletedPlanCountByTime;
 import com.pullanner.web.controller.summary.dto.TotalMonthlyWorkoutCountResponse;
 import com.pullanner.web.controller.summary.dto.TotalWorkoutCountResponse;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -54,7 +57,7 @@ public class SummaryService {
 
         Map<String, Map<String, Integer>> totalCountByWorkoutNameForPeriod = createTotalCountByWorkoutNameForPeriod(monthNamesForPeriod);
 
-        List<Plan> plans = planRepository.findAllByUserIdBetweenPeriod(userId, startDate, endDate);
+        List<Plan> plans = planRepository.findAllByUserIdBetweenPeriodOfPlanDate(userId, startDate, endDate);
         for (Plan plan : plans) {
             List<PlanWorkout> planWorkouts = plan.getPlanWorkouts();
             for (PlanWorkout planWorkout : planWorkouts) {
@@ -101,5 +104,41 @@ public class SummaryService {
 
     private String getSubStringOfMonthName(LocalDateTime date) {
         return date.getMonth().name().substring(0, 3);
+    }
+
+    @Transactional(readOnly = true)
+    public CompletedPlanCountByTime getCompletedPlanCountByTime(Long userId, LocalDateTime startDate, LocalDateTime endDate) {
+        Map<String, Integer> completedPlanCountByTimeThisMonth = createCompletedPlanCountByTime();
+        Map<String, Integer> completedPlanCountByTimePreviousMonth = createCompletedPlanCountByTime();
+
+        Month thisMonth = endDate.getMonth();
+        Month previousMonth = startDate.getMonth();
+
+        List<Plan> plans = planRepository.findAllByUserIdBetweenPeriodOfCompletedDate(userId, startDate, endDate);
+        for (Plan plan : plans) {
+            if (plan.isCompleted()) {
+                if (plan.matchGivenMonth(thisMonth)) {
+                    String planCompletedTime = plan.getPlanCompletedTime();
+                    completedPlanCountByTimeThisMonth.put(planCompletedTime, completedPlanCountByTimeThisMonth.get(planCompletedTime) + 1);
+                } else if (plan.matchGivenMonth(previousMonth)) {
+                    String planCompletedTime = plan.getPlanCompletedTime();
+                    completedPlanCountByTimePreviousMonth.put(planCompletedTime, completedPlanCountByTimePreviousMonth.get(planCompletedTime) + 1);
+                } else {
+                    throw new IllegalStateException();
+                }
+            }
+        }
+
+        return CompletedPlanCountByTime.of(completedPlanCountByTimeThisMonth, completedPlanCountByTimePreviousMonth);
+    }
+
+    private Map<String, Integer> createCompletedPlanCountByTime() {
+        Map<String, Integer> completedPlanCountByTimeThisMonth = new LinkedHashMap<>();
+        List<String> times = PlanCompletedTimeEnum.findTimes();
+        for (String time : times) {
+            completedPlanCountByTimeThisMonth.put(time, 0);
+        }
+
+        return completedPlanCountByTimeThisMonth;
     }
 }
