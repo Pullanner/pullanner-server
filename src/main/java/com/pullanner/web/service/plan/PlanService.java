@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -224,7 +225,7 @@ public class PlanService {
                 }
 
                 // 7. check if user has achieved the plan for seven consecutive days
-                LocalDate today = LocalDate.now();
+                LocalDateTime today = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
                 for (Plan completedPlan : completedPlansOfUser) {
                     if (completedPlan.checkCompletionDateForSameDate(today)) {
                         continue;

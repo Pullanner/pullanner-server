@@ -68,4 +68,8 @@ public class PlanWorkout extends BaseTimeEntity {
     public int getIdOfWorkout() {
         return workout.getId();
     }
+
+    public int getTotalCount() {
+        return countPerSet * setCount;
+    }
 }

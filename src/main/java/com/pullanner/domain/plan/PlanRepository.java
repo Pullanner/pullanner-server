@@ -22,4 +22,13 @@ public interface PlanRepository extends JpaRepository<Plan, Long> {
 
     @EntityGraph(value = "PlanWithPlanWorkouts")
     Optional<Plan> findWithPlanWorkoutsById(Long id);
+
+    @Query(value = "select p from Plan p join fetch p.planWorkouts pw where p.writer.id = :userId")
+    List<Plan> findAllByUserId(@Param("userId") Long userId);
+
+    @Query(value = "select p from Plan p join fetch p.planWorkouts pw where p.writer.id = :userId and p.planDate between :startDate and :endDate")
+    List<Plan> findAllByUserIdBetweenPeriodOfPlanDate(@Param("userId") Long userId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
+
+    @Query(value = "select p from Plan p join fetch p.planWorkouts pw where p.writer.id = :userId and p.completedDate between :startDate and :endDate")
+    List<Plan> findAllByUserIdBetweenPeriodOfCompletedDate(@Param("userId") Long userId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 }
