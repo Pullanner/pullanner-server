@@ -173,12 +173,14 @@ public class Plan extends BaseTimeEntity {
 
     public String getPlanCompletedTime() {
         int hour = completedDate.getHour();
-        if (3 < hour && hour < 13) {
+        if (5 < hour && hour < 12) {
             return PlanCompletedTimeEnum.MORNING.getTime();
-        } else if (11 < hour && hour < 21) {
+        } else if (11 < hour && hour < 18) {
             return PlanCompletedTimeEnum.AFTER_NOON.getTime();
-        } else {
+        } else if (17 < hour) {
             return PlanCompletedTimeEnum.EVENING.getTime();
+        } else {
+            return PlanCompletedTimeEnum.NIGHT.getTime();
         }
     }
 }
