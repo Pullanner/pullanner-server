@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 @Getter
 public enum PlanCompletedTimeEnum {
 
-    MORNING("morning"), AFTER_NOON("afternoon"), EVENING("evening"), NIGHT("night");
+    NIGHT("night"), MORNING("morning"), AFTER_NOON("afternoon"), EVENING("evening");
 
     private final String time;
 
