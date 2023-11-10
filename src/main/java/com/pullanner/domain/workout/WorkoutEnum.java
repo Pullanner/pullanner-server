@@ -24,12 +24,20 @@ public enum WorkoutEnum {
     private static final Map<Integer, String> workoutNameById = Stream.of(values())
             .collect(Collectors.toUnmodifiableMap(WorkoutEnum::getId, WorkoutEnum::getName));
 
+    private static final List<Integer> workoutIds = Stream.of(values())
+            .map(WorkoutEnum::getId)
+            .toList();
+
     private static final List<String> workoutNames = Stream.of(values())
             .map(WorkoutEnum::getName)
             .toList();
 
     private final int id;
     private final String name;
+
+    public static List<Integer> findAllWorkoutIds() {
+        return workoutIds;
+    }
 
     public static List<String> findAllWorkoutNames() {
         return workoutNames;

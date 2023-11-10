@@ -15,11 +15,11 @@ public class TotalWorkoutCountResponse {
 
     private List<WorkoutCountResponse> totalCountByWorkout;
 
-    public static TotalWorkoutCountResponse from(Map<String, Integer> totalCountByWorkout) {
+    public static TotalWorkoutCountResponse from(Map<Integer, Integer> totalCountByWorkout) {
         List<WorkoutCountResponse> workoutCountResponses = new ArrayList<>();
-        List<String> workoutNames = WorkoutEnum.findAllWorkoutNames();
-        for (String workoutName : workoutNames) {
-            workoutCountResponses.add(WorkoutCountResponse.of(workoutName, totalCountByWorkout.get(workoutName)));
+        List<Integer> workoutIds = WorkoutEnum.findAllWorkoutIds();
+        for (Integer workoutId : workoutIds) {
+            workoutCountResponses.add(WorkoutCountResponse.of(workoutId, totalCountByWorkout.get(workoutId)));
         }
 
         return new TotalWorkoutCountResponse(workoutCountResponses);

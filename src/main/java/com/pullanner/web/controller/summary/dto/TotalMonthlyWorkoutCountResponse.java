@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,20 +12,15 @@ import java.util.Map;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class TotalMonthlyWorkoutCountResponse {
 
-    private Map<String, List<MonthlyWorkoutCountResponse>> data;
+    private List<MonthlyWorkoutCountResponse> workoutCountPerMonth;
 
-    public static TotalMonthlyWorkoutCountResponse from(Map<String, Map<String, Integer>> totalCountByWorkoutNameForPeriod) {
-        Map<String, List<MonthlyWorkoutCountResponse>> data = new LinkedHashMap<>();
-        for (String workoutName : totalCountByWorkoutNameForPeriod.keySet()) {
-            List<MonthlyWorkoutCountResponse> monthlyWorkoutCountResponses = new ArrayList<>();
-            Map<String, Integer> totalCountForPeriod = totalCountByWorkoutNameForPeriod.get(workoutName);
-            for (String monthName : totalCountForPeriod.keySet()) {
-                monthlyWorkoutCountResponses.add(MonthlyWorkoutCountResponse.of(monthName, totalCountForPeriod.get(monthName)));
-            }
-
-            data.put(workoutName, monthlyWorkoutCountResponses);
+    public static TotalMonthlyWorkoutCountResponse from(Map<Integer, Map<String, Integer>> totalCountByWorkoutNameForPeriod) {
+        List<MonthlyWorkoutCountResponse> workoutCountPerMonth = new ArrayList<>();
+        for (Integer workoutId : totalCountByWorkoutNameForPeriod.keySet()) {
+            Map<String, Integer> totalCountForPeriod = totalCountByWorkoutNameForPeriod.get(workoutId);
+            workoutCountPerMonth.add(MonthlyWorkoutCountResponse.of(workoutId, totalCountForPeriod));
         }
 
-        return new TotalMonthlyWorkoutCountResponse(data);
+        return new TotalMonthlyWorkoutCountResponse(workoutCountPerMonth);
     }
 }

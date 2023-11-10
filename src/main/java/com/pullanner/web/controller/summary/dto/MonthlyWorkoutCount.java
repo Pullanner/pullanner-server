@@ -6,12 +6,12 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class WorkoutCountResponse {
+public class MonthlyWorkoutCount {
 
-    private Integer step;
+    private String month;
     private Integer totalCount;
 
-    public static WorkoutCountResponse of(Integer step, Integer totalCount) {
-        return new WorkoutCountResponse(step, totalCount);
+    public static MonthlyWorkoutCount of(String month, Integer totalCount) {
+        return new MonthlyWorkoutCount(month, totalCount);
     }
 }

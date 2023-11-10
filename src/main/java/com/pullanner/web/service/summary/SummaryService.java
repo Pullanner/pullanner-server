@@ -24,16 +24,16 @@ public class SummaryService {
 
     @Transactional(readOnly = true)
     public TotalWorkoutCountResponse getTotalCountByWorkout(Long userId) {
-        Map<String, Integer> totalCountByWorkout = createTotalCountByWorkout();
+        Map<Integer, Integer> totalCountByWorkout = createTotalCountByWorkout();
 
         List<Plan> plans = planRepository.findAllByUserId(userId);
         for (Plan plan : plans) {
             List<PlanWorkout> planWorkouts = plan.getPlanWorkouts();
             for (PlanWorkout planWorkout : planWorkouts) {
                 if (planWorkout.getDone()) {
-                    String workoutName = WorkoutEnum.findWorkoutNameById(planWorkout.getIdOfWorkout());
+                    int workoutId = planWorkout.getIdOfWorkout();
                     int totalCount = planWorkout.getTotalCount();
-                    totalCountByWorkout.put(workoutName, totalCountByWorkout.get(workoutName) + totalCount);
+                    totalCountByWorkout.put(workoutId, totalCountByWorkout.get(workoutId) + totalCount);
                 }
             }
         }
@@ -41,11 +41,11 @@ public class SummaryService {
         return TotalWorkoutCountResponse.from(totalCountByWorkout);
     }
 
-    private Map<String, Integer> createTotalCountByWorkout() {
-        Map<String, Integer> totalCountByWorkout = new HashMap<>();
-        List<String> workoutNames = WorkoutEnum.findAllWorkoutNames();
-        for (String workoutName : workoutNames) {
-            totalCountByWorkout.put(workoutName, 0);
+    private Map<Integer, Integer> createTotalCountByWorkout() {
+        Map<Integer, Integer> totalCountByWorkout = new HashMap<>();
+        List<Integer> workoutNames = WorkoutEnum.findAllWorkoutIds();
+        for (Integer workoutId : workoutNames) {
+            totalCountByWorkout.put(workoutId, 0);
         }
 
         return totalCountByWorkout;
@@ -55,39 +55,39 @@ public class SummaryService {
     public TotalMonthlyWorkoutCountResponse getTotalCountByWorkoutNameForPeriod(Long userId, LocalDateTime startDate, LocalDateTime endDate) {
         List<String> monthNamesForPeriod = getMonthNamesForPeriod(startDate);
 
-        Map<String, Map<String, Integer>> totalCountByWorkoutNameForPeriod = createTotalCountByWorkoutNameForPeriod(monthNamesForPeriod);
+        Map<Integer, Map<String, Integer>> totalCountByWorkoutIdForPeriod = createTotalCountByWorkoutIdForPeriod(monthNamesForPeriod);
 
         List<Plan> plans = planRepository.findAllByUserIdBetweenPeriodOfPlanDate(userId, startDate, endDate);
         for (Plan plan : plans) {
             List<PlanWorkout> planWorkouts = plan.getPlanWorkouts();
             for (PlanWorkout planWorkout : planWorkouts) {
                 if (planWorkout.getDone()) {
-                    String workoutName = WorkoutEnum.findWorkoutNameById(planWorkout.getIdOfWorkout());
+                    int workoutId = planWorkout.getIdOfWorkout();
                     String monthName = getSubStringOfMonthName(planWorkout.getModifiedDate());
                     int totalCount = planWorkout.getTotalCount();
 
-                    Map<String, Integer> totalCountByMonth = totalCountByWorkoutNameForPeriod.get(workoutName);
+                    Map<String, Integer> totalCountByMonth = totalCountByWorkoutIdForPeriod.get(workoutId);
                     totalCountByMonth.put(monthName, totalCountByMonth.get(monthName) + totalCount);
                 }
             }
         }
 
-        return TotalMonthlyWorkoutCountResponse.from(totalCountByWorkoutNameForPeriod);
+        return TotalMonthlyWorkoutCountResponse.from(totalCountByWorkoutIdForPeriod);
     }
 
-    private static Map<String, Map<String, Integer>> createTotalCountByWorkoutNameForPeriod(List<String> monthNamesForPeriod) {
-        Map<String, Map<String, Integer>> totalCountByWorkoutNameForPeriod = new LinkedHashMap<>();
-        List<String> workoutNames = WorkoutEnum.findAllWorkoutNames();
-        for (String workoutName : workoutNames) {
+    private static Map<Integer, Map<String, Integer>> createTotalCountByWorkoutIdForPeriod(List<String> monthNamesForPeriod) {
+        Map<Integer, Map<String, Integer>> totalCountByWorkoutIdForPeriod = new LinkedHashMap<>();
+        List<Integer> workoutIds = WorkoutEnum.findAllWorkoutIds();
+        for (Integer workoutId : workoutIds) {
             Map<String, Integer> totalCountByMonth = new LinkedHashMap<>();
 
             for (String monthName : monthNamesForPeriod) {
                 totalCountByMonth.put(monthName, 0);
             }
 
-            totalCountByWorkoutNameForPeriod.put(workoutName, totalCountByMonth);
+            totalCountByWorkoutIdForPeriod.put(workoutId, totalCountByMonth);
         }
-        return totalCountByWorkoutNameForPeriod;
+        return totalCountByWorkoutIdForPeriod;
     }
 
     private List<String> getMonthNamesForPeriod(LocalDateTime startDate) {
