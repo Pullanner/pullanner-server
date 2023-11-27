@@ -76,6 +76,7 @@ public class Plan extends BaseTimeEntity {
         this.name = name;
         this.note = note;
         this.planDate = planDate;
+        this.completed = false;
     }
 
     /*
