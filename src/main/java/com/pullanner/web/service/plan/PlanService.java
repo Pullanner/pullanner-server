@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -53,7 +54,7 @@ public class PlanService {
     @Transactional(readOnly = true)
     public PlanResponsesByMonth findByMonth(Long userId, Integer year, Integer month) {
         LocalDateTime firstDateOfThisMonth = LocalDateTime.of(year, month, 1, 0, 0);
-        LocalDateTime lastDateOfThisMonth = LocalDateTime.of(year, month, firstDateOfThisMonth.getDayOfMonth(), 23, 59);
+        LocalDateTime lastDateOfThisMonth = LocalDateTime.of(year, month, getLastDayOfMonth(firstDateOfThisMonth), 23, 59);
 
         LocalDateTime startDate = firstDateOfThisMonth.minusDays(14);
         LocalDateTime endDate = lastDateOfThisMonth.plusDays(14);
@@ -76,6 +77,10 @@ public class PlanService {
         }
 
         return PlanResponsesByMonth.from(planInformationByDate);
+    }
+
+    private static int getLastDayOfMonth(LocalDateTime firstDateOfThisMonth) {
+        return firstDateOfThisMonth.with(TemporalAdjusters.lastDayOfMonth()).getDayOfMonth();
     }
 
     @Transactional
