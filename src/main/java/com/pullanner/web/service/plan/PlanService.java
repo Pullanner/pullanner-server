@@ -86,7 +86,7 @@ public class PlanService {
     @Transactional
     public void save(Long userId, PlanSaveOrUpdateRequest request) {
         // validate date of plan to save
-        planValidationService.validatePlanSaveDate(request);
+        planValidationService.validatePlanSaveOrUpdateDateTime(request);
 
         User user = userRepository.findWithUserWorkoutsById(userId).orElseThrow(
                 () -> new UserNotFoundedException(userId)
@@ -119,7 +119,7 @@ public class PlanService {
         planValidationService.validateIfPlanCompleted(plan);
 
         // validate datetime of plan to update
-        planValidationService.validatePlanUpdateDateTime(request);
+        planValidationService.validatePlanSaveOrUpdateDateTime(request);
 
         plan = planRepository.findWithPlanWorkoutsById(planId).orElseThrow(PlanWorkoutNotFoundedException::new);
 

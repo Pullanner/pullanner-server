@@ -17,16 +17,7 @@ import java.util.Set;
 @Service
 public class PlanValidationService {
 
-    public void validatePlanSaveDate(PlanSaveOrUpdateRequest request) {
-        LocalDate today = LocalDate.now(ZoneId.of("Asia/Seoul"));
-        LocalDate planDate = request.getPlanDateTime().toLocalDate();
-
-        if (!planDate.isAfter(today)) {
-            throw new PlanSaveDateException();
-        }
-    }
-
-    public void validatePlanUpdateDateTime(PlanSaveOrUpdateRequest request) {
+    public void validatePlanSaveOrUpdateDateTime(PlanSaveOrUpdateRequest request) {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul")).truncatedTo(ChronoUnit.MINUTES);
         LocalDateTime planDateTime = request.getPlanDateTime().truncatedTo(ChronoUnit.MINUTES);
 
